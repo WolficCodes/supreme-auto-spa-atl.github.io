@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+/* HERO SECTION */
+.hero-modern {
+    background: linear-gradient(to bottom right, #e8f0ff, #ffffff);
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.hero-modern h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #1a3d7c;
+}
+
+.hero-modern p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.btn {
+    background: #1a3d7c;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #163568;
+}
+
+/* SECTIONS */
+.section {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.service-grid, .why-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.card, .why-card {
+    background: #f5f7fa;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #1a3d7c;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #f0f0f0;
+}
+
+.employee-link {
+    display: block;
+    margin-top: 10px;
+    color: #1a3d7c;
+    text-decoration: none;
+}
