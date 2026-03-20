@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmed – Supreme Auto Spa ATL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f0; --gold: #c9a84c; --gold-light: #e8c96a; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .card {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid rgba(201,168,76,0.25);
+      padding: 56px 40px;
+      background: #111118;
+    }
+    .check {
+      width: 64px; height: 64px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 32px;
+      font-size: 28px;
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+      color: var(--gold);
+    }
+    .amount {
+      font-size: 32px;
+      font-weight: 600;
+      margin: 20px 0 8px;
+    }
+    .item-name {
+      font-size: 14px;
+      color: rgba(245,245,240,0.5);
+      margin-bottom: 8px;
+    }
+    .datetime {
+      font-size: 13px;
+      color: rgba(245,245,240,0.4);
+      margin-bottom: 32px;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      margin: 32px 0;
+    }
+    p {
+      font-size: 14px;
+      color: rgba(245,245,240,0.55);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      padding: 14px 36px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--gold-light); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="check">✓</div>
+    <h1>Booking Confirmed</h1>
+    <div class="amount">$1.00</div>
+    <div class="item-name">Supreme Auto Spa ATL – Booking Deposit</div>
+    <div class="datetime" id="datetime"></div>
+    <hr class="divider" />
+    <p>Thank you! We'll contact you at <strong>(404) 555‑0192</strong> to confirm your appointment time and location.</p>
+    <a href="/" class="btn">← Back to Home</a>
+  </div>
+
+  <script>
+    const now = new Date();
+    document.getElementById('datetime').textContent =
+      'Date: ' + now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
+      ' at ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  </script>
+</body>
+</html>

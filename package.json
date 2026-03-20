@@ -1,0 +1,8 @@
+{
+  "name": "supreme-auto-spa-atl",
+  "version": "1.0.0",
+  "description": "Supreme Auto Spa ATL – payment integration",
+  "dependencies": {
+    "stripe": "^14.0.0"
+  }
+}
