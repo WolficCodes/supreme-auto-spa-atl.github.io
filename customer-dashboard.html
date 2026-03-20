@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account – Supreme Auto Spa ATL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body { background: var(--black); }
+    .dash-wrap {
+      max-width: 1100px; margin: 0 auto;
+      padding: 100px 32px 80px;
+    }
+
+    /* Header */
+    .dash-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 48px; flex-wrap: wrap; gap: 20px;
+    }
+    .dash-header .label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .dash-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5vw, 52px); letter-spacing: 3px;
+    }
+    .signout-btn {
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted); padding: 10px 20px; font-size: 12px;
+      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      transition: all .2s;
+    }
+    .signout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* Stats row */
+    .stats {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2px; margin-bottom: 48px;
+    }
+    .stat-card {
+      background: var(--card); padding: 28px 24px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .stat-card .stat-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .stat-card .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px; letter-spacing: 2px; color: var(--gold);
+    }
+    .stat-card .stat-sub { font-size: 12px; color: rgba(245,245,240,0.3); margin-top: 4px; }
+
+    /* Section title */
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 2px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* Bookings table */
+    .bookings-wrap { margin-bottom: 48px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); padding: 12px 16px; text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    td {
+      padding: 16px; font-size: 13px; color: var(--white);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .status-badge {
+      display: inline-block; padding: 4px 10px;
+      font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .status-confirmed { background: rgba(76,175,125,0.12); color: #7fd4a8; border: 1px solid rgba(76,175,125,0.3); }
+    .status-pending   { background: rgba(201,168,76,0.1);  color: var(--gold); border: 1px solid var(--gold-border); }
+    .status-completed { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); }
+    .empty-state {
+      text-align: center; padding: 56px 24px;
+      background: var(--card); border: 1px solid rgba(255,255,255,0.05);
+    }
+    .empty-state p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+
+    /* Profile card */
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .profile-field {
+      background: var(--card); padding: 20px 24px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .profile-field .field-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .profile-field .field-val { font-size: 14px; }
+
+    /* Book CTA */
+    .book-cta {
+      background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
+      border: 1px solid var(--gold-border);
+      padding: 36px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px; margin-top: 48px;
+    }
+    .book-cta h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; letter-spacing: 2px; margin-bottom: 4px;
+    }
+    .book-cta p { font-size: 13px; color: var(--muted); }
+    .btn-cta {
+      background: var(--gold); color: var(--black);
+      padding: 14px 32px; font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: background .2s; white-space: nowrap;
+    }
+    .btn-cta:hover { background: var(--gold-light); }
+
+    @media (max-width: 600px) {
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Supreme Auto Spa</a>
+    <div class="nav-links">
+      <span id="nav-name" style="font-size:13px;color:var(--muted)"></span>
+      <a href="#" onclick="signOut()" style="color:rgba(245,245,240,0.3);font-size:12px">Sign Out</a>
+    </div>
+  </nav>
+
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <div>
+        <p class="label">Customer Portal</p>
+        <h1 id="welcome-msg">My Dashboard</h1>
+      </div>
+      <button class="signout-btn" onclick="signOut()">Sign Out</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-val" id="stat-total">0</div>
+        <div class="stat-sub">all time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Upcoming</div>
+        <div class="stat-val" id="stat-upcoming">0</div>
+        <div class="stat-sub">scheduled</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-val" id="stat-completed">0</div>
+        <div class="stat-sub">services done</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Member Since</div>
+        <div class="stat-val" id="stat-since">—</div>
+        <div class="stat-sub">2026</div>
+      </div>
+    </div>
+
+    <!-- Bookings -->
+    <div class="section-title">Booking History</div>
+    <div class="bookings-wrap" id="bookings-section"></div>
+
+    <!-- Profile -->
+    <div class="section-title">Account Details</div>
+    <div class="profile-grid" id="profile-grid"></div>
+
+    <!-- Book CTA -->
+    <div class="book-cta">
+      <div>
+        <h3>Ready for Your Next Detail?</h3>
+        <p>Book now with a $1 deposit — we'll confirm your time and location.</p>
+      </div>
+      <a href="index.html#payment" class="btn-cta">Book a Detail</a>
+    </div>
+  </div>
+
+  <script>
+    // Guard: must be logged in as customer
+    const session = JSON.parse(localStorage.getItem('sas_session') || 'null');
+    if (!session || session.type !== 'customer') {
+      window.location = 'signin.html';
+    }
+
+    // Load user data
+    const accounts = JSON.parse(localStorage.getItem('sas_customers') || '[]');
+    const user = accounts.find(a => a.email === session.email) || {};
+
+    document.getElementById('welcome-msg').textContent = `Welcome Back, ${session.fname}`;
+    document.getElementById('nav-name').textContent = `${session.fname} ${session.lname}`;
+
+    // Demo bookings (in real app these come from DB)
+    const demoBookings = [
+      { id: 'SAS-0041', service: 'Full Detail', date: 'Mar 28, 2026', vehicle: user.vehicle || '—', amount: '$120', status: 'confirmed' },
+      { id: 'SAS-0038', service: 'Exterior Detail', date: 'Feb 14, 2026', vehicle: user.vehicle || '—', amount: '$65', status: 'completed' },
+      { id: 'SAS-0031', service: 'Interior Detail', date: 'Jan 05, 2026', vehicle: user.vehicle || '—', amount: '$80', status: 'completed' },
+    ];
+
+    const bookings = (user.bookings && user.bookings.length) ? user.bookings : demoBookings;
+
+    // Stats
+    const upcoming  = bookings.filter(b => b.status === 'confirmed' || b.status === 'pending').length;
+    const completed = bookings.filter(b => b.status === 'completed').length;
+    document.getElementById('stat-total').textContent = bookings.length;
+    document.getElementById('stat-upcoming').textContent = upcoming;
+    document.getElementById('stat-completed').textContent = completed;
+    document.getElementById('stat-since').textContent = 'MAR';
+
+    // Bookings table
+    const bSection = document.getElementById('bookings-section');
+    if (bookings.length === 0) {
+      bSection.innerHTML = `
+        <div class="empty-state">
+          <p>No bookings yet. Ready to get your car detailed?</p>
+          <a href="index.html#payment" class="btn-cta">Book Your First Detail</a>
+        </div>`;
+    } else {
+      bSection.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Vehicle</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bookings.map(b => `
+              <tr>
+                <td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;letter-spacing:1px">${b.id}</td>
+                <td>${b.service}</td>
+                <td>${b.date}</td>
+                <td style="color:var(--muted)">${b.vehicle}</td>
+                <td style="font-weight:600">${b.amount}</td>
+                <td><span class="status-badge status-${b.status}">${b.status}</span></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    // Profile
+    document.getElementById('profile-grid').innerHTML = `
+      <div class="profile-field">
+        <div class="field-label">Full Name</div>
+        <div class="field-val">${user.fname || session.fname} ${user.lname || session.lname}</div>
+      </div>
+      <div class="profile-field">
+        <div class="field-label">Email</div>
+        <div class="field-val">${session.email}</div>
+      </div>
+      <div class="profile-field">
+        <div class="field-label">Phone</div>
+        <div class="field-val">${user.phone || '—'}</div>
+      </div>
+      <div class="profile-field">
+        <div class="field-label">Vehicle on File</div>
+        <div class="field-val">${user.vehicle || '—'}</div>
+      </div>`;
+
+    function signOut() {
+      localStorage.removeItem('sas_session');
+      window.location = 'index.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In – Supreme Auto Spa ATL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+    .img-panel {
+      position: relative;
+      background: url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=900&auto=format&fit=crop')
+        center/cover no-repeat;
+    }
+    .img-panel::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg,rgba(10,10,10,0.7) 0%,rgba(10,10,10,0.35) 100%);
+    }
+    .img-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 56px;
+    }
+    .img-overlay .tag {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px;
+    }
+    .img-overlay h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px; letter-spacing: 3px; line-height: 1.05; margin-bottom: 16px;
+    }
+    .img-overlay p { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 300px; }
+
+    .form-panel {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 100px 72px 60px; background: var(--dark); overflow-y: auto;
+    }
+    .form-header { margin-bottom: 36px; }
+    .form-header .label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px;
+    }
+    .form-header h1 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px;
+    }
+    .forgot { text-align: right; margin-top: -10px; margin-bottom: 18px; }
+    .forgot a { font-size: 12px; color: var(--muted); text-decoration: none; }
+    .forgot a:hover { color: var(--gold); }
+    .bottom-links { margin-top: 28px; text-align: center; font-size: 13px; color: var(--muted); }
+    .bottom-links a { color: var(--gold); text-decoration: none; }
+    .bottom-links a:hover { text-decoration: underline; }
+    .employee-link {
+      margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      text-align: center; font-size: 12px; color: rgba(245,245,240,0.3);
+    }
+    .employee-link a { color: rgba(245,245,240,0.3); text-decoration: none; }
+    .employee-link a:hover { color: var(--gold); }
+    @media (max-width: 768px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      .img-panel { display: none; }
+      .form-panel { padding: 100px 28px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Supreme Auto Spa</a>
+    <div class="nav-links">
+      <a href="signup.html">Create Account</a>
+      <a href="signup.html" class="nav-btn">Sign Up</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="img-panel">
+      <div class="img-overlay">
+        <p class="tag">Welcome Back</p>
+        <h2>Good To<br>See You<br><span style="color:var(--gold)">Again</span></h2>
+        <p>Sign in to view your bookings, track service history, and manage your account.</p>
+      </div>
+    </div>
+
+    <div class="form-panel">
+      <div class="form-header">
+        <p class="label">Customer Portal</p>
+        <h1>Sign In</h1>
+      </div>
+
+      <div class="alert alert-error" id="error-msg"></div>
+
+      <form id="signin-form" onsubmit="handleSignin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="your@email.com" required />
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="Your password" required />
+        </div>
+
+        <div class="forgot"><a href="#">Forgot password?</a></div>
+
+        <button type="submit" class="btn btn-gold" id="submit-btn">Sign In</button>
+
+        <div class="divider">or</div>
+
+        <a href="signup.html" class="btn btn-outline">Create an Account</a>
+      </form>
+
+      <p class="bottom-links">New customer? <a href="signup.html">Sign up free</a></p>
+      <p class="employee-link"><a href="login.html">Employee login →</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Check if already logged in
+    const session = JSON.parse(localStorage.getItem('sas_session') || 'null');
+    if (session && session.type === 'customer') {
+      window.location = 'customer-dashboard.html';
+    }
+
+    function handleSignin(e) {
+      e.preventDefault();
+      const btn    = document.getElementById('submit-btn');
+      const errEl  = document.getElementById('error-msg');
+      errEl.classList.remove('show');
+
+      const email    = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+
+      const accounts = JSON.parse(localStorage.getItem('sas_customers') || '[]');
+      const user = accounts.find(a => a.email === email && a.password === password);
+
+      if (!user) {
+        errEl.textContent = 'Incorrect email or password.';
+        errEl.classList.add('show');
+        return;
+      }
+
+      localStorage.setItem('sas_session', JSON.stringify({
+        type: 'customer', email: user.email, fname: user.fname, lname: user.lname
+      }));
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      setTimeout(() => { window.location = 'customer-dashboard.html'; }, 800);
+    }
+  </script>
+</body>
+</html>

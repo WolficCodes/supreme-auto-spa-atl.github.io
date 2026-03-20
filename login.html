@@ -1,34 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Login</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Login – Supreme Auto Spa ATL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body { display: flex; flex-direction: column; }
+    .login-wrap {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 120px 24px 60px;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 55%),
+        var(--black);
+    }
+    .login-box {
+      width: 100%; max-width: 420px;
+      border: 1px solid var(--gold-border);
+      background: var(--dark);
+      padding: 52px 44px 44px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold-faint);
+      border: 1px solid var(--gold-border);
+      color: var(--gold); font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase; padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold);
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px; letter-spacing: 3px; margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 13px; color: var(--muted); margin-bottom: 36px;
+    }
+    .customer-link {
+      margin-top: 24px; text-align: center;
+      font-size: 12px; color: rgba(245,245,240,0.3);
+    }
+    .customer-link a { color: rgba(245,245,240,0.3); text-decoration: none; }
+    .customer-link a:hover { color: var(--gold); }
+    .hint {
+      margin-top: 16px; padding: 12px 14px;
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.15);
+      font-size: 12px; color: rgba(245,245,240,0.4);
+      line-height: 1.6;
+    }
+    .hint strong { color: var(--gold); }
+  </style>
 </head>
 <body>
 
-<section class="section">
-    <h2>Employee Login</h2>
-    <p>Enter the password to access onboarding.</p>
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Supreme Auto Spa</a>
+    <div class="nav-links">
+      <a href="signin.html">Customer Login</a>
+    </div>
+  </nav>
 
-    <input type="password" id="password" placeholder="Password" class="input">
-    <button onclick="login()" class="btn">Login</button>
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="badge"><span class="badge-dot"></span> Staff Access</div>
+      <h1>Employee<br>Login</h1>
+      <p class="subtitle">Authorized personnel only.</p>
 
-    <p id="error" style="color:red; display:none;">Incorrect password.</p>
-</section>
+      <div class="alert alert-error" id="error-msg"></div>
 
-<script>
-function login() {
-    const pass = document.getElementById("password").value;
+      <form id="emp-form" onsubmit="handleEmpLogin(event)">
+        <div class="form-group">
+          <label>Employee Email</label>
+          <input type="email" id="email" placeholder="staff@supremeautospa.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn btn-gold" id="submit-btn">Access Portal</button>
+      </form>
 
-    if (pass === "detail2024") {
-        window.location.href = "onboarding.html";
-    } else {
-        document.getElementById("error").style.display = "block";
+      <div class="hint">
+        Demo credentials — Email: <strong>staff@supremeautospa.com</strong><br>
+        Password: <strong>Supreme2026!</strong>
+      </div>
+
+      <p class="customer-link"><a href="signin.html">← Customer sign in</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Check if already logged in as employee
+    const session = JSON.parse(localStorage.getItem('sas_session') || 'null');
+    if (session && session.type === 'employee') {
+      window.location = 'employee-dashboard.html';
     }
-}
-</script>
 
+    // Demo employee credentials (in a real app this hits an API)
+    const EMPLOYEES = [
+      { email: 'staff@supremeautospa.com', password: 'Supreme2026!', name: 'Alex Carter', role: 'Detailer' },
+      { email: 'manager@supremeautospa.com', password: 'Manager2026!', name: 'Jordan Smith', role: 'Manager' },
+    ];
+
+    function handleEmpLogin(e) {
+      e.preventDefault();
+      const btn   = document.getElementById('submit-btn');
+      const errEl = document.getElementById('error-msg');
+      errEl.classList.remove('show');
+
+      const email    = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+
+      const emp = EMPLOYEES.find(a => a.email === email && a.password === password);
+      if (!emp) {
+        errEl.textContent = 'Invalid email or password.';
+        errEl.classList.add('show');
+        return;
+      }
+
+      localStorage.setItem('sas_session', JSON.stringify({
+        type: 'employee', email: emp.email, name: emp.name, role: emp.role
+      }));
+
+      btn.disabled = true; btn.textContent = 'Logging in...';
+      setTimeout(() => { window.location = 'employee-dashboard.html'; }, 800);
+    }
+  </script>
 </body>
 </html>

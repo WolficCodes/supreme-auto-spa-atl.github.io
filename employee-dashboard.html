@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Portal – Supreme Auto Spa ATL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body { background: var(--black); }
+    .dash-wrap { max-width: 1100px; margin: 0 auto; padding: 100px 32px 80px; }
+
+    /* Header */
+    .dash-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 48px; flex-wrap: wrap; gap: 20px;
+    }
+    .dash-header .label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .dash-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5vw, 52px); letter-spacing: 3px;
+    }
+    .role-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--gold-faint); border: 1px solid var(--gold-border);
+      color: var(--gold); font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 12px;
+    }
+    .signout-btn {
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted); padding: 10px 20px; font-size: 12px;
+      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      transition: all .2s;
+    }
+    .signout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* Stats */
+    .stats {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2px; margin-bottom: 48px;
+    }
+    .stat-card {
+      background: var(--card); padding: 28px 24px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .stat-card .stat-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .stat-card .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px; letter-spacing: 2px; color: var(--gold);
+    }
+    .stat-card .stat-sub { font-size: 12px; color: rgba(245,245,240,0.3); margin-top: 4px; }
+
+    /* Section title */
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 2px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07);
+    }
+
+    /* Jobs table */
+    .table-wrap { margin-bottom: 48px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); padding: 12px 16px; text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    td {
+      padding: 16px; font-size: 13px; color: var(--white);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .status-badge {
+      display: inline-block; padding: 4px 10px;
+      font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .status-confirmed { background: rgba(76,175,125,0.12); color: #7fd4a8; border: 1px solid rgba(76,175,125,0.3); }
+    .status-pending   { background: rgba(201,168,76,0.1);  color: var(--gold); border: 1px solid var(--gold-border); }
+    .status-completed { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); }
+
+    /* Onboarding checklist */
+    .onboarding-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px; margin-bottom: 48px;
+    }
+    .onboard-card {
+      background: var(--card); padding: 28px 28px;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .onboard-check {
+      width: 32px; height: 32px; flex-shrink: 0;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; margin-top: 2px;
+    }
+    .check-done { background: rgba(76,175,125,0.15); border: 1px solid rgba(76,175,125,0.4); color: #7fd4a8; }
+    .check-todo { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); }
+    .onboard-title {
+      font-weight: 600; font-size: 14px; margin-bottom: 6px;
+    }
+    .onboard-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* Quick actions */
+    .actions-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2px; margin-bottom: 48px;
+    }
+    .action-card {
+      background: var(--card); padding: 24px 24px;
+      border: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer; transition: border-color .2s;
+      text-decoration: none; display: block;
+    }
+    .action-card:hover { border-color: var(--gold-border); }
+    .action-icon { font-size: 22px; margin-bottom: 12px; }
+    .action-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .action-desc { font-size: 12px; color: var(--muted); }
+
+    /* Photo grid */
+    .photo-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      margin-bottom: 48px;
+    }
+    .photo-grid img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      filter: brightness(0.75) saturate(0.8);
+      transition: filter .3s;
+    }
+    .photo-grid img:hover { filter: brightness(0.9) saturate(1); }
+
+    @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Supreme Auto Spa</a>
+    <div class="nav-links">
+      <span id="nav-role" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)"></span>
+      <span id="nav-name" style="font-size:13px;color:var(--muted)"></span>
+      <a href="#" onclick="signOut()" style="color:rgba(245,245,240,0.3);font-size:12px">Sign Out</a>
+    </div>
+  </nav>
+
+  <div class="dash-wrap">
+
+    <div class="dash-header">
+      <div>
+        <p class="label">Employee Portal</p>
+        <h1 id="welcome-msg">Staff Dashboard</h1>
+        <div style="margin-top:10px">
+          <span class="role-badge" id="role-badge">● Detailer</span>
+        </div>
+      </div>
+      <button class="signout-btn" onclick="signOut()">Sign Out</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Jobs Today</div>
+        <div class="stat-val">3</div>
+        <div class="stat-sub">Mar 20, 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">This Week</div>
+        <div class="stat-val">11</div>
+        <div class="stat-sub">scheduled</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-val">47</div>
+        <div class="stat-sub">all time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rating</div>
+        <div class="stat-val">4.9</div>
+        <div class="stat-sub">avg customer</div>
+      </div>
+    </div>
+
+    <!-- Onboarding checklist -->
+    <div class="section-title">Onboarding Checklist</div>
+    <div class="onboarding-grid">
+      <div class="onboard-card">
+        <div class="onboard-check check-done">✓</div>
+        <div>
+          <div class="onboard-title">Account Created</div>
+          <div class="onboard-desc">Your employee account is active and verified.</div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <div class="onboard-check check-done">✓</div>
+        <div>
+          <div class="onboard-title">Review Service Menu</div>
+          <div class="onboard-desc">Familiarize yourself with all service packages and pricing.</div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <div class="onboard-check check-done">✓</div>
+        <div>
+          <div class="onboard-title">Equipment Walkthrough</div>
+          <div class="onboard-desc">Complete equipment orientation with your team lead.</div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <div class="onboard-check check-todo">○</div>
+        <div>
+          <div class="onboard-title">First Solo Job</div>
+          <div class="onboard-desc">Complete your first unassisted detail appointment.</div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <div class="onboard-check check-todo">○</div>
+        <div>
+          <div class="onboard-title">Download Mobile App</div>
+          <div class="onboard-desc">Install the team scheduling app on your phone.</div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <div class="onboard-check check-todo">○</div>
+        <div>
+          <div class="onboard-title">W-9 / Direct Deposit</div>
+          <div class="onboard-desc">Submit payroll paperwork to the manager.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today's jobs -->
+    <div class="section-title">Today's Schedule</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Vehicle</th>
+            <th>Location</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--gold);font-weight:600">9:00 AM</td>
+            <td>Marcus W.</td>
+            <td>Full Detail</td>
+            <td>2021 BMW M3</td>
+            <td>Kennesaw, GA</td>
+            <td><span class="status-badge status-confirmed">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--gold);font-weight:600">12:30 PM</td>
+            <td>Tanya R.</td>
+            <td>Interior Detail</td>
+            <td>2023 Camry</td>
+            <td>Marietta, GA</td>
+            <td><span class="status-badge status-confirmed">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--gold);font-weight:600">3:30 PM</td>
+            <td>DeShawn K.</td>
+            <td>Exterior Detail</td>
+            <td>2020 Charger</td>
+            <td>Smyrna, GA</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="section-title">Quick Actions</div>
+    <div class="actions-grid">
+      <a class="action-card" href="#">
+        <div class="action-icon">📋</div>
+        <div class="action-title">View Full Schedule</div>
+        <div class="action-desc">See all upcoming jobs for the week</div>
+      </a>
+      <a class="action-card" href="#">
+        <div class="action-icon">✅</div>
+        <div class="action-title">Mark Job Complete</div>
+        <div class="action-desc">Update status after finishing a detail</div>
+      </a>
+      <a class="action-card" href="#">
+        <div class="action-icon">📍</div>
+        <div class="action-title">Get Directions</div>
+        <div class="action-desc">Navigate to your next appointment</div>
+      </a>
+      <a class="action-card" href="#">
+        <div class="action-icon">💬</div>
+        <div class="action-title">Contact Manager</div>
+        <div class="action-desc">Reach the team lead for support</div>
+      </a>
+    </div>
+
+    <!-- Inspiration photo grid -->
+    <div class="section-title">Our Work</div>
+    <div class="photo-grid">
+      <img src="https://images.unsplash.com/photo-1507136566006-cfc505b114fc?w=600&auto=format&fit=crop" alt="detail work" />
+      <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop" alt="clean car" />
+      <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=600&auto=format&fit=crop" alt="car detail" />
+      <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&auto=format&fit=crop" alt="luxury car" />
+      <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&auto=format&fit=crop" alt="sports car" />
+      <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&auto=format&fit=crop" alt="car wash" />
+    </div>
+
+  </div>
+
+  <script>
+    const session = JSON.parse(localStorage.getItem('sas_session') || 'null');
+    if (!session || session.type !== 'employee') {
+      window.location = 'login.html';
+    }
+
+    document.getElementById('welcome-msg').textContent = `Welcome, ${session.name.split(' ')[0]}`;
+    document.getElementById('nav-name').textContent = session.name;
+    document.getElementById('nav-role').textContent = session.role;
+    document.getElementById('role-badge').textContent = `● ${session.role}`;
+
+    function signOut() {
+      localStorage.removeItem('sas_session');
+      window.location = 'login.html';
+    }
+  </script>
+</body>
+</html>

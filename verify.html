@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verification – Supreme Auto Spa ATL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body {
+      display: flex; flex-direction: column; min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 55%),
+        var(--black);
+    }
+    .wrap {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 60px 24px;
+    }
+
+    /* ── Login card ── */
+    .login-box {
+      width: 100%; max-width: 420px;
+      border: 1px solid var(--gold-border);
+      background: var(--dark);
+      padding: 52px 44px 44px;
+    }
+    .ksu-logo-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 32px;
+    }
+    .ksu-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--gold-faint); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 14px;
+      color: var(--gold); letter-spacing: 1px;
+    }
+    .ksu-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px; letter-spacing: 3px; margin-bottom: 6px;
+    }
+    .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+
+    /* ── Profile card (shown after login) ── */
+    #profile-card { display: none; }
+    .id-card {
+      border: 1px solid var(--gold-border);
+      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+      padding: 32px 28px; margin-bottom: 24px;
+    }
+    .id-card-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    .id-school {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .id-year {
+      font-size: 10px; letter-spacing: 1px; color: var(--muted);
+    }
+    .id-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px; letter-spacing: 2px; margin-bottom: 4px;
+    }
+    .id-rows { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .id-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .id-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .id-row-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .id-row-val {
+      font-size: 13px; font-weight: 500; text-align: right;
+    }
+    .id-row-val.gold { color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; }
+
+    .verified-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(76,175,125,0.1); border: 1px solid rgba(76,175,125,0.3);
+      color: #7fd4a8; font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 7px 14px; margin-bottom: 24px;
+    }
+    .verified-dot { width: 6px; height: 6px; border-radius: 50%; background: #7fd4a8; }
+
+    .back-btn {
+      display: block; width: 100%; padding: 13px;
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted); font-size: 12px; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer; text-align: center;
+      text-decoration: none; transition: all .2s;
+    }
+    .back-btn:hover { border-color: var(--gold); color: var(--gold); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Supreme Auto Spa</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="login-box">
+
+      <!-- ── Login form ── -->
+      <div id="login-form">
+        <div class="ksu-logo-row">
+          <div class="ksu-dot">KSU</div>
+          <span class="ksu-label">Kennesaw State University</span>
+        </div>
+        <h1>Identity<br>Verification</h1>
+        <p class="subtitle">Enter your KSU credentials to continue.</p>
+
+        <div class="alert alert-error" id="error-msg"></div>
+
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>KSU Email</label>
+            <input type="email" id="email" placeholder="username@students.kennesaw.edu" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required />
+          </div>
+          <button type="submit" class="btn btn-gold" id="submit-btn">Verify Identity</button>
+        </form>
+
+        <div style="margin-top:20px;text-align:center">
+          <a href="index.html" class="back-btn">← Back to Site</a>
+        </div>
+      </div>
+
+      <!-- ── Profile card (shown after successful login) ── -->
+      <div id="profile-card">
+        <div class="ksu-logo-row">
+          <div class="ksu-dot">KSU</div>
+          <span class="ksu-label">Kennesaw State University</span>
+        </div>
+
+        <div class="verified-badge">
+          <span class="verified-dot"></span> Identity Verified
+        </div>
+
+        <div class="id-card">
+          <div class="id-card-header">
+            <span class="id-school">KSU Student</span>
+            <span class="id-year">2025</span>
+          </div>
+          <div class="id-name">ISAIAH HENRY</div>
+
+          <div class="id-rows">
+            <div class="id-row">
+              <span class="id-row-label">Student ID</span>
+              <span class="id-row-val gold">011619819</span>
+            </div>
+            <div class="id-row">
+              <span class="id-row-label">KSU Email</span>
+              <span class="id-row-val">Ihenry8@students.kennesaw.edu</span>
+            </div>
+            <div class="id-row">
+              <span class="id-row-label">University</span>
+              <span class="id-row-val">Kennesaw State University</span>
+            </div>
+            <div class="id-row">
+              <span class="id-row-label">Course</span>
+              <span class="id-row-val">CYBR 2310</span>
+            </div>
+            <div class="id-row">
+              <span class="id-row-label">Assignment</span>
+              <span class="id-row-val">Week 9 – Payment Web App</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Supreme Auto Spa</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const btn   = document.getElementById('submit-btn');
+      const errEl = document.getElementById('error-msg');
+      errEl.classList.remove('show');
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (
+        email.toLowerCase() === 'ihenry8@students.kennesaw.edu' &&
+        password === 'Detail2025!'
+      ) {
+        btn.disabled = true;
+        btn.textContent = 'Verified...';
+        setTimeout(() => {
+          document.getElementById('login-form').style.display = 'none';
+          document.getElementById('profile-card').style.display = 'block';
+        }, 700);
+      } else {
+        errEl.textContent = 'Incorrect email or password.';
+        errEl.classList.add('show');
+      }
+    }
+  </script>
+</body>
+</html>
