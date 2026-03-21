@@ -8,22 +8,20 @@
   <link rel="stylesheet" href="shared.css" />
   <style>
     body {
-      display: flex; flex-direction: column; min-height: 100vh;
       background:
         radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 55%),
         var(--black);
     }
-    .wrap {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      padding: 60px 24px;
-    }
 
-    /* ── Login card ── */
+    /* ── Shared ── */
+    .wrap {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 90px 24px 60px;
+    }
     .login-box {
-      width: 100%; max-width: 420px;
+      width: 100%; max-width: 440px;
       border: 1px solid var(--gold-border);
-      background: var(--dark);
-      padding: 52px 44px 44px;
+      background: var(--dark); padding: 52px 44px 44px;
     }
     .ksu-logo-row {
       display: flex; align-items: center; gap: 12px; margin-bottom: 32px;
@@ -35,54 +33,17 @@
       font-family: 'Bebas Neue', sans-serif; font-size: 14px;
       color: var(--gold); letter-spacing: 1px;
     }
-    .ksu-label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--muted);
-    }
-    h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 38px; letter-spacing: 3px; margin-bottom: 6px;
-    }
+    .ksu-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+    h1 { font-family: 'Bebas Neue', sans-serif; font-size: 38px; letter-spacing: 3px; margin-bottom: 6px; }
     .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
-
-    /* ── Profile card (shown after login) ── */
-    #profile-card { display: none; }
-    .id-card {
-      border: 1px solid var(--gold-border);
-      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
-      padding: 32px 28px; margin-bottom: 24px;
+    .back-btn {
+      display: block; width: 100%; padding: 13px; margin-top: 16px;
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted); font-size: 12px; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer; text-align: center;
+      text-decoration: none; transition: all .2s;
     }
-    .id-card-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 28px;
-    }
-    .id-school {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold);
-    }
-    .id-year {
-      font-size: 10px; letter-spacing: 1px; color: var(--muted);
-    }
-    .id-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 32px; letter-spacing: 2px; margin-bottom: 4px;
-    }
-    .id-rows { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
-    .id-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .id-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .id-row-label {
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .id-row-val {
-      font-size: 13px; font-weight: 500; text-align: right;
-    }
-    .id-row-val.gold { color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; }
-
+    .back-btn:hover { border-color: var(--gold); color: var(--gold); }
     .verified-badge {
       display: inline-flex; align-items: center; gap: 8px;
       background: rgba(76,175,125,0.1); border: 1px solid rgba(76,175,125,0.3);
@@ -91,128 +52,494 @@
     }
     .verified-dot { width: 6px; height: 6px; border-radius: 50%; background: #7fd4a8; }
 
-    .back-btn {
-      display: block; width: 100%; padding: 13px;
-      background: transparent; border: 1px solid rgba(255,255,255,0.12);
-      color: var(--muted); font-size: 12px; letter-spacing: 2px;
-      text-transform: uppercase; cursor: pointer; text-align: center;
-      text-decoration: none; transition: all .2s;
+    /* ── Student ID card ── */
+    .id-card {
+      border: 1px solid var(--gold-border);
+      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+      padding: 32px 28px; margin-bottom: 24px;
     }
-    .back-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .id-card-header {
+      display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px;
+    }
+    .id-school { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+    .id-year   { font-size: 10px; letter-spacing: 1px; color: var(--muted); }
+    .id-name   { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; margin-bottom: 4px; }
+    .id-rows   { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .id-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .id-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .id-row-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .id-row-val   { font-size: 13px; font-weight: 500; text-align: right; }
+    .id-row-val.gold { color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; }
+
+    /* ── Teacher portal ── */
+    #teacher-portal {
+      width: 100%; max-width: 780px;
+      margin: 0 auto; padding: 90px 32px 80px;
+    }
+    .teacher-header { margin-bottom: 40px; }
+    .tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .teacher-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; }
+    .teacher-header p  { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+    .section-card {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      padding: 28px 28px; margin-bottom: 20px;
+    }
+    .section-card h3 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px;
+      color: var(--gold); margin-bottom: 16px;
+    }
+    .detail-row {
+      display: flex; gap: 16px; margin-bottom: 10px; font-size: 13px; line-height: 1.6;
+    }
+    .dl { color: var(--muted); min-width: 120px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding-top: 1px; }
+    .dv { color: var(--white); }
+    .obj-list { list-style: none; padding: 0; }
+    .obj-list li {
+      padding: 8px 0; font-size: 13px; color: rgba(245,245,240,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px;
+    }
+    .obj-list li:last-child { border-bottom: none; }
+    .obj-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+
+    /* Rubric */
+    .rubric-item {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      padding: 22px 24px; margin-bottom: 8px;
+    }
+    .rubric-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+    }
+    .rubric-name { font-size: 14px; font-weight: 600; }
+    .rubric-max  { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+    .rubric-desc { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
+    .score-row   { display: flex; align-items: center; gap: 14px; }
+    .score-row input[type=range] { flex: 1; accent-color: var(--gold); cursor: pointer; }
+    .score-display {
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+      color: var(--gold); letter-spacing: 1px; min-width: 48px; text-align: right;
+    }
+
+    /* Total */
+    .score-total {
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.04));
+      border: 1px solid var(--gold-border); padding: 24px 28px; margin: 24px 0;
+    }
+    .score-total-label { font-size: 13px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+    .score-grade       { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .score-total-val   { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: var(--gold); }
+
+    /* Feedback */
+    .feedback-form textarea {
+      width: 100%; padding: 14px 16px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 14px;
+      line-height: 1.6; resize: vertical; min-height: 120px; outline: none;
+      transition: border-color .2s; border-radius: 2px; margin-top: 8px;
+    }
+    .feedback-form textarea:focus { border-color: var(--gold); }
+    .feedback-form textarea::placeholder { color: rgba(245,245,240,0.25); }
+    .send-btn {
+      width: 100%; padding: 15px; margin-top: 16px;
+      background: var(--gold); color: var(--black);
+      font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      border: none; cursor: pointer; transition: background .2s;
+    }
+    .send-btn:hover { background: var(--gold-light); }
+    .send-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .email-note {
+      font-size: 11px; color: rgba(245,245,240,0.3); text-align: center;
+      margin-top: 10px; line-height: 1.7;
+    }
+    .email-note a { color: rgba(201,168,76,0.6); text-decoration: none; }
+    .email-note a:hover { color: var(--gold); }
+    .setup-box {
+      background: rgba(201,168,76,0.05); border: 1px solid rgba(201,168,76,0.2);
+      padding: 16px 18px; margin-top: 16px; font-size: 12px;
+      color: rgba(245,245,240,0.5); line-height: 1.8;
+    }
+    .setup-box strong { color: var(--gold); }
+    .setup-box code {
+      background: rgba(255,255,255,0.06); padding: 1px 6px;
+      font-family: monospace; font-size: 11px; color: var(--white);
+    }
   </style>
 </head>
 <body>
 
   <nav class="nav">
     <a href="index.html" class="nav-logo">Supreme Auto Spa</a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-    </div>
+    <div class="nav-links"><a href="index.html">Home</a></div>
   </nav>
 
-  <div class="wrap">
+  <!-- ══════════ LOGIN FORM ══════════ -->
+  <div class="wrap" id="login-wrap">
     <div class="login-box">
-
-      <!-- ── Login form ── -->
-      <div id="login-form">
-        <div class="ksu-logo-row">
-          <div class="ksu-dot">KSU</div>
-          <span class="ksu-label">Kennesaw State University</span>
-        </div>
-        <h1>Identity<br>Verification</h1>
-        <p class="subtitle">Enter your KSU credentials to continue.</p>
-
-        <div class="alert alert-error" id="error-msg"></div>
-
-        <form onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label>KSU Email</label>
-            <input type="email" id="email" placeholder="username@students.kennesaw.edu" required />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="password" placeholder="Enter your password" required />
-          </div>
-          <button type="submit" class="btn btn-gold" id="submit-btn">Verify Identity</button>
-        </form>
-
-        <div style="margin-top:20px;text-align:center">
-          <a href="index.html" class="back-btn">← Back to Site</a>
-        </div>
+      <div class="ksu-logo-row">
+        <div class="ksu-dot">KSU</div>
+        <span class="ksu-label">Kennesaw State University</span>
       </div>
-
-      <!-- ── Profile card (shown after successful login) ── -->
-      <div id="profile-card">
-        <div class="ksu-logo-row">
-          <div class="ksu-dot">KSU</div>
-          <span class="ksu-label">Kennesaw State University</span>
+      <h1>Identity<br>Verification</h1>
+      <p class="subtitle">Enter your credentials to continue.</p>
+      <div class="alert alert-error" id="error-msg"></div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Username or Email</label>
+          <input type="text" id="uname" placeholder="Isaiah, IH, teacher, or KSU email" required />
         </div>
-
-        <div class="verified-badge">
-          <span class="verified-dot"></span> Identity Verified
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="pass" placeholder="Enter your password" required />
         </div>
-
-        <div class="id-card">
-          <div class="id-card-header">
-            <span class="id-school">KSU Student</span>
-            <span class="id-year">2025</span>
-          </div>
-          <div class="id-name">ISAIAH HENRY</div>
-
-          <div class="id-rows">
-            <div class="id-row">
-              <span class="id-row-label">Student ID</span>
-              <span class="id-row-val gold">001619819</span>
-            </div>
-            <div class="id-row">
-              <span class="id-row-label">KSU Email</span>
-              <span class="id-row-val">Ihenry8@students.kennesaw.edu</span>
-            </div>
-            <div class="id-row">
-              <span class="id-row-label">University</span>
-              <span class="id-row-val">Kennesaw State University</span>
-            </div>
-            <div class="id-row">
-              <span class="id-row-label">Course</span>
-              <span class="id-row-val">CYBR 2310</span>
-            </div>
-            <div class="id-row">
-              <span class="id-row-label">Assignment</span>
-              <span class="id-row-val">WWebsite go brrrrrr.</span>
-            </div>
-          </div>
-        </div>
-
-        <a href="index.html" class="back-btn">← Back to Supreme Auto Spa</a>
-      </div>
-
+        <button type="submit" class="btn btn-gold" id="submit-btn">Verify Identity</button>
+      </form>
+      <a href="index.html" class="back-btn">← Back to Site</a>
     </div>
   </div>
 
+  <!-- ══════════ STUDENT ID CARD ══════════ -->
+  <div class="wrap" id="profile-card" style="display:none">
+    <div class="login-box">
+      <div class="ksu-logo-row">
+        <div class="ksu-dot">KSU</div>
+        <span class="ksu-label">Kennesaw State University</span>
+      </div>
+      <div class="verified-badge"><span class="verified-dot"></span> Identity Verified</div>
+      <div class="id-card">
+        <div class="id-card-header">
+          <span class="id-school">KSU Student</span>
+          <span class="id-year">2025</span>
+        </div>
+        <div class="id-name">ISAIAH HENRY</div>
+        <div class="id-rows">
+          <div class="id-row">
+            <span class="id-row-label">Student ID</span>
+            <span class="id-row-val gold">011619819</span>
+          </div>
+          <div class="id-row">
+            <span class="id-row-label">KSU Email</span>
+            <span class="id-row-val">Ihenry8@students.kennesaw.edu</span>
+          </div>
+          <div class="id-row">
+            <span class="id-row-label">University</span>
+            <span class="id-row-val">Kennesaw State University</span>
+          </div>
+          <div class="id-row">
+            <span class="id-row-label">Course</span>
+            <span class="id-row-val">CYBR 2310</span>
+          </div>
+          <div class="id-row">
+            <span class="id-row-label">Assignment</span>
+            <span class="id-row-val">Week 9 – Payment Web App</span>
+          </div>
+        </div>
+      </div>
+      <a href="index.html" class="back-btn">← Back to Supreme Auto Spa</a>
+    </div>
+  </div>
+
+  <!-- ══════════ TEACHER PORTAL ══════════ -->
+  <div id="teacher-portal" style="display:none">
+    <div style="max-width:780px;margin:0 auto;padding:90px 32px 80px">
+
+      <div class="teacher-header">
+        <p class="tag">Instructor View · CYBR 2310</p>
+        <h1>Grading Portal</h1>
+        <p>
+          Assignment 4 · Week 9 · Vibe-Code a $1 Payment Web Application<br>
+          Student: <strong style="color:var(--white)">Isaiah Henry</strong>
+          &nbsp;·&nbsp; ID: <strong style="color:var(--gold)">011619819</strong>
+          &nbsp;·&nbsp; <span style="color:var(--muted)">Ihenry8@students.kennesaw.edu</span>
+        </p>
+      </div>
+
+      <!-- Assignment details -->
+      <div class="section-card">
+        <h3>Assignment Overview</h3>
+        <div class="detail-row"><span class="dl">Course</span><span class="dv">CYBR 2310 – Cybersecurity Fundamentals</span></div>
+        <div class="detail-row"><span class="dl">Assignment</span><span class="dv">Week 9 Assignment 4 – Vibe-Code a $1 Payment Web Application</span></div>
+        <div class="detail-row"><span class="dl">Week</span><span class="dv">Week 9</span></div>
+        <div class="detail-row"><span class="dl">Total Points</span><span class="dv">100 pts (+ 10 pts extra credit available)</span></div>
+        <div class="detail-row"><span class="dl">Submission</span><span class="dv">Live URL + Functional Payment Link</span></div>
+      </div>
+
+      <div class="section-card">
+        <h3>Learning Objectives</h3>
+        <ul class="obj-list">
+          <li>Connect a static website to a working payment flow</li>
+          <li>Use LLM prompting to generate and revise application code</li>
+          <li>Integrate a payment processor appropriately for a small web application</li>
+          <li>Demonstrate that working software must be testable, reviewable, and verifiable</li>
+          <li>Make a design choice between a hosted checkout model and an API-based approach</li>
+        </ul>
+      </div>
+
+      <div class="section-card">
+        <h3>Required Deliverables</h3>
+        <ul class="obj-list">
+          <li>Live Website URL — publicly accessible, no broken links</li>
+          <li>Visible payment button or link on the homepage or main navigation</li>
+          <li>Working credit card payment flow — amount clearly shown as $1.00</li>
+          <li>Success/confirmation page showing item, amount, and date/time or transaction message</li>
+        </ul>
+      </div>
+
+      <!-- Rubric -->
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin:36px 0 16px">
+        Rubric &amp; Scoring
+      </h2>
+
+      <div class="rubric-item">
+        <div class="rubric-top">
+          <span class="rubric-name">Site Loads &amp; Is Publicly Accessible</span>
+          <span class="rubric-max">/ 20 pts</span>
+        </div>
+        <p class="rubric-desc">The live URL works in a fresh browser session without any setup. No dead or broken links on the homepage.</p>
+        <div class="score-row">
+          <input type="range" min="0" max="20" value="20" step="1" oninput="updateScore(this,'sc1')" />
+          <span class="score-display" id="sc1">20</span>
+        </div>
+      </div>
+
+      <div class="rubric-item">
+        <div class="rubric-top">
+          <span class="rubric-name">Payment Button / Link Is Clearly Visible</span>
+          <span class="rubric-max">/ 20 pts</span>
+        </div>
+        <p class="rubric-desc">A clearly labeled buy/pay button exists on the homepage or main nav. Professor can find and click it without inspecting source code.</p>
+        <div class="score-row">
+          <input type="range" min="0" max="20" value="20" step="1" oninput="updateScore(this,'sc2')" />
+          <span class="score-display" id="sc2">20</span>
+        </div>
+      </div>
+
+      <div class="rubric-item">
+        <div class="rubric-top">
+          <span class="rubric-name">Payment Flow Works — Credit Card Accepted</span>
+          <span class="rubric-max">/ 30 pts</span>
+        </div>
+        <p class="rubric-desc">Clicking the button initiates a real or simulated checkout. Credit card entry is supported. Amount is fixed at $1.00 and clearly displayed before submission.</p>
+        <div class="score-row">
+          <input type="range" min="0" max="30" value="30" step="1" oninput="updateScore(this,'sc3')" />
+          <span class="score-display" id="sc3">30</span>
+        </div>
+      </div>
+
+      <div class="rubric-item">
+        <div class="rubric-top">
+          <span class="rubric-name">Success / Confirmation Page</span>
+          <span class="rubric-max">/ 20 pts</span>
+        </div>
+        <p class="rubric-desc">After payment, user lands on a success page showing: item purchased, amount charged, and a date/time or transaction confirmation message.</p>
+        <div class="score-row">
+          <input type="range" min="0" max="20" value="20" step="1" oninput="updateScore(this,'sc4')" />
+          <span class="score-display" id="sc4">20</span>
+        </div>
+      </div>
+
+      <div class="rubric-item">
+        <div class="rubric-top">
+          <span class="rubric-name">Verification Readiness</span>
+          <span class="rubric-max">/ 10 pts</span>
+        </div>
+        <p class="rubric-desc">Professor can verify the entire flow without guesswork. Payment path is obvious, easy to test, and does not require inspecting the codebase first.</p>
+        <div class="score-row">
+          <input type="range" min="0" max="10" value="10" step="1" oninput="updateScore(this,'sc5')" />
+          <span class="score-display" id="sc5">10</span>
+        </div>
+      </div>
+
+      <!-- Total score display -->
+      <div class="score-total">
+        <div>
+          <div class="score-total-label">Total Score</div>
+          <div class="score-grade" id="grade-label">A</div>
+        </div>
+        <div style="text-align:right">
+          <div class="score-total-val">
+            <span id="total-score">100</span><span style="font-size:24px;color:var(--muted)">/100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback form -->
+      <div class="section-card feedback-form">
+        <h3>Send Feedback to Student</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6">
+          Fills in the score automatically. Enter your comments below and hit send —
+          the email goes directly to
+          <strong style="color:var(--white)">Ihenry8@students.kennesaw.edu</strong>.
+        </p>
+
+        <div class="form-group">
+          <label>Your Name (Instructor)</label>
+          <input type="text" id="teacher-name" placeholder="Prof. Smith" />
+        </div>
+
+        <div class="form-group" style="margin-top:16px">
+          <label>Feedback &amp; Comments</label>
+          <textarea id="feedback-text"
+            placeholder="Great work on the payment integration. The checkout flow is clean and the confirmation page clearly shows the item, amount, and timestamp..."></textarea>
+        </div>
+
+        <div class="alert alert-error"   id="fb-error"   style="margin-top:12px"></div>
+        <div class="alert alert-success" id="fb-success" style="margin-top:12px"></div>
+
+        <button class="send-btn" onclick="sendFeedback()" id="send-btn">
+          Send Feedback Email
+        </button>
+
+        <p class="email-note">
+          Powered by <a href="https://www.emailjs.com" target="_blank">EmailJS</a> — free, no backend needed.<br>
+          See setup instructions below if the button shows "Demo mode".
+        </p>
+
+        <div class="setup-box" id="setup-instructions">
+          <strong>One-time EmailJS setup (5 min, free):</strong><br>
+          1. Go to <a href="https://www.emailjs.com" target="_blank" style="color:var(--gold)">emailjs.com</a> → create a free account<br>
+          2. Add an Email Service (Gmail works) → copy the <code>Service ID</code><br>
+          3. Create an Email Template with variables:
+          <code>{{student_name}}</code>, <code>{{score}}</code>, <code>{{grade}}</code>, <code>{{feedback}}</code>, <code>{{teacher_name}}</code>, <code>{{breakdown}}</code><br>
+          4. Copy your <code>Template ID</code> and <code>Public Key</code> from Account → API Keys<br>
+          5. Paste all three into the three <code>YOUR_...</code> constants at the bottom of <code>verify.html</code>
+        </div>
+      </div>
+
+      <a href="index.html" class="back-btn" style="display:block;text-align:center;margin-top:24px">← Back to Supreme Auto Spa</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
+    // ── EmailJS config ─────────────────────────────────────────────────────────
+    // After setting up at emailjs.com, replace these three values:
+    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+    // ──────────────────────────────────────────────────────────────────────────
+
+    let scores = { sc1: 20, sc2: 20, sc3: 30, sc4: 20, sc5: 10 };
+
+    function updateScore(slider, id) {
+      scores[id] = parseInt(slider.value);
+      document.getElementById(id).textContent = slider.value;
+      recalc();
+    }
+
+    function calcGrade(total) {
+      const g = [[93,'A'],[90,'A−'],[87,'B+'],[83,'B'],[80,'B−'],
+                 [77,'C+'],[73,'C'],[70,'C−'],[67,'D+'],[60,'D'],[0,'F']];
+      return g.find(([min]) => total >= min)[1];
+    }
+
+    function recalc() {
+      const total = Object.values(scores).reduce((a, b) => a + b, 0);
+      document.getElementById('total-score').textContent = total;
+      document.getElementById('grade-label').textContent = calcGrade(total);
+    }
+
     function handleLogin(e) {
       e.preventDefault();
       const btn   = document.getElementById('submit-btn');
       const errEl = document.getElementById('error-msg');
       errEl.classList.remove('show');
 
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+      const u    = document.getElementById('uname').value.trim().toLowerCase();
+      const pass = document.getElementById('pass').value;
 
-      if (
-        email.toLowerCase() === 'Isaiah' &&
-        password === 'Detail2025!'
-      ) {
+      const isStudent =
+        (u === 'isaiah'                        && pass === 'Cyber') ||
+        (u === 'ih'                            && pass === 'Cyber') ||
+        (u === 'ihenry8@students.kennesaw.edu' && pass === 'Cyber');
+
+      const isTeacher = (u === 'teacher' && pass === 'Detail2025!');
+
+      if (isStudent || isTeacher) {
         btn.disabled = true;
         btn.textContent = 'Verified...';
         setTimeout(() => {
-          document.getElementById('login-form').style.display = 'none';
-          document.getElementById('profile-card').style.display = 'block';
+          document.getElementById('login-wrap').style.display = 'none';
+          if (isTeacher) {
+            document.getElementById('teacher-portal').style.display = 'block';
+          } else {
+            document.getElementById('profile-card').style.display = 'flex';
+          }
         }, 700);
       } else {
-        errEl.textContent = 'Incorrect email or password.';
+        errEl.textContent = 'Incorrect username or password.';
         errEl.classList.add('show');
       }
+    }
+
+    function sendFeedback() {
+      const btn      = document.getElementById('send-btn');
+      const errEl    = document.getElementById('fb-error');
+      const okEl     = document.getElementById('fb-success');
+      const feedback = document.getElementById('feedback-text').value.trim();
+      const teacher  = document.getElementById('teacher-name').value.trim() || 'Your Instructor';
+
+      errEl.classList.remove('show');
+      okEl.classList.remove('show');
+
+      if (!feedback) {
+        errEl.textContent = 'Please enter feedback before sending.';
+        errEl.classList.add('show');
+        return;
+      }
+
+      const total = Object.values(scores).reduce((a, b) => a + b, 0);
+      const grade = calcGrade(total);
+      const breakdown =
+        `Site Accessible: ${scores.sc1}/20\n` +
+        `Payment Button Visible: ${scores.sc2}/20\n` +
+        `Payment Flow Works: ${scores.sc3}/30\n` +
+        `Success Page: ${scores.sc4}/20\n` +
+        `Verification Readiness: ${scores.sc5}/10`;
+
+      // Demo mode if EmailJS not configured yet
+      if (EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID') {
+        okEl.innerHTML =
+          `<strong>Demo mode</strong> — EmailJS not configured yet, no email sent.<br><br>` +
+          `<strong>Would send to:</strong> Ihenry8@students.kennesaw.edu<br>` +
+          `<strong>Score:</strong> ${total}/100 &nbsp; <strong>Grade:</strong> ${grade}<br>` +
+          `<strong>From:</strong> ${teacher}<br>` +
+          `<strong>Feedback:</strong> ${feedback}<br><br>` +
+          `<strong>Breakdown:</strong><br>${breakdown.replace(/\n/g,'<br>')}`;
+        okEl.classList.add('show');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email:     'Ihenry8@students.kennesaw.edu',
+        student_name: 'Isaiah Henry',
+        teacher_name: teacher,
+        score:        `${total}/100`,
+        grade:        grade,
+        feedback:     feedback,
+        course:       'CYBR 2310',
+        assignment:   'Week 9 Assignment 4 – Payment Web App',
+        breakdown:    breakdown,
+      }).then(() => {
+        okEl.textContent = `Email sent to Ihenry8@students.kennesaw.edu — Score: ${total}/100 (${grade})`;
+        okEl.classList.add('show');
+        btn.textContent = 'Feedback Sent ✓';
+        document.getElementById('setup-instructions').style.display = 'none';
+      }).catch(err => {
+        console.error(err);
+        errEl.textContent = 'Failed to send. Check your EmailJS Service ID, Template ID, and Public Key.';
+        errEl.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Send Feedback Email';
+      });
     }
   </script>
 </body>
