@@ -150,6 +150,7 @@
       <div class="tab active" onclick="switchTab('customers')">Customers</div>
       <div class="tab" onclick="switchTab('bookings')">Bookings</div>
       <div class="tab" onclick="switchTab('payments')">Payments</div>
+      <div class="tab" onclick="switchTab('photos')">Photos</div>
     </div>
 
     <!-- CUSTOMERS TAB -->
@@ -199,7 +200,26 @@
       </div>
     </div>
 
-    <!-- PAYMENTS TAB -->
+    <!-- PHOTOS TAB -->
+    <div class="tab-panel" id="tab-photos">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.7">
+        Paste any image URL to update photos on the live site instantly. Works with Imgur, Google Photos, or any direct image link ending in <code style="background:rgba(255,255,255,0.08);padding:2px 6px;font-size:11px">.jpg</code> or <code style="background:rgba(255,255,255,0.08);padding:2px 6px;font-size:11px">.png</code>. Preview loads automatically as you type.
+      </p>
+      <div class="alert alert-success" id="photo-saved" style="margin-bottom:20px"></div>
+      <div class="alert alert-error"   id="photo-error" style="margin-bottom:20px"></div>
+      <div style="display:flex;gap:2px;margin-bottom:24px;flex-wrap:wrap" id="photo-section-tabs">
+        <div class="tab active" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('hero')">Hero</div>
+        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('services')">Services</div>
+        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('muscle')">Muscle</div>
+        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('exotic')">Exotics</div>
+        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('bmw')">BMW</div>
+        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('gallery')">Gallery</div>
+      </div>
+      <div id="photo-fields"><p style="color:var(--muted);font-size:13px">Loading photos...</p></div>
+      <button onclick="savePhotos()" style="background:var(--gold);color:var(--black);padding:14px 36px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;margin-top:8px;transition:background .2s" onmouseover="this.style.background='#e8c96a'" onmouseout="this.style.background='var(--gold)'">
+        Save &amp; Publish Changes
+      </button>
+    </div>
     <div class="tab-panel" id="tab-payments">
       <div class="table-wrap">
         <table>
@@ -410,6 +430,164 @@
       } catch (err) {
         alert('Delete failed: ' + err.message);
       }
+    };
+
+    // ── PHOTO MANAGER ──────────────────────────────────────────────
+    import { setDoc as setDocF, getDoc as getDocF } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    const PHOTO_SECTIONS = {
+      hero: {
+        label: 'Hero Background',
+        fields: [{ key: 'hero_bg', label: 'Hero Background Image', placeholder: 'https://...' }]
+      },
+      services: {
+        label: 'Service Cards',
+        fields: [
+          { key: 'svc_exterior',  label: 'Exterior Detail',   placeholder: 'https://...' },
+          { key: 'svc_interior',  label: 'Interior Detail',   placeholder: 'https://...' },
+          { key: 'svc_full',      label: 'Full Detail',       placeholder: 'https://...' },
+          { key: 'svc_paint',     label: 'Paint Correction',  placeholder: 'https://...' },
+          { key: 'svc_ceramic',   label: 'Ceramic Coating',   placeholder: 'https://...' },
+          { key: 'svc_express',   label: 'Express Wash',      placeholder: 'https://...' },
+        ]
+      },
+      muscle: {
+        label: 'Muscle Cars Category',
+        fields: [
+          { key: 'muscle_1', label: 'Muscle Car 1', placeholder: 'https://...' },
+          { key: 'muscle_2', label: 'Muscle Car 2', placeholder: 'https://...' },
+          { key: 'muscle_3', label: 'Muscle Car 3', placeholder: 'https://...' },
+          { key: 'muscle_4', label: 'Muscle Car 4', placeholder: 'https://...' },
+          { key: 'muscle_5', label: 'Muscle Car 5', placeholder: 'https://...' },
+          { key: 'muscle_6', label: 'Muscle Car 6', placeholder: 'https://...' },
+        ]
+      },
+      exotic: {
+        label: 'Exotic Cars Category',
+        fields: [
+          { key: 'exotic_1', label: 'Exotic Car 1', placeholder: 'https://...' },
+          { key: 'exotic_2', label: 'Exotic Car 2', placeholder: 'https://...' },
+          { key: 'exotic_3', label: 'Exotic Car 3', placeholder: 'https://...' },
+          { key: 'exotic_4', label: 'Exotic Car 4', placeholder: 'https://...' },
+          { key: 'exotic_5', label: 'Exotic Car 5', placeholder: 'https://...' },
+          { key: 'exotic_6', label: 'Exotic Car 6', placeholder: 'https://...' },
+        ]
+      },
+      bmw: {
+        label: 'BMW Category',
+        fields: [
+          { key: 'bmw_1', label: 'BMW Photo 1', placeholder: 'https://...' },
+          { key: 'bmw_2', label: 'BMW Photo 2', placeholder: 'https://...' },
+          { key: 'bmw_3', label: 'BMW Photo 3', placeholder: 'https://...' },
+          { key: 'bmw_4', label: 'BMW Photo 4', placeholder: 'https://...' },
+          { key: 'bmw_5', label: 'BMW Photo 5', placeholder: 'https://...' },
+          { key: 'bmw_6', label: 'BMW Photo 6', placeholder: 'https://...' },
+        ]
+      },
+      gallery: {
+        label: 'Main Gallery',
+        fields: Array.from({length: 15}, (_, i) => ({
+          key: `gallery_${i+1}`,
+          label: `Gallery Photo ${i+1}`,
+          placeholder: 'https://...'
+        }))
+      }
+    };
+
+    let currentPhotoSection = 'hero';
+    let currentPhotos = {};
+
+    // Load saved photos from Firestore
+    async function loadPhotos() {
+      try {
+        const snap = await getDocF(doc(db, 'settings', 'photos'));
+        if (snap.exists()) currentPhotos = snap.data();
+      } catch(_) {}
+      renderPhotoFields(currentPhotoSection);
+    }
+
+    window.switchPhotoSection = function(section) {
+      currentPhotoSection = section;
+      // Save any typed values before switching
+      collectCurrentValues();
+      // Update tab styles
+      document.querySelectorAll('#photo-section-tabs .tab').forEach((t, i) => {
+        t.classList.toggle('active', Object.keys(PHOTO_SECTIONS)[i] === section);
+      });
+      renderPhotoFields(section);
+    };
+
+    function collectCurrentValues() {
+      document.querySelectorAll('.photo-input').forEach(input => {
+        if (input.value.trim()) currentPhotos[input.dataset.key] = input.value.trim();
+      });
+    }
+
+    function renderPhotoFields(section) {
+      const sec    = PHOTO_SECTIONS[section];
+      const fields = sec.fields;
+      const wrap   = document.getElementById('photo-fields');
+
+      wrap.innerHTML = `
+        <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:20px">${sec.label}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:24px">
+          ${fields.map(f => `
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,0.06);padding:16px">
+              <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">${f.label}</div>
+              ${currentPhotos[f.key] ? `<img src="${currentPhotos[f.key]}" style="width:100%;height:100px;object-fit:cover;margin-bottom:10px;filter:brightness(.8)" onerror="this.style.display='none'" />` : ''}
+              <input
+                type="text"
+                class="photo-input"
+                data-key="${f.key}"
+                value="${currentPhotos[f.key] || ''}"
+                placeholder="${f.placeholder}"
+                style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:12px;outline:none"
+                oninput="previewPhoto(this)"
+                onfocus="this.style.borderColor='var(--gold)'"
+                onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+              />
+            </div>`).join('')}
+        </div>`;
+    }
+
+    window.previewPhoto = function(input) {
+      const key = input.dataset.key;
+      const url = input.value.trim();
+      const card = input.closest('div[style*="background:var(--card)"]');
+      let preview = card.querySelector('img');
+      if (!preview) {
+        preview = document.createElement('img');
+        preview.style.cssText = 'width:100%;height:100px;object-fit:cover;margin-bottom:10px;filter:brightness(.8)';
+        preview.onerror = () => preview.style.display = 'none';
+        card.insertBefore(preview, input);
+      }
+      if (url) { preview.src = url; preview.style.display = 'block'; }
+      else preview.style.display = 'none';
+    };
+
+    window.savePhotos = async function() {
+      collectCurrentValues();
+      const okEl  = document.getElementById('photo-saved');
+      const errEl = document.getElementById('photo-error');
+      okEl.classList.remove('show');
+      errEl.classList.remove('show');
+
+      try {
+        await setDocF(doc(db, 'settings', 'photos'), currentPhotos);
+        okEl.textContent = 'Photos saved! Changes are now live on your site.';
+        okEl.classList.add('show');
+        setTimeout(() => okEl.classList.remove('show'), 4000);
+      } catch(err) {
+        errEl.textContent = 'Save failed: ' + err.message;
+        errEl.classList.add('show');
+      }
+    };
+
+    // Load photos when tab opens
+    const origSwitchTab = window.switchTab;
+    window.switchTab = function(tab) {
+      origSwitchTab(tab);
+      if (tab === 'photos') loadPhotos();
     };
   </script>
 </body>
