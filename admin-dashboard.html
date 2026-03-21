@@ -208,12 +208,15 @@
       <div class="alert alert-success" id="photo-saved" style="margin-bottom:20px"></div>
       <div class="alert alert-error"   id="photo-error" style="margin-bottom:20px"></div>
       <div style="display:flex;gap:2px;margin-bottom:24px;flex-wrap:wrap" id="photo-section-tabs">
-        <div class="tab active" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('hero')">Hero</div>
-        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('services')">Services</div>
-        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('muscle')">Muscle</div>
-        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('exotic')">Exotics</div>
-        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('bmw')">BMW</div>
-        <div class="tab" style="padding:8px 18px;font-size:11px" onclick="switchPhotoSection('gallery')">Gallery</div>
+        <div class="tab active" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('hero')">Hero</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('services')">Services</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('muscle')">Muscle</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('exotic')">Exotics</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('bmw')">BMW</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('luxury')">Luxury</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('trucks')">Trucks</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('classic')">Classics</div>
+        <div class="tab" style="padding:8px 16px;font-size:11px;flex-shrink:0" onclick="switchPhotoSection('gallery')">Gallery</div>
       </div>
       <div id="photo-fields"><p style="color:var(--muted);font-size:13px">Loading photos...</p></div>
       <button onclick="savePhotos()" style="background:var(--gold);color:var(--black);padding:14px 36px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;margin-top:8px;transition:background .2s" onmouseover="this.style.background='#e8c96a'" onmouseout="this.style.background='var(--gold)'">
@@ -484,6 +487,39 @@
           { key: 'bmw_6', label: 'BMW Photo 6', placeholder: 'https://...' },
         ]
       },
+      luxury: {
+        label: 'Luxury Cars Category',
+        fields: [
+          { key: 'luxury_1', label: 'Luxury Car 1', placeholder: 'https://i.imgur.com/...' },
+          { key: 'luxury_2', label: 'Luxury Car 2', placeholder: 'https://i.imgur.com/...' },
+          { key: 'luxury_3', label: 'Luxury Car 3', placeholder: 'https://i.imgur.com/...' },
+          { key: 'luxury_4', label: 'Luxury Car 4', placeholder: 'https://i.imgur.com/...' },
+          { key: 'luxury_5', label: 'Luxury Car 5', placeholder: 'https://i.imgur.com/...' },
+          { key: 'luxury_6', label: 'Luxury Car 6', placeholder: 'https://i.imgur.com/...' },
+        ]
+      },
+      trucks: {
+        label: 'Trucks & SUVs Category',
+        fields: [
+          { key: 'trucks_1', label: 'Truck/SUV 1', placeholder: 'https://i.imgur.com/...' },
+          { key: 'trucks_2', label: 'Truck/SUV 2', placeholder: 'https://i.imgur.com/...' },
+          { key: 'trucks_3', label: 'Truck/SUV 3', placeholder: 'https://i.imgur.com/...' },
+          { key: 'trucks_4', label: 'Truck/SUV 4', placeholder: 'https://i.imgur.com/...' },
+          { key: 'trucks_5', label: 'Truck/SUV 5', placeholder: 'https://i.imgur.com/...' },
+          { key: 'trucks_6', label: 'Truck/SUV 6', placeholder: 'https://i.imgur.com/...' },
+        ]
+      },
+      classic: {
+        label: 'Classic Cars Category',
+        fields: [
+          { key: 'classic_1', label: 'Classic Car 1', placeholder: 'https://i.imgur.com/...' },
+          { key: 'classic_2', label: 'Classic Car 2', placeholder: 'https://i.imgur.com/...' },
+          { key: 'classic_3', label: 'Classic Car 3', placeholder: 'https://i.imgur.com/...' },
+          { key: 'classic_4', label: 'Classic Car 4', placeholder: 'https://i.imgur.com/...' },
+          { key: 'classic_5', label: 'Classic Car 5', placeholder: 'https://i.imgur.com/...' },
+          { key: 'classic_6', label: 'Classic Car 6', placeholder: 'https://i.imgur.com/...' },
+        ]
+      },
       gallery: {
         label: 'Main Gallery',
         fields: Array.from({length: 15}, (_, i) => ({
@@ -511,8 +547,9 @@
       // Save any typed values before switching
       collectCurrentValues();
       // Update tab styles
-      document.querySelectorAll('#photo-section-tabs .tab').forEach((t, i) => {
-        t.classList.toggle('active', Object.keys(PHOTO_SECTIONS)[i] === section);
+      document.querySelectorAll('#photo-section-tabs .tab').forEach(t => {
+        const sec = t.getAttribute('onclick').match(/switchPhotoSection\('(\w+)'\)/)?.[1];
+        t.classList.toggle('active', sec === section);
       });
       renderPhotoFields(section);
     };

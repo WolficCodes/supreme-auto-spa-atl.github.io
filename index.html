@@ -82,7 +82,9 @@
     /* CAR CATEGORIES */
     .cat-wrap { background:var(--dark); border-top:1px solid rgba(255,255,255,0.05); padding:100px 40px; }
     .cat-inner { max-width:1100px; margin:0 auto; }
-    .cat-tabs { display:flex; gap:2px; margin-bottom:28px; flex-wrap:wrap; }
+    .cat-tabs { display:flex; gap:2px; margin-bottom:28px; flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .cat-tabs::-webkit-scrollbar { display:none; }
+    .cat-tab { flex-shrink:0; }
     .cat-tab { padding:10px 22px; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:var(--muted); transition:all .2s; user-select:none; }
     .cat-tab.active { border-color:var(--gold); background:rgba(201,168,76,0.1); color:var(--gold); }
     .cat-tab:hover:not(.active) { border-color:rgba(255,255,255,0.2); color:var(--white); }
@@ -544,33 +546,54 @@
       // Hero
       hero_bg:       { type: 'bg',  sel: '.hero-bg' },
       // Services
-      svc_exterior:  { type: 'img', sel: '.service-img[alt="Exterior Detail"]' },
-      svc_interior:  { type: 'img', sel: '.service-img[alt="Interior Detail"]' },
-      svc_full:      { type: 'img', sel: '.service-img[alt="Full Detail"]' },
-      svc_paint:     { type: 'img', sel: '.service-img[alt="Paint Correction"]' },
-      svc_ceramic:   { type: 'img', sel: '.service-img[alt="Ceramic Coating"]' },
-      svc_express:   { type: 'img', sel: '.service-img[alt="Express Wash"]' },
+      svc_exterior:  { type: 'img', sel: '.service-card:nth-child(1) .service-img' },
+      svc_interior:  { type: 'img', sel: '.service-card:nth-child(2) .service-img' },
+      svc_full:      { type: 'img', sel: '.service-card:nth-child(3) .service-img' },
+      svc_paint:     { type: 'img', sel: '.service-card:nth-child(4) .service-img' },
+      svc_ceramic:   { type: 'img', sel: '.service-card:nth-child(5) .service-img' },
+      svc_express:   { type: 'img', sel: '.service-card:nth-child(6) .service-img' },
       // Muscle
-      muscle_1: { type: 'img', sel: '#cat-muscle .cat-img-wrap:nth-child(1) img' },
-      muscle_2: { type: 'img', sel: '#cat-muscle .cat-img-wrap:nth-child(2) img' },
-      muscle_3: { type: 'img', sel: '#cat-muscle .cat-img-wrap:nth-child(3) img' },
-      muscle_4: { type: 'img', sel: '#cat-muscle .cat-img-wrap:nth-child(4) img' },
-      muscle_5: { type: 'img', sel: '#cat-muscle .cat-img-wrap:nth-child(5) img' },
-      muscle_6: { type: 'img', sel: '#cat-muscle .cat-img-wrap:nth-child(6) img' },
+      muscle_1: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(1) img' },
+      muscle_2: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(2) img' },
+      muscle_3: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(3) img' },
+      muscle_4: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(4) img' },
+      muscle_5: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(5) img' },
+      muscle_6: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(6) img' },
       // Exotic
-      exotic_1: { type: 'img', sel: '#cat-exotic .cat-img-wrap:nth-child(1) img' },
-      exotic_2: { type: 'img', sel: '#cat-exotic .cat-img-wrap:nth-child(2) img' },
-      exotic_3: { type: 'img', sel: '#cat-exotic .cat-img-wrap:nth-child(3) img' },
-      exotic_4: { type: 'img', sel: '#cat-exotic .cat-img-wrap:nth-child(4) img' },
-      exotic_5: { type: 'img', sel: '#cat-exotic .cat-img-wrap:nth-child(5) img' },
-      exotic_6: { type: 'img', sel: '#cat-exotic .cat-img-wrap:nth-child(6) img' },
+      exotic_1: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(1) img' },
+      exotic_2: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(2) img' },
+      exotic_3: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(3) img' },
+      exotic_4: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(4) img' },
+      exotic_5: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(5) img' },
+      exotic_6: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(6) img' },
       // BMW
-      bmw_1: { type: 'img', sel: '#cat-bmw .cat-img-wrap:nth-child(1) img' },
-      bmw_2: { type: 'img', sel: '#cat-bmw .cat-img-wrap:nth-child(2) img' },
-      bmw_3: { type: 'img', sel: '#cat-bmw .cat-img-wrap:nth-child(3) img' },
-      bmw_4: { type: 'img', sel: '#cat-bmw .cat-img-wrap:nth-child(4) img' },
-      bmw_5: { type: 'img', sel: '#cat-bmw .cat-img-wrap:nth-child(5) img' },
-      bmw_6: { type: 'img', sel: '#cat-bmw .cat-img-wrap:nth-child(6) img' },
+      bmw_1: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(1) img' },
+      bmw_2: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(2) img' },
+      bmw_3: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(3) img' },
+      bmw_4: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(4) img' },
+      bmw_5: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(5) img' },
+      bmw_6: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(6) img' },
+      // Luxury
+      luxury_1: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(1) img' },
+      luxury_2: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(2) img' },
+      luxury_3: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(3) img' },
+      luxury_4: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(4) img' },
+      luxury_5: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(5) img' },
+      luxury_6: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(6) img' },
+      // Trucks
+      trucks_1: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(1) img' },
+      trucks_2: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(2) img' },
+      trucks_3: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(3) img' },
+      trucks_4: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(4) img' },
+      trucks_5: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(5) img' },
+      trucks_6: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(6) img' },
+      // Classics
+      classic_1: { type: 'img', sel: '#cat-classic .cat-img:nth-child(1) img' },
+      classic_2: { type: 'img', sel: '#cat-classic .cat-img:nth-child(2) img' },
+      classic_3: { type: 'img', sel: '#cat-classic .cat-img:nth-child(3) img' },
+      classic_4: { type: 'img', sel: '#cat-classic .cat-img:nth-child(4) img' },
+      classic_5: { type: 'img', sel: '#cat-classic .cat-img:nth-child(5) img' },
+      classic_6: { type: 'img', sel: '#cat-classic .cat-img:nth-child(6) img' },
       // Gallery
       ...Object.fromEntries(Array.from({length:15},(_,i)=>[
         `gallery_${i+1}`,
@@ -582,6 +605,7 @@
       const snap = await getDoc(doc(db, 'settings', 'photos'));
       if (snap.exists()) {
         const photos = snap.data();
+        console.log('[SAS Photos] Loaded', Object.keys(photos).length, 'photos from Firestore');
         Object.entries(photos).forEach(([key, url]) => {
           if (!url || !IMAGE_MAP[key]) return;
           const { type, sel } = IMAGE_MAP[key];
