@@ -7,71 +7,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shared.css" />
   <style>
-    .page-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
-    }
-    /* Left – image panel */
+    .page-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
     .img-panel {
       position: relative;
-      background: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=900&auto=format&fit=crop')
-        center/cover no-repeat;
+      background: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=900&auto=format&fit=crop') center/cover no-repeat;
     }
-    .img-panel::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg,
-        rgba(10,10,10,0.75) 0%,
-        rgba(10,10,10,0.4) 100%);
+    .img-panel::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(10,10,10,.75),rgba(10,10,10,.4)); }
+    .img-overlay { position:absolute; inset:0; z-index:1; display:flex; flex-direction:column; justify-content:flex-end; padding:56px; }
+    .img-overlay .tag { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+    .img-overlay h2 { font-family:'Bebas Neue',sans-serif; font-size:48px; letter-spacing:3px; line-height:1.05; margin-bottom:16px; }
+    .img-overlay p  { font-size:14px; color:var(--muted); line-height:1.7; max-width:320px; }
+    .form-panel { display:flex; flex-direction:column; justify-content:center; padding:100px 64px 60px; background:var(--dark); overflow-y:auto; }
+    .form-header { margin-bottom:28px; }
+    .form-header .label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+    .form-header h1 { font-family:'Bebas Neue',sans-serif; font-size:38px; letter-spacing:2px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+    /* Account type toggle */
+    .type-toggle { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-bottom:24px; }
+    .type-btn {
+      padding:14px; text-align:center; cursor:pointer;
+      border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03);
+      transition:all .2s; user-select:none;
     }
-    .img-overlay {
-      position: absolute; inset: 0; z-index: 1;
-      display: flex; flex-direction: column;
-      justify-content: flex-end; padding: 56px;
-    }
-    .img-overlay .tag {
-      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 14px;
-    }
-    .img-overlay h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 48px; letter-spacing: 3px; line-height: 1.05;
-      margin-bottom: 16px;
-    }
-    .img-overlay p {
-      font-size: 14px; color: var(--muted); line-height: 1.7;
-      max-width: 320px;
-    }
-    /* Right – form panel */
-    .form-panel {
-      display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 100px 64px 60px;
-      background: var(--dark);
-      overflow-y: auto;
-    }
-    .form-header { margin-bottom: 36px; }
-    .form-header .label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 10px;
-    }
-    .form-header h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 38px; letter-spacing: 2px;
-    }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .signin-link {
-      margin-top: 24px; text-align: center;
-      font-size: 13px; color: var(--muted);
-    }
-    .signin-link a { color: var(--gold); text-decoration: none; }
-    .signin-link a:hover { text-decoration: underline; }
-    @media (max-width: 768px) {
-      .page-wrap { grid-template-columns: 1fr; }
-      .img-panel { display: none; }
-      .form-panel { padding: 100px 28px 48px; }
-      .form-row { grid-template-columns: 1fr; }
+    .type-btn.active { border-color:var(--gold); background:var(--gold-faint); }
+    .type-btn-title { font-size:13px; font-weight:600; margin-bottom:3px; }
+    .type-btn.active .type-btn-title { color:var(--gold); }
+    .type-btn-sub { font-size:11px; color:var(--muted); }
+
+    /* Admin code field */
+    #admin-code-wrap { display:none; }
+
+    .signin-link { margin-top:20px; text-align:center; font-size:13px; color:var(--muted); }
+    .signin-link a { color:var(--gold); text-decoration:none; }
+    .signin-link a:hover { text-decoration:underline; }
+    @media (max-width:768px) {
+      .page-wrap { grid-template-columns:1fr; }
+      .img-panel { display:none; }
+      .form-panel { padding:100px 28px 48px; }
+      .form-row { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -86,23 +60,34 @@
   </nav>
 
   <div class="page-wrap">
-    <!-- Left image panel -->
     <div class="img-panel">
       <div class="img-overlay">
         <p class="tag">Premium Mobile Detailing</p>
         <h2>Your Car<br>Deserves<br><span style="color:var(--gold)">The Best</span></h2>
-        <p>Create an account to book appointments, track your service history, and manage your vehicles — all in one place.</p>
+        <p>Create an account to book appointments, track your service history, and manage your vehicles.</p>
       </div>
     </div>
 
-    <!-- Right form panel -->
     <div class="form-panel">
       <div class="form-header">
-        <p class="label">New Customer</p>
+        <p class="label">Join Supreme Auto Spa</p>
         <h1>Create Account</h1>
       </div>
 
-      <div class="alert alert-error" id="error-msg"></div>
+      <!-- Account type selector -->
+      <p style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Account Type</p>
+      <div class="type-toggle">
+        <div class="type-btn active" id="btn-customer" onclick="setType('customer')">
+          <div class="type-btn-title">Customer</div>
+          <div class="type-btn-sub">Book detailing services</div>
+        </div>
+        <div class="type-btn" id="btn-admin" onclick="setType('admin')">
+          <div class="type-btn-title">Admin</div>
+          <div class="type-btn-sub">Manage the business</div>
+        </div>
+      </div>
+
+      <div class="alert alert-error"   id="error-msg"></div>
       <div class="alert alert-success" id="success-msg"></div>
 
       <form id="signup-form" onsubmit="handleSignup(event)">
@@ -124,12 +109,18 @@
 
         <div class="form-group">
           <label>Phone Number</label>
-          <input type="tel" id="phone" placeholder="(404) 555-0100" required />
+          <input type="tel" id="phone" placeholder="(404) 555-0100" />
         </div>
 
         <div class="form-group">
           <label>Vehicle (Year, Make, Model)</label>
           <input type="text" id="vehicle" placeholder="2021 BMW M3" />
+        </div>
+
+        <!-- Admin code — only shown when Admin is selected -->
+        <div class="form-group" id="admin-code-wrap">
+          <label>Admin Access Code</label>
+          <input type="password" id="admin-code" placeholder="Enter admin code" />
         </div>
 
         <div class="form-row">
@@ -143,32 +134,46 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-gold" id="submit-btn">
-          Create Account
-        </button>
+        <button type="submit" class="btn btn-gold" id="submit-btn">Create Account</button>
       </form>
 
       <p class="signin-link">Already have an account? <a href="signin.html">Sign in</a></p>
     </div>
   </div>
 
-  <script>
-    // Demo-mode: stores accounts in localStorage
-    function handleSignup(e) {
+  <script type="module">
+    import { auth, db } from './firebase.js';
+    import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    const ADMIN_CODE = 'SAS-ADMIN-2026'; // Change this to your secret admin code
+
+    let accountType = 'customer';
+
+    window.setType = function(type) {
+      accountType = type;
+      document.getElementById('btn-customer').classList.toggle('active', type === 'customer');
+      document.getElementById('btn-admin').classList.toggle('active', type === 'admin');
+      document.getElementById('admin-code-wrap').style.display = type === 'admin' ? 'block' : 'none';
+      document.getElementById('admin-code').required = type === 'admin';
+    };
+
+    window.handleSignup = async function(e) {
       e.preventDefault();
-      const btn = document.getElementById('submit-btn');
-      const errEl = document.getElementById('error-msg');
-      const okEl  = document.getElementById('success-msg');
+      const btn     = document.getElementById('submit-btn');
+      const errEl   = document.getElementById('error-msg');
+      const okEl    = document.getElementById('success-msg');
       errEl.classList.remove('show');
       okEl.classList.remove('show');
 
       const fname    = document.getElementById('fname').value.trim();
       const lname    = document.getElementById('lname').value.trim();
-      const email    = document.getElementById('email').value.trim().toLowerCase();
+      const email    = document.getElementById('email').value.trim();
       const phone    = document.getElementById('phone').value.trim();
       const vehicle  = document.getElementById('vehicle').value.trim();
       const password = document.getElementById('password').value;
       const confirm  = document.getElementById('confirm').value;
+      const code     = document.getElementById('admin-code').value;
 
       if (password !== confirm) {
         errEl.textContent = 'Passwords do not match.';
@@ -176,26 +181,56 @@
         return;
       }
 
-      // Check if email already registered
-      const accounts = JSON.parse(localStorage.getItem('sas_customers') || '[]');
-      if (accounts.find(a => a.email === email)) {
-        errEl.textContent = 'An account with that email already exists.';
+      if (accountType === 'admin' && code !== ADMIN_CODE) {
+        errEl.textContent = 'Invalid admin access code.';
         errEl.classList.add('show');
         return;
       }
 
-      // Save account
-      accounts.push({ fname, lname, email, phone, vehicle, password, bookings: [] });
-      localStorage.setItem('sas_customers', JSON.stringify(accounts));
-
-      // Auto sign-in
-      localStorage.setItem('sas_session', JSON.stringify({ type: 'customer', email, fname, lname }));
-
       btn.disabled = true;
-      okEl.textContent = 'Account created! Redirecting...';
-      okEl.classList.add('show');
-      setTimeout(() => { window.location = 'customer-dashboard.html'; }, 1200);
-    }
+      btn.textContent = 'Creating account...';
+
+      try {
+        // Create Firebase Auth user
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+        // Set display name
+        await updateProfile(cred.user, { displayName: `${fname} ${lname}` });
+
+        // Save profile to Firestore
+        await setDoc(doc(db, 'users', cred.user.uid), {
+          uid:       cred.user.uid,
+          fname,
+          lname,
+          email,
+          phone,
+          vehicle,
+          role:      accountType,   // 'customer' or 'admin'
+          createdAt: serverTimestamp(),
+          bookings:  [],
+        });
+
+        okEl.textContent = 'Account created! Redirecting...';
+        okEl.classList.add('show');
+
+        setTimeout(() => {
+          window.location = accountType === 'admin'
+            ? 'admin-dashboard.html'
+            : 'customer-dashboard.html';
+        }, 1000);
+
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+        const msgs = {
+          'auth/email-already-in-use': 'An account with this email already exists.',
+          'auth/invalid-email':        'Please enter a valid email address.',
+          'auth/weak-password':        'Password must be at least 8 characters.',
+        };
+        errEl.textContent = msgs[err.code] || err.message;
+        errEl.classList.add('show');
+      }
+    };
   </script>
 </body>
 </html>

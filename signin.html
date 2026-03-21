@@ -7,64 +7,55 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shared.css" />
   <style>
-    .page-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
-    }
+    .page-wrap { display:grid; grid-template-columns:1fr 1fr; min-height:100vh; }
     .img-panel {
-      position: relative;
-      background: url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=900&auto=format&fit=crop')
-        center/cover no-repeat;
+      position:relative;
+      background:url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=900&auto=format&fit=crop') center/cover no-repeat;
     }
-    .img-panel::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg,rgba(10,10,10,0.7) 0%,rgba(10,10,10,0.35) 100%);
-    }
-    .img-overlay {
-      position: absolute; inset: 0; z-index: 1;
-      display: flex; flex-direction: column;
-      justify-content: flex-end; padding: 56px;
-    }
-    .img-overlay .tag {
-      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 14px;
-    }
-    .img-overlay h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 52px; letter-spacing: 3px; line-height: 1.05; margin-bottom: 16px;
-    }
-    .img-overlay p { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 300px; }
+    .img-panel::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(10,10,10,.7),rgba(10,10,10,.35)); }
+    .img-overlay { position:absolute; inset:0; z-index:1; display:flex; flex-direction:column; justify-content:flex-end; padding:56px; }
+    .img-overlay .tag { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+    .img-overlay h2 { font-family:'Bebas Neue',sans-serif; font-size:52px; letter-spacing:3px; line-height:1.05; margin-bottom:16px; }
+    .img-overlay p  { font-size:14px; color:var(--muted); line-height:1.7; max-width:300px; }
+    .form-panel { display:flex; flex-direction:column; justify-content:center; padding:100px 72px 60px; background:var(--dark); overflow-y:auto; }
+    .form-header { margin-bottom:32px; }
+    .form-header .label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+    .form-header h1 { font-family:'Bebas Neue',sans-serif; font-size:42px; letter-spacing:2px; }
+    .forgot { text-align:right; margin-top:-10px; margin-bottom:18px; }
+    .forgot a { font-size:12px; color:var(--muted); text-decoration:none; cursor:pointer; }
+    .forgot a:hover { color:var(--gold); }
+    .bottom-links { margin-top:24px; text-align:center; font-size:13px; color:var(--muted); }
+    .bottom-links a { color:var(--gold); text-decoration:none; }
+    .bottom-links a:hover { text-decoration:underline; }
+    .employee-link { margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.07); text-align:center; font-size:12px; color:rgba(245,245,240,0.3); }
+    .employee-link a { color:rgba(245,245,240,0.3); text-decoration:none; }
+    .employee-link a:hover { color:var(--gold); }
 
-    .form-panel {
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 100px 72px 60px; background: var(--dark); overflow-y: auto;
+    /* Forgot password modal overlay */
+    .modal-bg {
+      display:none; position:fixed; inset:0; z-index:200;
+      background:rgba(0,0,0,0.7); align-items:center; justify-content:center;
+      padding:24px;
     }
-    .form-header { margin-bottom: 36px; }
-    .form-header .label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 10px;
+    .modal-bg.open { display:flex; }
+    .modal {
+      background:var(--dark); border:1px solid var(--gold-border);
+      padding:40px 36px; width:100%; max-width:400px;
     }
-    .form-header h1 {
-      font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px;
+    .modal h3 { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; margin-bottom:8px; }
+    .modal p  { font-size:13px; color:var(--muted); margin-bottom:24px; line-height:1.6; }
+    .modal-close {
+      background:transparent; border:1px solid rgba(255,255,255,0.12);
+      color:var(--muted); padding:10px; font-size:12px; letter-spacing:1px;
+      text-transform:uppercase; cursor:pointer; width:100%; margin-top:12px;
+      transition:all .2s;
     }
-    .forgot { text-align: right; margin-top: -10px; margin-bottom: 18px; }
-    .forgot a { font-size: 12px; color: var(--muted); text-decoration: none; }
-    .forgot a:hover { color: var(--gold); }
-    .bottom-links { margin-top: 28px; text-align: center; font-size: 13px; color: var(--muted); }
-    .bottom-links a { color: var(--gold); text-decoration: none; }
-    .bottom-links a:hover { text-decoration: underline; }
-    .employee-link {
-      margin-top: 16px; padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      text-align: center; font-size: 12px; color: rgba(245,245,240,0.3);
-    }
-    .employee-link a { color: rgba(245,245,240,0.3); text-decoration: none; }
-    .employee-link a:hover { color: var(--gold); }
-    @media (max-width: 768px) {
-      .page-wrap { grid-template-columns: 1fr; }
-      .img-panel { display: none; }
-      .form-panel { padding: 100px 28px 48px; }
+    .modal-close:hover { border-color:var(--gold); color:var(--gold); }
+
+    @media (max-width:768px) {
+      .page-wrap { grid-template-columns:1fr; }
+      .img-panel { display:none; }
+      .form-panel { padding:100px 28px 48px; }
     }
   </style>
 </head>
@@ -77,6 +68,22 @@
       <a href="signup.html" class="nav-btn">Sign Up</a>
     </div>
   </nav>
+
+  <!-- Forgot password modal -->
+  <div class="modal-bg" id="forgot-modal">
+    <div class="modal">
+      <h3>Reset Password</h3>
+      <p>Enter your email and we'll send you a reset link right away.</p>
+      <div class="alert alert-error"   id="reset-error"></div>
+      <div class="alert alert-success" id="reset-success"></div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="reset-email" placeholder="your@email.com" />
+      </div>
+      <button class="btn btn-gold" id="reset-btn" onclick="sendReset()" style="margin-top:4px">Send Reset Email</button>
+      <button class="modal-close" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
 
   <div class="page-wrap">
     <div class="img-panel">
@@ -100,18 +107,13 @@
           <label>Email Address</label>
           <input type="email" id="email" placeholder="your@email.com" required />
         </div>
-
         <div class="form-group">
           <label>Password</label>
           <input type="password" id="password" placeholder="Your password" required />
         </div>
-
-        <div class="forgot"><a href="#">Forgot password?</a></div>
-
+        <div class="forgot"><a onclick="openModal()">Forgot password?</a></div>
         <button type="submit" class="btn btn-gold" id="submit-btn">Sign In</button>
-
         <div class="divider">or</div>
-
         <a href="signup.html" class="btn btn-outline">Create an Account</a>
       </form>
 
@@ -120,39 +122,99 @@
     </div>
   </div>
 
-  <script>
-    // Check if already logged in
-    const session = JSON.parse(localStorage.getItem('sas_session') || 'null');
-    if (session && session.type === 'customer') {
-      window.location = 'customer-dashboard.html';
-    }
+  <script type="module">
+    import { auth, db } from './firebase.js';
+    import {
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-    function handleSignin(e) {
+    // If already signed in, redirect appropriately
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        if (snap.exists()) {
+          const role = snap.data().role;
+          window.location = role === 'admin' ? 'admin-dashboard.html' : 'customer-dashboard.html';
+        }
+      }
+    });
+
+    window.handleSignin = async function(e) {
       e.preventDefault();
-      const btn    = document.getElementById('submit-btn');
-      const errEl  = document.getElementById('error-msg');
+      const btn   = document.getElementById('submit-btn');
+      const errEl = document.getElementById('error-msg');
       errEl.classList.remove('show');
 
-      const email    = document.getElementById('email').value.trim().toLowerCase();
+      const email    = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
 
-      const accounts = JSON.parse(localStorage.getItem('sas_customers') || '[]');
-      const user = accounts.find(a => a.email === email && a.password === password);
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
 
-      if (!user) {
-        errEl.textContent = 'Incorrect email or password.';
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        const snap = await getDoc(doc(db, 'users', cred.user.uid));
+        const role = snap.exists() ? snap.data().role : 'customer';
+        window.location = role === 'admin' ? 'admin-dashboard.html' : 'customer-dashboard.html';
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+        const msgs = {
+          'auth/user-not-found':   'No account found with that email.',
+          'auth/wrong-password':   'Incorrect password.',
+          'auth/invalid-email':    'Please enter a valid email.',
+          'auth/too-many-requests':'Too many attempts. Try again later.',
+          'auth/invalid-credential': 'Incorrect email or password.',
+        };
+        errEl.textContent = msgs[err.code] || 'Sign in failed. Please try again.';
+        errEl.classList.add('show');
+      }
+    };
+
+    window.openModal  = () => document.getElementById('forgot-modal').classList.add('open');
+    window.closeModal = () => {
+      document.getElementById('forgot-modal').classList.remove('open');
+      document.getElementById('reset-error').classList.remove('show');
+      document.getElementById('reset-success').classList.remove('show');
+      document.getElementById('reset-email').value = '';
+      document.getElementById('reset-btn').disabled = false;
+      document.getElementById('reset-btn').textContent = 'Send Reset Email';
+    };
+
+    window.sendReset = async function() {
+      const btn   = document.getElementById('reset-btn');
+      const errEl = document.getElementById('reset-error');
+      const okEl  = document.getElementById('reset-success');
+      const email = document.getElementById('reset-email').value.trim();
+      errEl.classList.remove('show');
+      okEl.classList.remove('show');
+
+      if (!email) {
+        errEl.textContent = 'Please enter your email address.';
         errEl.classList.add('show');
         return;
       }
 
-      localStorage.setItem('sas_session', JSON.stringify({
-        type: 'customer', email: user.email, fname: user.fname, lname: user.lname
-      }));
-
       btn.disabled = true;
-      btn.textContent = 'Signing in...';
-      setTimeout(() => { window.location = 'customer-dashboard.html'; }, 800);
-    }
+      btn.textContent = 'Sending...';
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        okEl.textContent = `Reset link sent to ${email} — check your inbox.`;
+        okEl.classList.add('show');
+        btn.textContent = 'Email Sent ✓';
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Send Reset Email';
+        errEl.textContent = err.code === 'auth/user-not-found'
+          ? 'No account found with that email.'
+          : 'Failed to send reset email. Try again.';
+        errEl.classList.add('show');
+      }
+    };
   </script>
 </body>
 </html>

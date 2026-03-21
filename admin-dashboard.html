@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Portal – Supreme Auto Spa ATL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body { background:var(--black); }
+    .dash-wrap { max-width:1200px; margin:0 auto; padding:100px 32px 80px; }
+
+    /* Header */
+    .dash-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; flex-wrap:wrap; gap:20px; }
+    .dash-header .label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+    .dash-header h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(32px,5vw,52px); letter-spacing:3px; }
+    .admin-badge { display:inline-flex; align-items:center; gap:6px; background:var(--gold-faint); border:1px solid var(--gold-border); color:var(--gold); font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:5px 12px; margin-top:8px; }
+    .signout-btn { background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted); padding:10px 20px; font-size:12px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+    .signout-btn:hover { border-color:var(--red); color:var(--red); }
+
+    /* Stats */
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:2px; margin-bottom:48px; }
+    .stat-card { background:var(--card); padding:28px 24px; border:1px solid rgba(255,255,255,0.05); }
+    .stat-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+    .stat-val   { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:2px; color:var(--gold); }
+    .stat-sub   { font-size:12px; color:rgba(245,245,240,0.3); margin-top:4px; }
+
+    /* Section */
+    .section-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+    .section-title::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.07); }
+
+    /* Tabs */
+    .tabs { display:flex; gap:2px; margin-bottom:24px; }
+    .tab { padding:11px 24px; font-size:12px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:var(--muted); transition:all .2s; }
+    .tab.active { border-color:var(--gold); background:var(--gold-faint); color:var(--gold); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    /* Search */
+    .search-bar { display:flex; gap:12px; margin-bottom:20px; }
+    .search-bar input { flex:1; padding:12px 16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:var(--white); font-family:'Inter',sans-serif; font-size:13px; outline:none; transition:border-color .2s; }
+    .search-bar input:focus { border-color:var(--gold); }
+    .search-bar input::placeholder { color:rgba(245,245,240,0.25); }
+
+    /* Table */
+    .table-wrap { overflow-x:auto; margin-bottom:48px; }
+    table { width:100%; border-collapse:collapse; }
+    th { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); padding:12px 16px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.07); white-space:nowrap; }
+    td { padding:14px 16px; font-size:13px; color:var(--white); border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
+    tr:hover td { background:rgba(255,255,255,0.02); }
+    .status-badge { display:inline-block; padding:4px 10px; font-size:10px; letter-spacing:1px; text-transform:uppercase; }
+    .status-confirmed { background:rgba(76,175,125,0.12); color:#7fd4a8; border:1px solid rgba(76,175,125,0.3); }
+    .status-pending   { background:rgba(201,168,76,0.1);  color:var(--gold); border:1px solid var(--gold-border); }
+    .status-completed { background:rgba(255,255,255,0.05); color:var(--muted); border:1px solid rgba(255,255,255,0.1); }
+    .role-customer { background:rgba(56,138,221,0.1); color:#85b7eb; border:1px solid rgba(56,138,221,0.3); }
+    .role-admin    { background:rgba(201,168,76,0.1); color:var(--gold); border:1px solid var(--gold-border); }
+
+    /* Action buttons */
+    .action-btn { padding:5px 12px; font-size:11px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all .2s; border:none; font-family:'Inter',sans-serif; }
+    .btn-view   { background:rgba(255,255,255,0.06); color:var(--muted); border:1px solid rgba(255,255,255,0.1); }
+    .btn-view:hover { border-color:var(--gold); color:var(--gold); }
+    .btn-delete { background:rgba(224,85,85,0.08); color:#f08080; border:1px solid rgba(224,85,85,0.25); margin-left:6px; }
+    .btn-delete:hover { background:rgba(224,85,85,0.18); }
+
+    /* Customer detail modal */
+    .modal-bg { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; padding:24px; }
+    .modal-bg.open { display:flex; }
+    .modal { background:var(--dark); border:1px solid var(--gold-border); padding:40px; width:100%; max-width:560px; max-height:85vh; overflow-y:auto; }
+    .modal h3 { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--gold); margin-bottom:20px; }
+    .modal-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:13px; }
+    .modal-row:last-of-type { border-bottom:none; }
+    .modal-key { color:var(--muted); font-size:11px; letter-spacing:1px; text-transform:uppercase; }
+    .modal-val { color:var(--white); text-align:right; }
+    .modal-close { width:100%; padding:12px; margin-top:20px; background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted); font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+    .modal-close:hover { border-color:var(--gold); color:var(--gold); }
+
+    /* Confirm delete modal */
+    .confirm-modal { background:var(--dark); border:1px solid rgba(224,85,85,0.4); padding:40px; width:100%; max-width:400px; text-align:center; }
+    .confirm-modal h3 { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:#f08080; margin-bottom:12px; }
+    .confirm-modal p  { font-size:13px; color:var(--muted); margin-bottom:28px; line-height:1.6; }
+    .confirm-btns { display:flex; gap:8px; }
+    .btn-confirm-del { flex:1; padding:13px; background:rgba(224,85,85,0.15); border:1px solid rgba(224,85,85,0.4); color:#f08080; font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+    .btn-confirm-del:hover { background:rgba(224,85,85,0.3); }
+    .btn-cancel-del { flex:1; padding:13px; background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted); font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+    .btn-cancel-del:hover { border-color:var(--gold); color:var(--gold); }
+
+    /* Empty / loading */
+    .empty { text-align:center; padding:48px; color:var(--muted); font-size:13px; background:var(--card); border:1px solid rgba(255,255,255,0.05); }
+    .loading { text-align:center; padding:60px; color:var(--muted); font-size:14px; }
+
+    /* Booking status select */
+    select.status-select { background:var(--card); border:1px solid rgba(255,255,255,0.1); color:var(--white); padding:4px 8px; font-size:12px; cursor:pointer; font-family:'Inter',sans-serif; }
+    select.status-select:focus { outline:none; border-color:var(--gold); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Supreme Auto Spa</a>
+    <div class="nav-links">
+      <span id="nav-name" style="font-size:13px;color:var(--muted)"></span>
+      <a href="#" id="nav-signout" style="color:rgba(245,245,240,0.3);font-size:12px">Sign Out</a>
+    </div>
+  </nav>
+
+  <!-- Customer detail modal -->
+  <div class="modal-bg" id="detail-modal">
+    <div class="modal">
+      <h3 id="modal-name">Customer</h3>
+      <div id="modal-body"></div>
+      <button class="modal-close" onclick="document.getElementById('detail-modal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+
+  <!-- Delete confirm modal -->
+  <div class="modal-bg" id="delete-modal">
+    <div class="confirm-modal">
+      <h3>Delete User?</h3>
+      <p id="delete-msg">This will permanently remove this customer's profile and all their data.</p>
+      <div class="confirm-btns">
+        <button class="btn-confirm-del" id="confirm-del-btn">Yes, Delete</button>
+        <button class="btn-cancel-del" onclick="document.getElementById('delete-modal').classList.remove('open')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">Loading admin portal...</div>
+
+  <div class="dash-wrap" id="dash" style="display:none">
+
+    <div class="dash-header">
+      <div>
+        <p class="label">Admin Portal</p>
+        <h1 id="welcome-msg">Admin Dashboard</h1>
+        <div class="admin-badge">● Administrator</div>
+      </div>
+      <button class="signout-btn" id="signout-btn">Sign Out</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">Total Customers</div><div class="stat-val" id="stat-customers">0</div><div class="stat-sub">registered</div></div>
+      <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-val" id="stat-bookings">0</div><div class="stat-sub">all time</div></div>
+      <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-val" id="stat-pending">0</div><div class="stat-sub">need attention</div></div>
+      <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-val" id="stat-revenue">$0</div><div class="stat-sub">collected</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('customers')">Customers</div>
+      <div class="tab" onclick="switchTab('bookings')">Bookings</div>
+      <div class="tab" onclick="switchTab('payments')">Payments</div>
+    </div>
+
+    <!-- CUSTOMERS TAB -->
+    <div class="tab-panel active" id="tab-customers">
+      <div class="search-bar">
+        <input type="text" id="customer-search" placeholder="Search by name, email, or vehicle..." oninput="filterCustomers()" />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Vehicle</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="customers-tbody">
+            <tr><td colspan="7" class="empty">Loading customers...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BOOKINGS TAB -->
+    <div class="tab-panel" id="tab-bookings">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer</th>
+              <th>Service</th>
+              <th>Vehicle</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody">
+            <tr><td colspan="7" class="empty">Loading bookings...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAYMENTS TAB -->
+    <div class="tab-panel" id="tab-payments">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Transaction</th>
+              <th>Customer</th>
+              <th>Item</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="payments-tbody">
+            <tr><td colspan="6" class="empty">Loading payments...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:20px 24px;background:var(--card);border:1px solid rgba(255,255,255,0.05);font-size:13px;color:var(--muted);line-height:1.7">
+        Payment records are pulled from Stripe. To see full transaction history, log in to your
+        <a href="https://dashboard.stripe.com" target="_blank" style="color:var(--gold)">Stripe Dashboard</a>.
+        Deposits recorded below are the $1 booking deposits collected through the site.
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { auth, db } from './firebase.js';
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import {
+      doc, getDoc, getDocs, deleteDoc,
+      collection, query, orderBy, collectionGroup
+    } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    let allUsers    = [];
+    let pendingDeleteUid = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location = 'signin.html'; return; }
+
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (!snap.exists() || snap.data().role !== 'admin') {
+        window.location = 'customer-dashboard.html'; return;
+      }
+
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('dash').style.display = 'block';
+
+      const data = snap.data();
+      document.getElementById('welcome-msg').textContent = `Welcome, ${data.fname}`;
+      document.getElementById('nav-name').textContent = `${data.fname} ${data.lname}`;
+
+      const doSignOut = async () => { await signOut(auth); window.location = 'index.html'; };
+      document.getElementById('signout-btn').onclick  = doSignOut;
+      document.getElementById('nav-signout').onclick  = doSignOut;
+
+      await loadAllData();
+    });
+
+    async function loadAllData() {
+      // Load all users
+      const usersSnap = await getDocs(collection(db, 'users'));
+      allUsers = usersSnap.docs.map(d => ({ uid: d.id, ...d.data() }));
+
+      const customers = allUsers.filter(u => u.role === 'customer');
+      document.getElementById('stat-customers').textContent = customers.length;
+
+      renderCustomers(customers);
+
+      // Load all bookings across all users
+      let allBookings = [];
+      for (const u of customers) {
+        try {
+          const bSnap = await getDocs(collection(db, 'users', u.uid, 'bookings'));
+          const userBookings = bSnap.docs.map(d => ({
+            id: d.id, ...d.data(),
+            customerName:  `${u.fname} ${u.lname}`,
+            customerEmail: u.email,
+            vehicle:       u.vehicle || '—',
+          }));
+          allBookings = allBookings.concat(userBookings);
+        } catch (_) {}
+      }
+
+      document.getElementById('stat-bookings').textContent = allBookings.length;
+      document.getElementById('stat-pending').textContent  = allBookings.filter(b => b.status === 'pending').length;
+
+      // Revenue: count $1 deposits
+      const revenue = allBookings.filter(b => b.amount).length;
+      document.getElementById('stat-revenue').textContent = `$${revenue}`;
+
+      renderBookings(allBookings);
+      renderPayments(allBookings);
+    }
+
+    function renderCustomers(users) {
+      const tbody = document.getElementById('customers-tbody');
+      if (users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty">No customers yet. Share your site to get registrations!</div></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = users.map(u => `
+        <tr id="row-${u.uid}">
+          <td style="font-weight:600">${u.fname} ${u.lname}</td>
+          <td style="color:var(--muted)">${u.email}</td>
+          <td style="color:var(--muted)">${u.phone || '—'}</td>
+          <td>${u.vehicle || '—'}</td>
+          <td><span class="status-badge role-${u.role}">${u.role}</span></td>
+          <td style="color:var(--muted)">${u.createdAt?.toDate ? u.createdAt.toDate().toLocaleDateString() : '—'}</td>
+          <td>
+            <button class="action-btn btn-view" onclick="viewCustomer('${u.uid}')">View</button>
+            ${u.role !== 'admin' ? `<button class="action-btn btn-delete" onclick="confirmDelete('${u.uid}','${u.fname} ${u.lname}')">Delete</button>` : ''}
+          </td>
+        </tr>`).join('');
+    }
+
+    function renderBookings(bookings) {
+      const tbody = document.getElementById('bookings-tbody');
+      if (bookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty">No bookings yet.</div></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = bookings.map(b => `
+        <tr>
+          <td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;letter-spacing:1px">${b.id}</td>
+          <td>${b.customerName}</td>
+          <td>${b.service || 'Booking Deposit'}</td>
+          <td style="color:var(--muted)">${b.vehicle}</td>
+          <td style="color:var(--muted)">${b.date || '—'}</td>
+          <td style="font-weight:600">${b.amount || '$1.00'}</td>
+          <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
+        </tr>`).join('');
+    }
+
+    function renderPayments(bookings) {
+      const tbody = document.getElementById('payments-tbody');
+      const paid  = bookings.filter(b => b.stripeSessionId || b.amount);
+      if (paid.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty">No payment records yet. Completed Stripe checkouts will appear here.</div></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = paid.map((b, i) => `
+        <tr>
+          <td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:12px">${b.stripeSessionId || `TXN-${String(i+1).padStart(4,'0')}`}</td>
+          <td>${b.customerName}</td>
+          <td>Booking Deposit</td>
+          <td style="font-weight:600;color:#7fd4a8">$1.00</td>
+          <td style="color:var(--muted)">${b.date || b.createdAt?.toDate?.().toLocaleDateString() || '—'}</td>
+          <td><span class="status-badge status-confirmed">Paid</span></td>
+        </tr>`).join('');
+    }
+
+    // Tab switching
+    window.switchTab = function(tab) {
+      document.querySelectorAll('.tab').forEach((t, i) => {
+        t.classList.toggle('active', ['customers','bookings','payments'][i] === tab);
+      });
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+    };
+
+    // Search customers
+    window.filterCustomers = function() {
+      const q = document.getElementById('customer-search').value.toLowerCase();
+      const filtered = allUsers.filter(u =>
+        u.role === 'customer' && (
+          `${u.fname} ${u.lname}`.toLowerCase().includes(q) ||
+          u.email.toLowerCase().includes(q) ||
+          (u.vehicle || '').toLowerCase().includes(q)
+        )
+      );
+      renderCustomers(filtered);
+    };
+
+    // View customer detail
+    window.viewCustomer = async function(uid) {
+      const u = allUsers.find(x => x.uid === uid);
+      if (!u) return;
+      document.getElementById('modal-name').textContent = `${u.fname} ${u.lname}`;
+      document.getElementById('modal-body').innerHTML = `
+        <div class="modal-row"><span class="modal-key">UID</span><span class="modal-val" style="font-size:11px;font-family:monospace;color:var(--muted)">${u.uid}</span></div>
+        <div class="modal-row"><span class="modal-key">Email</span><span class="modal-val">${u.email}</span></div>
+        <div class="modal-row"><span class="modal-key">Phone</span><span class="modal-val">${u.phone || '—'}</span></div>
+        <div class="modal-row"><span class="modal-key">Vehicle</span><span class="modal-val">${u.vehicle || '—'}</span></div>
+        <div class="modal-row"><span class="modal-key">Role</span><span class="modal-val">${u.role}</span></div>
+        <div class="modal-row"><span class="modal-key">Joined</span><span class="modal-val">${u.createdAt?.toDate ? u.createdAt.toDate().toLocaleString() : '—'}</span></div>
+      `;
+      document.getElementById('detail-modal').classList.add('open');
+    };
+
+    // Delete user
+    window.confirmDelete = function(uid, name) {
+      pendingDeleteUid = uid;
+      document.getElementById('delete-msg').textContent = `This will permanently remove ${name}'s profile and all their data from Firestore.`;
+      document.getElementById('delete-modal').classList.add('open');
+    };
+
+    document.getElementById('confirm-del-btn').onclick = async () => {
+      if (!pendingDeleteUid) return;
+      try {
+        await deleteDoc(doc(db, 'users', pendingDeleteUid));
+        allUsers = allUsers.filter(u => u.uid !== pendingDeleteUid);
+        document.getElementById('delete-modal').classList.remove('open');
+        document.getElementById('stat-customers').textContent = allUsers.filter(u => u.role === 'customer').length;
+        renderCustomers(allUsers.filter(u => u.role === 'customer'));
+        pendingDeleteUid = null;
+      } catch (err) {
+        alert('Delete failed: ' + err.message);
+      }
+    };
+  </script>
+</body>
+</html>
