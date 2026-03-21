@@ -522,6 +522,23 @@
     });
     const db = getFirestore(app);
 
+    function normalizeImageUrl(url) {
+      if (!url) return url;
+      if (url.includes('lh3.googleusercontent.com')) {
+        return url.split('=')[0] + '=w1200';
+      }
+      if (url.includes('photos.google.com') || url.includes('photos.app.goo.gl')) {
+        url = url.replace(/=w\d+-h\d+.*$/, '').replace(/=s\d+.*$/, '');
+        return url.includes('?') ? url + '&w=1200' : url + '=w1200';
+      }
+      const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+      if (driveMatch) return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+      const driveOpen = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+      if (driveOpen) return `https://drive.google.com/uc?export=view&id=${driveOpen[1]}`;
+      if (url.includes('dropbox.com')) return url.replace('?dl=0','?raw=1').replace('www.dropbox.com','dl.dropboxusercontent.com');
+      return url;
+    }
+
     // Map of Firestore keys to DOM selectors
     const IMAGE_MAP = {
       // Hero
@@ -570,11 +587,11 @@
           const { type, sel } = IMAGE_MAP[key];
           const el = document.querySelector(sel);
           if (!el) return;
+          const finalUrl = normalizeImageUrl(url);
           if (type === 'bg') {
-            // Replace just the background-image URL in the inline style
-            el.style.backgroundImage = `linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.85) 100%), url('${url}')`;
+            el.style.backgroundImage = `linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.85) 100%), url('${finalUrl}')`;
           } else {
-            el.src = url;
+            el.src = finalUrl;
           }
         });
       }

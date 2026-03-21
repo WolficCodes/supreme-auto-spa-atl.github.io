@@ -527,42 +527,170 @@
       const sec    = PHOTO_SECTIONS[section];
       const fields = sec.fields;
       const wrap   = document.getElementById('photo-fields');
+      let html = `
+        <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">${sec.label}</p>
+        <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px 16px;margin-bottom:24px;font-size:12px;color:rgba(245,245,240,0.5);line-height:1.9">
+          <strong style="color:var(--gold)">Supported image sources — just paste and it auto-converts:</strong><br>
+          ✅ <strong style="color:var(--white)">Google Photos:</strong> Open photo → tap Share → Create link → paste here (auto-converted)<br>
+          ✅ <strong style="color:var(--white)">Google Drive:</strong> File → Share → copy link → paste here (auto-converted)<br>
+          ✅ <strong style="color:var(--white)">Imgur:</strong> Right-click image → Copy image address<br>
+          ✅ <strong style="color:var(--white)">Dropbox:</strong> Share → copy link → paste here (auto-converted)<br>
+          ✅ Any direct link ending in <code style="background:rgba(255,255,255,0.08);padding:1px 5px">.jpg</code> <code style="background:rgba(255,255,255,0.08);padding:1px 5px">.png</code> <code style="background:rgba(255,255,255,0.08);padding:1px 5px">.webp</code><br>
+          ❌ <strong style="color:#f08080">iCloud links don't work</strong> — save the photo to your camera roll and upload to imgur.com
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:24px">`;
 
-      wrap.innerHTML = `
-        <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:20px">${sec.label}</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:24px">
-          ${fields.map(f => `
-            <div style="background:var(--card);border:1px solid rgba(255,255,255,0.06);padding:16px">
-              <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">${f.label}</div>
-              ${currentPhotos[f.key] ? `<img src="${currentPhotos[f.key]}" style="width:100%;height:100px;object-fit:cover;margin-bottom:10px;filter:brightness(.8)" onerror="this.style.display='none'" />` : ''}
-              <input
-                type="text"
-                class="photo-input"
-                data-key="${f.key}"
-                value="${currentPhotos[f.key] || ''}"
-                placeholder="${f.placeholder}"
-                style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:12px;outline:none"
+      fields.forEach(f => {
+        const hasPhoto = !!currentPhotos[f.key];
+        const badgeStyle = hasPhoto
+          ? 'background:rgba(76,175,125,0.12);color:#7fd4a8;border:1px solid rgba(76,175,125,0.3)'
+          : 'background:rgba(255,255,255,0.05);color:rgba(245,245,240,0.4);border:1px solid rgba(255,255,255,0.1)';
+        const badgeText = hasPhoto ? 'Custom photo saved' : 'Using default image';
+        const shortUrl  = hasPhoto ? (currentPhotos[f.key].length > 55 ? currentPhotos[f.key].substring(0,55)+'...' : currentPhotos[f.key]) : '';
+
+        html += `
+          <div style="background:var(--card);border:1px solid rgba(255,255,255,0.06);overflow:hidden">
+            <div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;gap:8px">
+              <span style="font-size:13px;font-weight:600;color:var(--white)">${f.label}</span>
+              <span id="badge-${f.key}" style="font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;white-space:nowrap;${badgeStyle}">${badgeText}</span>
+            </div>
+            <div style="position:relative;background:#080808;height:130px;display:flex;align-items:center;justify-content:center">
+              <img id="preview-${f.key}" src="${hasPhoto ? currentPhotos[f.key] : ''}" style="width:100%;height:130px;object-fit:cover;display:${hasPhoto ? 'block' : 'none'};filter:brightness(.75)"
+                onerror="document.getElementById('preview-${f.key}').style.display='none';document.getElementById('noimg-${f.key}').style.display='flex';document.getElementById('badge-${f.key}').textContent='Bad URL';document.getElementById('badge-${f.key}').style='font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:rgba(224,85,85,0.12);color:#f08080;border:1px solid rgba(224,85,85,0.3)'" />
+              <div id="noimg-${f.key}" style="display:${hasPhoto ? 'none' : 'flex'};flex-direction:column;align-items:center;gap:6px;padding:16px;text-align:center">
+                <span style="font-size:24px;opacity:.15">IMG</span>
+                <span style="font-size:11px;color:rgba(245,245,240,0.2)">No custom photo set</span>
+              </div>
+            </div>
+            <div style="padding:12px 14px">
+              <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,245,240,0.3);margin-bottom:6px">Paste image URL</div>
+              <input type="text" class="photo-input" data-key="${f.key}"
+                value="${hasPhoto ? currentPhotos[f.key] : ''}"
+                placeholder="https://i.imgur.com/yourphoto.jpg"
+                style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:12px;outline:none"
                 oninput="previewPhoto(this)"
                 onfocus="this.style.borderColor='var(--gold)'"
-                onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-              />
-            </div>`).join('')}
-        </div>`;
+                onblur="this.style.borderColor='rgba(255,255,255,0.1)'" />
+              ${hasPhoto ? `<div style="margin-top:6px;font-size:10px;color:rgba(245,245,240,0.2);word-break:break-all">Current: ${shortUrl}</div>` : ''}
+            </div>
+          </div>`;
+      });
+
+      html += `</div>`;
+      wrap.innerHTML = html;
+    }
+
+    // Convert any pasted URL into a direct loadable image URL
+    function normalizeImageUrl(url) {
+      if (!url) return url;
+
+      // Google Photos: https://photos.google.com/photo/... or share links
+      // Convert to direct image by appending =w1200 size param
+      if (url.includes('photos.google.com') || url.includes('photos.app.goo.gl')) {
+        // Strip any existing size param and add a large one
+        url = url.replace(/=w\d+-h\d+.*$/, '').replace(/=s\d+.*$/, '');
+        if (!url.includes('?')) url = url + '=w1200';
+        else url = url + '&w=1200';
+        return url;
+      }
+
+      // Google Photos lh3.googleusercontent.com direct CDN links
+      // These look like: https://lh3.googleusercontent.com/pw/...
+      // They work if you strip query params and append size
+      if (url.includes('lh3.googleusercontent.com')) {
+        url = url.split('=')[0]; // strip everything after =
+        url = url + '=w1200';
+        return url;
+      }
+
+      // Google Drive preview -> direct download
+      // https://drive.google.com/file/d/FILE_ID/view -> https://drive.google.com/uc?export=view&id=FILE_ID
+      const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+      if (driveMatch) {
+        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+      }
+
+      // Google Drive open link
+      const driveOpen = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+      if (driveOpen) {
+        return `https://drive.google.com/uc?export=view&id=${driveOpen[1]}`;
+      }
+
+      // Dropbox: change ?dl=0 to ?raw=1
+      if (url.includes('dropbox.com')) {
+        return url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+      }
+
+      // iCloud shared photos - can't be converted, warn user
+      if (url.includes('icloud.com')) {
+        return null; // will show iCloud warning
+      }
+
+      return url;
     }
 
     window.previewPhoto = function(input) {
-      const key = input.dataset.key;
-      const url = input.value.trim();
-      const card = input.closest('div[style*="background:var(--card)"]');
-      let preview = card.querySelector('img');
-      if (!preview) {
-        preview = document.createElement('img');
-        preview.style.cssText = 'width:100%;height:100px;object-fit:cover;margin-bottom:10px;filter:brightness(.8)';
-        preview.onerror = () => preview.style.display = 'none';
-        card.insertBefore(preview, input);
+      const key     = input.dataset.key;
+      const raw     = input.value.trim();
+      const preview = document.getElementById('preview-' + key);
+      const noimg   = document.getElementById('noimg-'   + key);
+      const badge   = document.getElementById('badge-'   + key);
+      if (!preview) return;
+
+      if (raw) {
+        // iCloud warning
+        if (raw.includes('icloud.com')) {
+          if (noimg) { noimg.style.display = 'flex'; noimg.innerHTML = '<span style=\'font-size:11px;color:#f08080;text-align:center;padding:0 12px\'>iCloud links don\'t work as direct images.<br>Save the photo to your phone and upload to imgur.com instead.</span>'; }
+          preview.style.display = 'none';
+          if (badge) { badge.textContent = 'iCloud not supported'; badge.style = 'font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:rgba(224,85,85,0.12);color:#f08080;border:1px solid rgba(224,85,85,0.3)'; }
+          return;
+        }
+
+        const converted = normalizeImageUrl(raw);
+        if (!converted) return;
+
+        // If URL was converted, update the input to show the converted URL
+        if (converted !== raw) {
+          input.value = converted;
+          // Show a small note that it was auto-converted
+          let note = input.parentNode.querySelector('.convert-note');
+          if (!note) {
+            note = document.createElement('div');
+            note.className = 'convert-note';
+            note.style.cssText = 'margin-top:6px;font-size:10px;color:#7fd4a8;line-height:1.5';
+            input.parentNode.appendChild(note);
+          }
+          note.textContent = '✓ Auto-converted to direct image URL';
+        }
+
+        preview.src = converted;
+        preview.style.display = 'block';
+        if (noimg) noimg.style.display = 'none';
+        if (badge) { badge.textContent = 'Custom photo saved'; badge.style = 'font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:rgba(76,175,125,0.12);color:#7fd4a8;border:1px solid rgba(76,175,125,0.3)'; }
+
+        preview.onerror = () => {
+          preview.style.display = 'none';
+          if (noimg) { noimg.style.display = 'flex'; noimg.innerHTML = '<span style=\'font-size:11px;color:#f08080;text-align:center;padding:0 12px\'>Image failed to load.<br>For Google Photos: open the photo, tap Share → Create link, paste that link here.</span>'; }
+          if (badge) { badge.textContent = 'Failed to load'; badge.style = 'font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:rgba(224,85,85,0.12);color:#f08080;border:1px solid rgba(224,85,85,0.3)'; }
+        };
+      } else {
+        preview.style.display = 'none';
+        if (noimg) noimg.style.display = 'flex';
+        if (badge) { badge.textContent = 'Using default image'; badge.style = 'font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:rgba(255,255,255,0.05);color:rgba(245,245,240,0.4);border:1px solid rgba(255,255,255,0.1)'; }
       }
-      if (url) { preview.src = url; preview.style.display = 'block'; }
-      else preview.style.display = 'none';
+    };
+
+    // Also normalize on save so stored URLs are always direct links
+    const _origCollect = collectCurrentValues;
+    collectCurrentValues = function() {
+      document.querySelectorAll('.photo-input').forEach(input => {
+        const raw = input.value.trim();
+        if (raw) {
+          const converted = normalizeImageUrl(raw);
+          if (converted && converted !== raw) input.value = converted;
+          currentPhotos[input.dataset.key] = input.value.trim();
+        }
+      });
     };
 
     window.savePhotos = async function() {
