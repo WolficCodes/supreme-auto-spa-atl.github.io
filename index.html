@@ -1,281 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Supreme Auto Spa ATL – Premium Mobile Detailing</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --black: #0a0a0a; --white: #f5f5f0;
-      --gold: #c9a84c; --gold-light: #e8c96a;
-      --dark: #111118; --card: #16161e;
-      --muted: rgba(245,245,240,0.55);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --black:#0a0a0a;--dark:#111118;--card:#16161e;
+      --white:#f5f5f0;--muted:rgba(245,245,240,0.55);--faint:rgba(245,245,240,0.08);
+      --gold:#c9a84c;--gold-l:#e8c96a;--gold-faint:rgba(201,168,76,0.1);--gold-b:rgba(201,168,76,0.3);
+      --red:#e05555;--green:#4caf7d;
     }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
 
-    /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 18px 40px; background: rgba(10,10,10,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(201,168,76,0.15); }
-    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--gold); text-decoration: none; }
-    .nav-links { display: flex; gap: 20px; align-items: center; }
-    .nav-links a { color: rgba(245,245,240,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: color .2s; white-space: nowrap; }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-verify { color: var(--gold) !important; border: 1px solid rgba(201,168,76,0.5); padding: 7px 16px !important; transition: all .2s !important; }
-    .nav-verify:hover { background: var(--gold) !important; color: var(--black) !important; }
-    .nav-signup { background: var(--gold); color: var(--black) !important; padding: 8px 20px !important; font-weight: 600; }
-    .nav-signup:hover { background: var(--gold-light) !important; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); transition: all .3s; }
-    .mobile-menu { display: none; position: fixed; top: 59px; left: 0; right: 0; z-index: 199; background: rgba(10,10,10,0.98); backdrop-filter: blur(14px); padding: 24px 28px; flex-direction: column; gap: 4px; border-bottom: 1px solid rgba(201,168,76,0.15); }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: rgba(245,245,240,0.7); text-decoration: none; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s; }
-    .mobile-menu a:hover { color: var(--gold); }
-    .mobile-menu a:last-child { border-bottom: none; }
-
-    /* HERO */
-    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 24px 80px; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.88) 100%), url('https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1800&auto=format&fit=crop&q=90') center/cover no-repeat; }
-    .hero-content { position: relative; z-index: 1; }
-    .hero-tag { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 11vw, 110px); line-height: 0.95; letter-spacing: 4px; margin-bottom: 24px; }
-    .hero h1 span { color: var(--gold); }
-    .hero p { font-size: 16px; color: rgba(245,245,240,0.65); max-width: 460px; line-height: 1.7; margin: 0 auto 48px; }
-    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn-gold { background: var(--gold); color: var(--black); padding: 16px 36px; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: all .2s; text-decoration: none; display: inline-block; }
-    .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
-    .btn-outline { background: transparent; color: var(--white); padding: 16px 36px; font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; border: 1px solid rgba(245,245,240,0.3); cursor: pointer; text-decoration: none; display: inline-block; transition: all .2s; }
-    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
-    .scroll-ind { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .scroll-ind span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,245,240,0.3); }
-    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: spulse 2s ease-in-out infinite; }
-    @keyframes spulse { 0%,100%{opacity:.3} 50%{opacity:1} }
-
-    /* STATS BAR */
-    .stats-bar { background: var(--dark); border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); }
-    .stats-inner { max-width: 1100px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: repeat(4,1fr); }
-    .stat-item { padding: 32px 24px; text-align: center; border-right: 1px solid rgba(255,255,255,0.05); }
-    .stat-item:last-child { border-right: none; }
-    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: var(--gold); line-height: 1; }
-    .stat-lbl { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
-
-    /* SECTIONS */
-    .sec { padding: 100px 40px; max-width: 1100px; margin: 0 auto; }
-    .sec-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-    .sec h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px,5vw,56px); letter-spacing: 3px; margin-bottom: 48px; }
-
-    /* SERVICES */
-    .svc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; }
-    .svc-card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); transition: border-color .2s; overflow: hidden; position: relative; }
-    .svc-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--gold); transform:scaleX(0); transition:transform .3s; }
-    .svc-card:hover::before { transform:scaleX(1); }
-    .svc-card:hover { border-color: rgba(201,168,76,0.25); }
-    .svc-img { width:100%; height:200px; object-fit:cover; display:block; filter:brightness(.7) saturate(.8); transition:all .4s; }
-    .svc-card:hover .svc-img { filter:brightness(.9) saturate(1.1); transform:scale(1.03); }
-    .svc-body { padding: 28px 24px; }
-    .svc-icon { width:36px; height:36px; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:14px; }
-    .svc-card h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; margin-bottom:10px; }
-    .svc-card p { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:14px; }
-    .svc-price { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--gold); letter-spacing:1px; }
-
-    /* CAR CATEGORIES */
-    .cat-wrap { background:var(--dark); border-top:1px solid rgba(255,255,255,0.05); padding:100px 40px; }
-    .cat-inner { max-width:1100px; margin:0 auto; }
-    .cat-tabs { display:flex; gap:2px; margin-bottom:28px; flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
-    .cat-tabs::-webkit-scrollbar { display:none; }
-    .cat-tab { flex-shrink:0; }
-    .cat-tab { padding:10px 22px; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:var(--muted); transition:all .2s; user-select:none; }
-    .cat-tab.active { border-color:var(--gold); background:rgba(201,168,76,0.1); color:var(--gold); }
-    .cat-tab:hover:not(.active) { border-color:rgba(255,255,255,0.2); color:var(--white); }
-    .cat-panel { display:none; }
-    .cat-panel.active { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
-    .cat-img { position:relative; overflow:hidden; cursor:pointer; }
-    .cat-img img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; filter:brightness(.65) saturate(.75); transition:all .4s; }
-    .cat-img:hover img { filter:brightness(.95) saturate(1.15); transform:scale(1.05); }
-    .cat-lbl { position:absolute; bottom:0; left:0; right:0; padding:14px 16px; background:linear-gradient(to top,rgba(0,0,0,0.85),transparent); }
-    .cat-lbl-tag { display:inline-block; background:var(--gold); color:var(--black); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:3px 8px; margin-bottom:4px; }
-    .cat-lbl-name { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:2px; color:var(--white); display:block; text-shadow:0 2px 8px rgba(0,0,0,0.9); }
-
-    /* FEATURED MOSAIC */
-    .mosaic-wrap { padding:100px 40px; max-width:1100px; margin:0 auto; }
-    .mosaic-top { display:grid; grid-template-columns:2fr 1fr; gap:3px; margin-bottom:3px; }
-    .mosaic-bot { display:grid; grid-template-columns:1fr 1fr 1fr; gap:3px; }
-    .mosaic-img { position:relative; overflow:hidden; }
-    .mosaic-img img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.7); transition:all .4s; }
-    .mosaic-img:hover img { filter:brightness(.95); transform:scale(1.03); }
-    .mosaic-lbl { position:absolute; bottom:16px; left:16px; }
-    .mosaic-tag { display:inline-block; background:var(--gold); color:var(--black); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:3px 8px; margin-bottom:6px; }
-    .mosaic-name { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--white); text-shadow:0 2px 12px rgba(0,0,0,0.9); display:block; }
-
-    /* PAYMENT */
-    .pay-sec { background:var(--dark); border-top:1px solid rgba(201,168,76,0.15); border-bottom:1px solid rgba(201,168,76,0.15); padding:100px 40px; text-align:center; }
-    .pay-inner { max-width:580px; margin:0 auto; }
-    .price-badge { display:inline-block; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.4); color:var(--gold); font-size:11px; letter-spacing:3px; text-transform:uppercase; padding:8px 20px; margin-bottom:32px; }
-    .pay-sec h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,5vw,56px); letter-spacing:3px; margin-bottom:16px; }
-    .pay-sec p { color:var(--muted); font-size:15px; line-height:1.7; margin-bottom:40px; }
-    .pay-btn { background:var(--gold); color:var(--black); padding:18px 52px; font-size:14px; font-weight:700; letter-spacing:3px; text-transform:uppercase; border:none; cursor:pointer; transition:all .2s; }
-    .pay-btn:hover { background:var(--gold-light); transform:translateY(-2px); }
-    .pay-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
-    .pay-note { margin-top:16px; font-size:12px; color:rgba(245,245,240,0.3); }
-
-    /* WHY */
-    .why-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
-    .why-card { background:var(--card); padding:36px 28px; border:1px solid rgba(255,255,255,0.05); transition:border-color .2s; }
-    .why-card:hover { border-color:rgba(201,168,76,0.25); }
-    .why-num { font-family:'Bebas Neue',sans-serif; font-size:52px; color:rgba(201,168,76,0.15); letter-spacing:2px; margin-bottom:12px; line-height:1; }
-    .why-card h3 { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:2px; color:var(--gold); margin-bottom:10px; }
-    .why-card p { font-size:13px; color:var(--muted); line-height:1.7; }
-
-    /* GALLERY */
-    .gal-wrap { padding:100px 40px; background:var(--dark); border-top:1px solid rgba(255,255,255,0.05); }
-    .gal-inner { max-width:1100px; margin:0 auto; }
-    .masonry { columns:3; gap:3px; }
-    .masonry img { width:100%; display:block; margin-bottom:3px; filter:brightness(.7) saturate(.75); transition:filter .3s; break-inside:avoid; cursor:pointer; }
-    .masonry img:hover { filter:brightness(.95) saturate(1.1); }
-
-    /* CONTACT */
-    .con-wrap { padding:100px 40px; max-width:1100px; margin:0 auto; }
-    .con-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
-    .con-info h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(32px,5vw,52px); letter-spacing:3px; margin-bottom:28px; }
-    .con-item { display:flex; gap:16px; margin-bottom:24px; }
-    .con-icon { width:40px; height:40px; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px; }
-    .con-lbl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(245,245,240,0.3); margin-bottom:4px; }
-    .con-val { font-size:14px; color:var(--muted); line-height:1.7; }
-    .con-val a { color:var(--gold); text-decoration:none; }
-    .con-img { width:100%; height:320px; object-fit:cover; filter:brightness(.5) saturate(.4); border:1px solid rgba(201,168,76,0.15); display:block; }
-
-    /* FOOTER */
-    footer { padding:40px; border-top:1px solid rgba(255,255,255,0.06); }
-    .foot-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-    .foot-logo { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:2px; color:var(--gold); }
-    .foot-links { display:flex; gap:20px; flex-wrap:wrap; }
-    .foot-links a { font-size:11px; color:rgba(245,245,240,0.3); text-decoration:none; letter-spacing:1px; text-transform:uppercase; transition:color .2s; }
-    .foot-links a:hover { color:var(--gold); }
-    .foot-copy { font-size:11px; color:rgba(245,245,240,0.2); }
-
-    /* MOBILE */
-    @media (max-width:900px) {
-      .svc-grid { grid-template-columns:1fr 1fr; }
-      .why-grid { grid-template-columns:1fr 1fr; }
+    /* ── NAV ── */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:300;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 40px;height:68px;
+      background:rgba(10,10,10,0.95);backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(201,168,76,0.12);
     }
-    @media (max-width:768px) {
-      nav { padding:16px 20px; }
-      .nav-links { display:none; }
-      .hamburger { display:flex; }
-      .hero { padding:100px 20px 60px; }
-      .stats-inner { grid-template-columns:repeat(2,1fr); padding:0 20px; }
-      .stat-item:nth-child(2) { border-right:none; }
-      .sec { padding:60px 20px; }
-      .svc-grid { grid-template-columns:1fr; }
-      .cat-wrap { padding:60px 20px; }
-      .cat-panel.active { grid-template-columns:1fr 1fr; }
-      .mosaic-wrap { padding:60px 20px; }
-      .mosaic-top { grid-template-columns:1fr; }
-      .mosaic-bot { grid-template-columns:1fr 1fr; }
-      .pay-sec { padding:60px 20px; }
-      .why-grid { grid-template-columns:1fr 1fr; }
-      .gal-wrap { padding:60px 20px; }
-      .masonry { columns:2; }
-      .con-wrap { padding:60px 20px; }
-      .con-grid { grid-template-columns:1fr; }
-      .foot-inner { flex-direction:column; text-align:center; }
-      .foot-links { justify-content:center; }
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--gold)}
+    .nav-links{display:flex;align-items:center;gap:28px}
+    .nav-links a{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,245,240,0.65);transition:color .2s}
+    .nav-links a:hover{color:var(--gold)}
+    .nav-cta{background:var(--gold);color:var(--black)!important;padding:9px 22px;font-weight:700;letter-spacing:1px;transition:background .2s!important}
+    .nav-cta:hover{background:var(--gold-l)!important}
+    .nav-phone{color:var(--gold)!important;font-weight:600}
+    /* hamburger */
+    .hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+    .hbg span{width:22px;height:2px;background:var(--white);display:block;transition:all .3s}
+    .mmenu{
+      display:none;position:fixed;top:68px;left:0;right:0;z-index:299;
+      background:rgba(10,10,10,0.98);backdrop-filter:blur(16px);
+      padding:24px 32px;flex-direction:column;gap:0;
+      border-bottom:1px solid rgba(201,168,76,0.12);
     }
-    @media (max-width:480px) {
-      .hero h1 { font-size:52px; }
-      .hero-buttons { flex-direction:column; align-items:center; width:100%; }
-      .btn-gold, .btn-outline { width:100%; text-align:center; }
-      .cat-panel.active { grid-template-columns:1fr; }
-      .mosaic-bot { grid-template-columns:1fr; }
-      .masonry { columns:1; }
-      .why-grid { grid-template-columns:1fr; }
-      .cat-tabs { gap:4px; }
-      .cat-tab { padding:8px 12px; font-size:10px; }
+    .mmenu.open{display:flex}
+    .mmenu a{padding:14px 0;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,245,240,0.7);border-bottom:1px solid rgba(255,255,255,0.05)}
+    .mmenu a:last-child{border-bottom:none}
+    .mmenu a:hover{color:var(--gold)}
+
+    /* ── HERO (full screen video-style) ── */
+    .hero{
+      position:relative;min-height:100vh;
+      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+      padding:100px 24px 60px;overflow:hidden;
+    }
+    .hero-bg{
+      position:absolute;inset:0;z-index:0;
+      background:
+        linear-gradient(to bottom,rgba(10,10,10,0.5) 0%,rgba(10,10,10,0.8) 70%,rgba(10,10,10,1) 100%),
+        url('https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1800&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-content{position:relative;z-index:1;max-width:800px}
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);
+      color:var(--gold);font-size:10px;letter-spacing:3px;text-transform:uppercase;
+      padding:7px 18px;margin-bottom:28px;
+    }
+    .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,12vw,120px);line-height:.95;letter-spacing:4px;margin-bottom:20px}
+    .hero h1 em{color:var(--gold);font-style:normal}
+    .hero-sub{font-size:17px;color:rgba(245,245,240,0.7);max-width:520px;margin:0 auto 48px;line-height:1.7}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+    .btn-gold{background:var(--gold);color:var(--black);padding:16px 36px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;display:inline-block}
+    .btn-gold:hover{background:var(--gold-l);transform:translateY(-2px)}
+    .btn-ghost{background:transparent;color:var(--white);padding:16px 36px;font-size:13px;font-weight:500;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(245,245,240,0.3);cursor:pointer;display:inline-block;transition:all .2s}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+    /* Scroll arrow */
+    .scroll-arr{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+    .scroll-arr span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,245,240,0.3)}
+    .scroll-arr-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollpulse 2s ease-in-out infinite}
+    @keyframes scrollpulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+    /* ── ANNOUNCEMENT BAR ── */
+    .announce{background:var(--gold);color:var(--black);text-align:center;padding:12px 24px;font-size:13px;font-weight:700;letter-spacing:1px}
+    .announce a{color:var(--black);text-decoration:underline}
+
+    /* ── STATS ── */
+    .stats-bar{background:var(--dark);border-bottom:1px solid rgba(201,168,76,0.12)}
+    .stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+    .stat-item{padding:28px 20px;text-align:center;border-right:1px solid rgba(255,255,255,0.05)}
+    .stat-item:last-child{border-right:none}
+    .stat-num{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:2px;color:var(--gold);line-height:1}
+    .stat-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+    /* ── SECTION SHARED ── */
+    .sec{padding:96px 40px;max-width:1100px;margin:0 auto}
+    .sec-full{padding:96px 40px}
+    .sec-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+    .sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);letter-spacing:3px;margin-bottom:16px}
+    .sec-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:560px;margin-bottom:48px}
+    .divider{height:1px;background:rgba(255,255,255,0.06);margin:0}
+
+    /* ── BOOKING SECTION ── */
+    .booking-wrap{background:var(--dark);border-top:2px solid var(--gold);border-bottom:1px solid rgba(201,168,76,0.12)}
+    .booking-inner{max-width:900px;margin:0 auto;padding:80px 40px}
+    .booking-inner .sec-title{text-align:center}
+    .booking-inner .sec-sub{text-align:center;margin:0 auto 40px}
+
+    /* Service type toggle */
+    .service-type{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:36px}
+    .type-card{
+      padding:28px 24px;border:2px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s;text-align:center;
+      user-select:none;position:relative;
+    }
+    .type-card.active{border-color:var(--gold);background:rgba(201,168,76,0.08)}
+    .type-card:hover:not(.active){border-color:rgba(255,255,255,0.2)}
+    .type-icon{font-size:28px;margin-bottom:12px}
+    .type-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:6px}
+    .type-card.active .type-name{color:var(--gold)}
+    .type-desc{font-size:12px;color:var(--muted);line-height:1.6}
+    .type-check{
+      position:absolute;top:12px;right:12px;width:20px;height:20px;
+      border-radius:50%;background:var(--gold);display:none;
+      align-items:center;justify-content:center;font-size:11px;color:var(--black);font-weight:700;
+    }
+    .type-card.active .type-check{display:flex}
+
+    /* Service picker */
+    .service-picker{margin-bottom:28px}
+    .picker-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+    .service-options{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    .svc-opt{
+      padding:18px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
+      cursor:pointer;transition:all .2s;text-align:center;
+    }
+    .svc-opt.selected{border-color:var(--gold);background:rgba(201,168,76,0.08)}
+    .svc-opt:hover:not(.selected){border-color:rgba(255,255,255,0.2)}
+    .svc-opt-name{font-weight:600;font-size:13px;margin-bottom:4px}
+    .svc-opt.selected .svc-opt-name{color:var(--gold)}
+    .svc-opt-price{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:1px}
+    .svc-opt-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+
+    /* Address / location fields */
+    .location-fields{margin-bottom:28px}
+    .field-group{margin-bottom:16px}
+    .field-group label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .field-group input,.field-group select,.field-group textarea{
+      width:100%;padding:13px 16px;
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+      color:var(--white);font-family:'Inter',sans-serif;font-size:14px;
+      outline:none;transition:border-color .2s;
+    }
+    .field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:var(--gold)}
+    .field-group input::placeholder,.field-group textarea::placeholder{color:rgba(245,245,240,0.25)}
+    .field-group select option{background:var(--dark);color:var(--white)}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .location-note{font-size:12px;color:var(--muted);padding:12px 14px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);margin-bottom:16px;line-height:1.6}
+    .location-note strong{color:var(--gold)}
+
+    /* In-store locations */
+    .store-options{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:16px}
+    .store-opt{
+      padding:16px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
+      cursor:pointer;transition:all .2s;
+    }
+    .store-opt.selected{border-color:var(--gold);background:rgba(201,168,76,0.08)}
+    .store-opt:hover:not(.selected){border-color:rgba(255,255,255,0.2)}
+    .store-name{font-weight:600;font-size:13px;margin-bottom:3px}
+    .store-opt.selected .store-name{color:var(--gold)}
+    .store-addr{font-size:11px;color:var(--muted)}
+    .store-hours{font-size:10px;color:rgba(201,168,76,0.7);margin-top:4px}
+
+    /* Book button */
+    .book-btn{
+      width:100%;padding:18px;background:var(--gold);color:var(--black);
+      font-size:14px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+      border:none;cursor:pointer;transition:all .2s;
+    }
+    .book-btn:hover{background:var(--gold-l)}
+    .book-btn:disabled{opacity:.5;cursor:not-allowed}
+    .book-note{font-size:11px;color:rgba(245,245,240,0.3);text-align:center;margin-top:12px}
+    .alert{padding:14px 16px;font-size:13px;border-radius:2px;margin-bottom:16px;display:none}
+    .alert.show{display:block}
+    .alert-error{background:rgba(224,85,85,0.1);border:1px solid rgba(224,85,85,0.3);color:#f08080}
+    .alert-success{background:rgba(76,175,125,0.1);border:1px solid rgba(76,175,125,0.3);color:#7fd4a8}
+
+    /* ── SERVICES GRID ── */
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    .svc-card{background:var(--card);border:1px solid rgba(255,255,255,0.05);overflow:hidden;transition:border-color .2s;position:relative}
+    .svc-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .3s}
+    .svc-card:hover::after{transform:scaleX(1)}
+    .svc-card:hover{border-color:rgba(201,168,76,0.2)}
+    .svc-img{width:100%;height:180px;object-fit:cover;filter:brightness(.7) saturate(.8);transition:all .4s}
+    .svc-card:hover .svc-img{filter:brightness(.9) saturate(1.05)}
+    .svc-body{padding:28px 24px}
+    .svc-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+    .svc-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:10px}
+    .svc-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+    .svc-price-row{display:flex;justify-content:space-between;align-items:center}
+    .svc-price{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:1px}
+    .svc-book-btn{padding:8px 20px;background:transparent;border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+    .svc-book-btn:hover{background:var(--gold);color:var(--black)}
+
+    /* ── MEMBERSHIP / PACKAGES ── */
+    .pkg-wrap{background:var(--dark);border-top:1px solid rgba(255,255,255,0.05)}
+    .pkg-inner{max-width:1100px;margin:0 auto;padding:96px 40px}
+    .pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    .pkg-card{background:var(--card);border:1px solid rgba(255,255,255,0.06);padding:36px 28px;position:relative;transition:border-color .2s}
+    .pkg-card.featured{border-color:var(--gold);background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.03))}
+    .pkg-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 16px}
+    .pkg-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:8px}
+    .pkg-card.featured .pkg-name{color:var(--gold)}
+    .pkg-price{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--gold);letter-spacing:2px;line-height:1}
+    .pkg-per{font-size:13px;color:var(--muted);margin-bottom:24px}
+    .pkg-features{list-style:none;margin-bottom:28px}
+    .pkg-features li{padding:9px 0;font-size:13px;color:rgba(245,245,240,0.75);border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;align-items:center}
+    .pkg-features li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
+    .pkg-features li.no{color:rgba(245,245,240,0.3)}
+    .pkg-features li.no::before{content:'✕';color:rgba(245,245,240,0.2)}
+    .pkg-btn{width:100%;padding:14px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s}
+    .pkg-card:not(.featured) .pkg-btn{background:transparent;border:1px solid rgba(255,255,255,0.15);color:var(--white)}
+    .pkg-card:not(.featured) .pkg-btn:hover{border-color:var(--gold);color:var(--gold)}
+    .pkg-card.featured .pkg-btn{background:var(--gold);color:var(--black)}
+    .pkg-card.featured .pkg-btn:hover{background:var(--gold-l)}
+
+    /* ── CAR CATEGORIES ── */
+    .cat-wrap{padding:96px 40px;background:var(--black)}
+    .cat-inner{max-width:1100px;margin:0 auto}
+    .cat-tabs{display:flex;gap:2px;margin-bottom:28px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .cat-tabs::-webkit-scrollbar{display:none}
+    .cat-tab{flex-shrink:0;padding:10px 24px;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:var(--muted);transition:all .2s;user-select:none}
+    .cat-tab.active{border-color:var(--gold);background:rgba(201,168,76,0.1);color:var(--gold)}
+    .cat-tab:hover:not(.active){border-color:rgba(255,255,255,0.2);color:var(--white)}
+    .cat-panel{display:none}
+    .cat-panel.active{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+    .cat-img{position:relative;overflow:hidden;cursor:pointer}
+    .cat-img img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(.65) saturate(.75);transition:all .4s}
+    .cat-img:hover img{filter:brightness(.95) saturate(1.1);transform:scale(1.04)}
+    .cat-lbl{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(to top,rgba(0,0,0,0.85),transparent)}
+    .cat-lbl-tag{display:inline-block;background:var(--gold);color:var(--black);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;margin-bottom:4px}
+    .cat-lbl-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:var(--white);display:block}
+
+    /* ── TESTIMONIALS ── */
+    .reviews-wrap{background:var(--dark);border-top:1px solid rgba(255,255,255,0.05)}
+    .reviews-inner{max-width:1100px;margin:0 auto;padding:96px 40px}
+    .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    .review-card{background:var(--card);border:1px solid rgba(255,255,255,0.06);padding:32px 28px}
+    .stars{color:var(--gold);font-size:16px;letter-spacing:2px;margin-bottom:16px}
+    .review-text{font-size:14px;color:rgba(245,245,240,0.75);line-height:1.8;margin-bottom:20px;font-style:italic}
+    .review-author{font-weight:600;font-size:13px;color:var(--white)}
+    .review-vehicle{font-size:11px;color:var(--muted);margin-top:2px}
+
+    /* ── GALLERY ── */
+    .gallery-wrap{padding:96px 40px;max-width:1100px;margin:0 auto}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+    .gallery-img{overflow:hidden;cursor:pointer}
+    .gallery-img img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(.7) saturate(.8);transition:all .4s}
+    .gallery-img:hover img{filter:brightness(.95) saturate(1.1);transform:scale(1.04)}
+
+    /* ── CTA BAND ── */
+    .cta-band{
+      padding:80px 40px;text-align:center;
+      background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));
+      border-top:1px solid rgba(201,168,76,0.2);border-bottom:1px solid rgba(201,168,76,0.2);
+    }
+    .cta-band h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);letter-spacing:3px;margin-bottom:12px}
+    .cta-band p{font-size:15px;color:var(--muted);margin-bottom:36px}
+
+    /* ── CONTACT ── */
+    .contact-wrap{padding:96px 40px;max-width:1100px;margin:0 auto}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+    .contact-card{background:var(--card);border:1px solid rgba(255,255,255,0.06);padding:32px}
+    .contact-card h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--gold);margin-bottom:20px}
+    .contact-row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);align-items:flex-start}
+    .contact-row:last-child{border-bottom:none}
+    .contact-icon{width:36px;height:36px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+    .contact-text{font-size:13px;color:var(--muted);line-height:1.7}
+    .contact-text a{color:var(--gold)}
+    .contact-text strong{color:var(--white);display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+
+    /* ── FOOTER ── */
+    footer{background:var(--dark);border-top:1px solid rgba(255,255,255,0.06)}
+    .footer-top{max-width:1100px;margin:0 auto;padding:60px 40px 40px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
+    .footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px;max-width:240px}
+    .footer-col h4{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);margin-bottom:16px}
+    .footer-col a{display:block;font-size:13px;color:rgba(245,245,240,0.45);margin-bottom:10px;transition:color .2s}
+    .footer-col a:hover{color:var(--gold)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,0.05);padding:20px 40px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(245,245,240,0.25)}
+    .footer-bottom a{color:rgba(245,245,240,0.25)}
+    .footer-bottom a:hover{color:var(--gold)}
+    .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gold)}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .nav{padding:0 20px}
+      .nav-links{display:none}
+      .hbg{display:flex}
+      .stats-inner{grid-template-columns:repeat(2,1fr)}
+      .stat-item:nth-child(2){border-right:none}
+      .services-grid{grid-template-columns:1fr 1fr}
+      .pkg-grid{grid-template-columns:1fr}
+      .cat-panel.active{grid-template-columns:1fr 1fr}
+      .reviews-grid{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:1fr 1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .footer-top{grid-template-columns:1fr 1fr}
+      .field-row{grid-template-columns:1fr}
+      .service-options{grid-template-columns:1fr 1fr}
+      .store-options{grid-template-columns:1fr}
+    }
+    @media(max-width:580px){
+      .sec{padding:60px 20px}
+      .sec-full{padding:60px 20px}
+      .booking-inner{padding:60px 20px}
+      .pkg-inner{padding:60px 20px}
+      .cat-wrap{padding:60px 20px}
+      .reviews-inner{padding:60px 20px}
+      .gallery-wrap{padding:60px 20px}
+      .contact-wrap{padding:60px 20px}
+      .hero h1{font-size:58px}
+      .hero-btns{flex-direction:column;align-items:stretch}
+      .btn-gold,.btn-ghost{text-align:center}
+      .services-grid{grid-template-columns:1fr}
+      .service-type{grid-template-columns:1fr}
+      .service-options{grid-template-columns:1fr}
+      .cat-panel.active{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:1fr}
+      .stats-inner{grid-template-columns:1fr 1fr}
+      .footer-top{grid-template-columns:1fr}
+      .footer-bottom{flex-direction:column;text-align:center}
     }
   </style>
 </head>
 <body>
 
   <!-- NAV -->
-  <nav>
-    <a href="#" class="logo">Supreme Auto Spa</a>
+  <nav class="nav">
+    <a href="#" class="nav-logo">Supreme Auto Spa</a>
     <div class="nav-links">
       <a href="#services">Services</a>
+      <a href="#packages">Packages</a>
       <a href="#categories">Vehicles</a>
-      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+      <a href="tel:4045550192" class="nav-phone">(404) 555‑0192</a>
       <a href="signin.html">Sign In</a>
-      <a href="verify.html" class="nav-verify">ID Verify</a>
-      <a href="signup.html" class="nav-signup">Sign Up</a>
+      <a href="verify.html" style="color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:8px 16px;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:all .2s" onmouseover="this.style.background='var(--gold)';this.style.color='var(--black)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">ID Verify</a>
+      <a href="#book" class="nav-cta">Book Now</a>
     </div>
-    <div class="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hbg" onclick="toggleMenu()" id="hbg"><span></span><span></span><span></span></div>
   </nav>
 
-  <div class="mobile-menu" id="mmenu">
-    <a href="#services"   onclick="closeMenu()">Services</a>
+  <!-- MOBILE MENU -->
+  <div class="mmenu" id="mmenu">
+    <a href="#services"  onclick="closeMenu()">Services</a>
+    <a href="#packages"  onclick="closeMenu()">Packages</a>
     <a href="#categories" onclick="closeMenu()">Vehicles</a>
-    <a href="#gallery"    onclick="closeMenu()">Gallery</a>
-    <a href="#payment"    onclick="closeMenu()">Book Now</a>
+    <a href="#reviews"   onclick="closeMenu()">Reviews</a>
+    <a href="#contact"   onclick="closeMenu()">Contact</a>
+    <a href="tel:4045550192" style="color:var(--gold)">(404) 555‑0192</a>
     <a href="signin.html">Sign In</a>
     <a href="verify.html" style="color:var(--gold)">ID Verify</a>
-    <a href="signup.html" style="color:var(--gold);font-weight:600">Sign Up →</a>
+    <a href="signup.html" style="color:var(--gold);font-weight:700">Sign Up</a>
+    <a href="#book" onclick="closeMenu()" style="color:var(--black);background:var(--gold);text-align:center;font-weight:700;padding:16px">Book Now</a>
   </div>
 
-  <!-- HERO — BMW M3 background -->
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announce" style="margin-top:68px">
+    🚗 Now offering both Mobile & In-Store Detailing across Metro Atlanta — <a href="#book">Book your spot today</a>
+  </div>
+
+  <!-- HERO -->
   <div class="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg" id="hero-bg"></div>
     <div class="hero-content">
-      <p class="hero-tag">Kennesaw &amp; Metro Atlanta</p>
-      <h1>Supreme<br><span>Auto Spa</span><br>ATL</h1>
-      <p>Premium mobile detailing that comes to you. Muscle cars, exotics, BMWs, luxury — we treat every vehicle like a trophy.</p>
-      <div class="hero-buttons">
-        <a href="#payment" class="btn-gold">Book a Detail</a>
-        <a href="#services" class="btn-outline">Our Services</a>
+      <div class="hero-badge"><span class="hero-badge-dot"></span> Premium Detailing · ATL</div>
+      <h1>Supreme<br><em>Auto Spa</em><br>ATL</h1>
+      <p class="hero-sub">Professional detailing that comes to you — or visit one of our in-store locations across Kennesaw & Metro Atlanta.</p>
+      <div class="hero-btns">
+        <a href="#book" class="btn-gold">Book a Detail</a>
+        <a href="#services" class="btn-ghost">View Services</a>
       </div>
     </div>
-    <div class="scroll-ind"><span>Scroll</span><div class="scroll-line"></div></div>
+    <div class="scroll-arr" onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">
+      <span>Scroll</span>
+      <div class="scroll-arr-line"></div>
+    </div>
   </div>
 
   <!-- STATS -->
-  <div class="stats-bar">
+  <div class="stats-bar" id="stats">
     <div class="stats-inner">
       <div class="stat-item"><div class="stat-num">500+</div><div class="stat-lbl">Cars Detailed</div></div>
-      <div class="stat-item"><div class="stat-num">4.9</div><div class="stat-lbl">Avg Rating</div></div>
-      <div class="stat-item"><div class="stat-num">3+</div><div class="stat-lbl">Years in ATL</div></div>
-      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Mobile Service</div></div>
+      <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-lbl">Avg Rating</div></div>
+      <div class="stat-item"><div class="stat-num">3+</div><div class="stat-lbl">Years in Atlanta</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Satisfaction</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BOOKING SECTION -->
+  <div class="booking-wrap" id="book">
+    <div class="booking-inner">
+      <p class="sec-label" style="text-align:center">Schedule Your Detail</p>
+      <h2 class="sec-title">Book Your Appointment</h2>
+      <p class="sec-sub">Choose how you want your detail — we come to you, or you come to us.</p>
+
+      <div class="alert alert-error" id="book-error"></div>
+      <div class="alert alert-success" id="book-success"></div>
+
+      <!-- Step 1: Mobile vs In-Store -->
+      <p class="picker-label">Step 1 — Choose Your Service Type</p>
+      <div class="service-type">
+        <div class="type-card active" id="type-mobile" onclick="setType('mobile')">
+          <div class="type-check">✓</div>
+          <div class="type-icon">🚗</div>
+          <div class="type-name">Mobile Detailing</div>
+          <div class="type-desc">We come to your home, office, or any location. Just give us your address and we'll be there.</div>
+        </div>
+        <div class="type-card" id="type-instore" onclick="setType('instore')">
+          <div class="type-check">✓</div>
+          <div class="type-icon">🏪</div>
+          <div class="type-name">In-Store Detailing</div>
+          <div class="type-desc">Drop your vehicle off at one of our convenient Metro Atlanta locations.</div>
+        </div>
+      </div>
+
+      <!-- Step 2: Pick a service -->
+      <div class="service-picker">
+        <p class="picker-label">Step 2 — Select a Service</p>
+        <div class="service-options">
+          <div class="svc-opt" onclick="selectSvc(this,'Express Wash','$35')">
+            <div class="svc-opt-name">Express Wash</div>
+            <div class="svc-opt-price">$35</div>
+            <div class="svc-opt-desc">Hand wash, windows, tire dressing</div>
+          </div>
+          <div class="svc-opt" onclick="selectSvc(this,'Exterior Detail','$65')">
+            <div class="svc-opt-name">Exterior Detail</div>
+            <div class="svc-opt-price">$65</div>
+            <div class="svc-opt-desc">Full exterior + clay bar + wax</div>
+          </div>
+          <div class="svc-opt" onclick="selectSvc(this,'Interior Detail','$80')">
+            <div class="svc-opt-name">Interior Detail</div>
+            <div class="svc-opt-price">$80</div>
+            <div class="svc-opt-desc">Deep clean, shampoo, leather care</div>
+          </div>
+          <div class="svc-opt" onclick="selectSvc(this,'Full Detail','$120')">
+            <div class="svc-opt-name">Full Detail</div>
+            <div class="svc-opt-price">$120</div>
+            <div class="svc-opt-desc">Complete inside &amp; out restoration</div>
+          </div>
+          <div class="svc-opt" onclick="selectSvc(this,'Paint Correction','$200')">
+            <div class="svc-opt-name">Paint Correction</div>
+            <div class="svc-opt-price">$200</div>
+            <div class="svc-opt-desc">Remove swirls, scratches, oxidation</div>
+          </div>
+          <div class="svc-opt" onclick="selectSvc(this,'Ceramic Coating','$350')">
+            <div class="svc-opt-name">Ceramic Coating</div>
+            <div class="svc-opt-price">$350</div>
+            <div class="svc-opt-desc">Long-lasting nano protection</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3a: Mobile — address fields -->
+      <div class="location-fields" id="mobile-fields">
+        <p class="picker-label">Step 3 — Your Location</p>
+        <div class="location-note">
+          <strong>We come to you!</strong> Enter the address where you'd like us to perform the detail. We service all of Kennesaw, Marietta, Smyrna, Acworth &amp; Metro Atlanta.
+        </div>
+        <div class="field-group">
+          <label>Street Address *</label>
+          <input type="text" id="street" placeholder="123 Main Street" />
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>City *</label>
+            <input type="text" id="city" placeholder="Kennesaw" />
+          </div>
+          <div class="field-group">
+            <label>ZIP Code *</label>
+            <input type="text" id="zip" placeholder="30144" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Parking / Access Notes</label>
+          <input type="text" id="parking" placeholder="e.g. Park in driveway, gate code is 1234" />
+        </div>
+      </div>
+
+      <!-- Step 3b: In-store — location picker -->
+      <div class="location-fields" id="instore-fields" style="display:none">
+        <p class="picker-label">Step 3 — Choose a Location</p>
+        <div class="store-options">
+          <div class="store-opt" onclick="selectStore(this,'Kennesaw – Barrett Pkwy')">
+            <div class="store-name">Kennesaw – Barrett Pkwy</div>
+            <div class="store-addr">1234 Barrett Pkwy NW, Kennesaw GA 30144</div>
+            <div class="store-hours">Mon–Sat 8am–6pm · Sun 9am–4pm</div>
+          </div>
+          <div class="store-opt" onclick="selectStore(this,'Marietta – Cobb Pkwy')">
+            <div class="store-name">Marietta – Cobb Pkwy</div>
+            <div class="store-addr">567 Cobb Pkwy SE, Marietta GA 30060</div>
+            <div class="store-hours">Mon–Sat 8am–6pm · Sun 9am–4pm</div>
+          </div>
+          <div class="store-opt" onclick="selectStore(this,'Smyrna – Concord Rd')">
+            <div class="store-name">Smyrna – Concord Rd</div>
+            <div class="store-addr">890 Concord Rd SE, Smyrna GA 30080</div>
+            <div class="store-hours">Mon–Sat 8am–7pm · Sun 10am–4pm</div>
+          </div>
+          <div class="store-opt" onclick="selectStore(this,'Acworth – Cobb Pkwy')">
+            <div class="store-name">Acworth – Cobb Pkwy</div>
+            <div class="store-addr">321 Cobb Pkwy N, Acworth GA 30101</div>
+            <div class="store-hours">Tue–Sat 9am–6pm · Closed Sun–Mon</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact + Date -->
+      <p class="picker-label">Step 4 — Your Info &amp; Preferred Date</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Your Name *</label>
+          <input type="text" id="cname" placeholder="Marcus Williams" />
+        </div>
+        <div class="field-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="cphone" placeholder="(404) 555-0100" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Email Address *</label>
+          <input type="email" id="cemail" placeholder="marcus@email.com" />
+        </div>
+        <div class="field-group">
+          <label>Preferred Date *</label>
+          <input type="date" id="cdate" />
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Vehicle (Year, Make, Model) *</label>
+        <input type="text" id="cvehicle" placeholder="2021 BMW M3 Competition" />
+      </div>
+      <div class="field-group">
+        <label>Special Requests / Notes</label>
+        <textarea id="cnotes" rows="3" placeholder="Any specific concerns or areas to focus on?"></textarea>
+      </div>
+
+      <!-- Pay deposit -->
+      <button class="book-btn" onclick="submitBooking()" id="book-btn">
+        Confirm &amp; Pay $1 Booking Deposit
+      </button>
+      <p class="book-note">🔒 Secure checkout via Stripe · $1 deposit holds your appointment · We'll confirm within 24 hours</p>
     </div>
   </div>
 
   <!-- SERVICES -->
   <div class="sec" id="services">
     <p class="sec-label">What we offer</p>
-    <h2>Our Services</h2>
-    <div class="svc-grid">
+    <h2 class="sec-title">Our Services</h2>
+    <div class="services-grid">
       <div class="svc-card">
-        <img class="svc-img" src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=700&auto=format&fit=crop" alt="Exterior Detail" />
-        <div class="svc-body"><div class="svc-icon">✦</div><h3>Exterior Detail</h3><p>Hand wash, clay bar treatment, wax, tire shine, and full exterior protection. Paint restored to showroom condition.</p><div class="svc-price">From $65</div></div>
+        <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=600&auto=format&fit=crop" alt="Exterior Detail" class="svc-img service-img" />
+        <div class="svc-body">
+          <div class="svc-tag">Exterior</div>
+          <div class="svc-name">Exterior Detail</div>
+          <div class="svc-desc">Hand wash, clay bar, wax, tire shine, and full exterior protection. Your paint restored to showroom condition.</div>
+          <div class="svc-price-row"><span class="svc-price">From $65</span><button class="svc-book-btn" onclick="scrollBook('Exterior Detail','$65')">Book</button></div>
+        </div>
       </div>
       <div class="svc-card">
-        <img class="svc-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&auto=format&fit=crop" alt="Interior Detail" />
-        <div class="svc-body"><div class="svc-icon">◈</div><h3>Interior Detail</h3><p>Deep vacuum, steam clean, shampoo, stain removal, leather conditioning, and complete odor elimination.</p><div class="svc-price">From $80</div></div>
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop" alt="Interior Detail" class="svc-img service-img" />
+        <div class="svc-body">
+          <div class="svc-tag">Interior</div>
+          <div class="svc-name">Interior Detail</div>
+          <div class="svc-desc">Deep vacuum, steam clean, shampoo, stain removal, leather conditioning, and odor elimination.</div>
+          <div class="svc-price-row"><span class="svc-price">From $80</span><button class="svc-book-btn" onclick="scrollBook('Interior Detail','$80')">Book</button></div>
+        </div>
       </div>
       <div class="svc-card">
-        <img class="svc-img" src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=700&auto=format&fit=crop" alt="Full Detail" />
-        <div class="svc-body"><div class="svc-icon">◉</div><h3>Full Detail</h3><p>Complete inside and out restoration. The ultimate treatment — everything included, nothing skipped.</p><div class="svc-price">From $120</div></div>
+        <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=600&auto=format&fit=crop" alt="Full Detail" class="svc-img service-img" />
+        <div class="svc-body">
+          <div class="svc-tag">Full Service</div>
+          <div class="svc-name">Full Detail</div>
+          <div class="svc-desc">Complete inside &amp; out restoration. The ultimate treatment — every surface cleaned, protected, and shining.</div>
+          <div class="svc-price-row"><span class="svc-price">From $120</span><button class="svc-book-btn" onclick="scrollBook('Full Detail','$120')">Book</button></div>
+        </div>
       </div>
       <div class="svc-card">
-        <img class="svc-img" src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=700&auto=format&fit=crop" alt="Paint Correction" />
-        <div class="svc-body"><div class="svc-icon">◆</div><h3>Paint Correction</h3><p>Remove swirl marks, scratches, and oxidation. Single and multi-stage polishing to restore your clear coat.</p><div class="svc-price">From $200</div></div>
+        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&auto=format&fit=crop" alt="Paint Correction" class="svc-img service-img" />
+        <div class="svc-body">
+          <div class="svc-tag">Advanced</div>
+          <div class="svc-name">Paint Correction</div>
+          <div class="svc-desc">Remove swirl marks, scratches, and oxidation. Single and multi-stage polishing for a flawless finish.</div>
+          <div class="svc-price-row"><span class="svc-price">From $200</span><button class="svc-book-btn" onclick="scrollBook('Paint Correction','$200')">Book</button></div>
+        </div>
       </div>
       <div class="svc-card">
-        <img class="svc-img" src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&auto=format&fit=crop" alt="Ceramic Coating" />
-        <div class="svc-body"><div class="svc-icon">⬡</div><h3>Ceramic Coating</h3><p>Long-lasting nano-ceramic protection that repels water, dirt, and UV damage for years of brilliant shine.</p><div class="svc-price">From $350</div></div>
+        <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=600&auto=format&fit=crop" alt="Ceramic Coating" class="svc-img service-img" />
+        <div class="svc-body">
+          <div class="svc-tag">Protection</div>
+          <div class="svc-name">Ceramic Coating</div>
+          <div class="svc-desc">Nano-ceramic protection that repels water, dirt, and UV damage. Lasts years, not months.</div>
+          <div class="svc-price-row"><span class="svc-price">From $350</span><button class="svc-book-btn" onclick="scrollBook('Ceramic Coating','$350')">Book</button></div>
+        </div>
       </div>
       <div class="svc-card">
-        <img class="svc-img" src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=700&auto=format&fit=crop" alt="Express Wash" />
-        <div class="svc-body"><div class="svc-icon">▷</div><h3>Express Wash</h3><p>Quick hand wash, windows, tire dressing, and interior wipe-down. In and out in under an hour.</p><div class="svc-price">From $35</div></div>
+        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&auto=format&fit=crop" alt="Express Wash" class="svc-img service-img" />
+        <div class="svc-body">
+          <div class="svc-tag">Quick</div>
+          <div class="svc-name">Express Wash</div>
+          <div class="svc-desc">Quick hand wash, windows, tire dressing, and interior wipe-down. Clean in under an hour.</div>
+          <div class="svc-price-row"><span class="svc-price">From $35</span><button class="svc-book-btn" onclick="scrollBook('Express Wash','$35')">Book</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PACKAGES -->
+  <div class="pkg-wrap" id="packages">
+    <div class="pkg-inner">
+      <p class="sec-label">Save more</p>
+      <h2 class="sec-title">Detail Packages</h2>
+      <p class="sec-sub">Bundle and save — perfect for regular customers who want to keep their vehicle in top condition year-round.</p>
+      <div class="pkg-grid">
+        <div class="pkg-card">
+          <div class="pkg-name">Basic</div>
+          <div class="pkg-price">$99</div>
+          <div class="pkg-per">2 express washes + 1 exterior detail</div>
+          <ul class="pkg-features">
+            <li>2× Express Wash (value $70)</li>
+            <li>1× Exterior Detail (value $65)</li>
+            <li>Free tire shine upgrade</li>
+            <li class="no">Interior cleaning</li>
+            <li class="no">Paint correction</li>
+          </ul>
+          <button class="pkg-btn" onclick="scrollBook('Basic Package','$99')">Get Basic</button>
+        </div>
+        <div class="pkg-card featured">
+          <div class="pkg-badge">Most Popular</div>
+          <div class="pkg-name">Premium</div>
+          <div class="pkg-price">$179</div>
+          <div class="pkg-per">Full detail + paint correction included</div>
+          <ul class="pkg-features">
+            <li>1× Full Detail (value $120)</li>
+            <li>1× Paint Correction (value $200)</li>
+            <li>Interior &amp; exterior both included</li>
+            <li>Free odor elimination</li>
+            <li>Priority scheduling</li>
+          </ul>
+          <button class="pkg-btn" onclick="scrollBook('Premium Package','$179')">Get Premium</button>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-name">Ultimate</div>
+          <div class="pkg-price">$499</div>
+          <div class="pkg-per">Full detail + ceramic coating + correction</div>
+          <ul class="pkg-features">
+            <li>1× Full Detail (value $120)</li>
+            <li>1× Paint Correction (value $200)</li>
+            <li>1× Ceramic Coating (value $350)</li>
+            <li>2-year coating warranty</li>
+            <li>VIP priority scheduling</li>
+          </ul>
+          <button class="pkg-btn" onclick="scrollBook('Ultimate Package','$499')">Get Ultimate</button>
+        </div>
       </div>
     </div>
   </div>
@@ -284,7 +678,7 @@
   <div class="cat-wrap" id="categories">
     <div class="cat-inner">
       <p class="sec-label">We detail them all</p>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,56px);letter-spacing:3px;margin-bottom:28px">Vehicle Categories</h2>
+      <h2 class="sec-title">Vehicle Categories</h2>
       <div class="cat-tabs">
         <div class="cat-tab active" onclick="switchCat('muscle')">Muscle Cars</div>
         <div class="cat-tab" onclick="switchCat('bmw')">BMW</div>
@@ -293,8 +687,6 @@
         <div class="cat-tab" onclick="switchCat('trucks')">Trucks &amp; SUVs</div>
         <div class="cat-tab" onclick="switchCat('classic')">Classics</div>
       </div>
-
-      <!-- MUSCLE CARS -->
       <div class="cat-panel active" id="cat-muscle">
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1584345604476-8ec5f82d718e?w=700&auto=format&fit=crop" alt="Mustang GT500"/><div class="cat-lbl"><span class="cat-lbl-tag">Mustang</span><span class="cat-lbl-name">Shelby GT500</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=700&auto=format&fit=crop" alt="Camaro SS"/><div class="cat-lbl"><span class="cat-lbl-tag">Chevrolet</span><span class="cat-lbl-name">Camaro SS</span></div></div>
@@ -303,8 +695,6 @@
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=700&auto=format&fit=crop" alt="Corvette C8"/><div class="cat-lbl"><span class="cat-lbl-tag">Chevrolet</span><span class="cat-lbl-name">Corvette C8</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1611566026373-c6c8da0ea861?w=700&auto=format&fit=crop" alt="Charger Hellcat"/><div class="cat-lbl"><span class="cat-lbl-tag">Dodge</span><span class="cat-lbl-name">Charger Hellcat</span></div></div>
       </div>
-
-      <!-- BMW -->
       <div class="cat-panel" id="cat-bmw">
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&auto=format&fit=crop" alt="BMW M3"/><div class="cat-lbl"><span class="cat-lbl-tag">BMW</span><span class="cat-lbl-name">M3 Competition</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1556189250-72ba954cfc2b?w=700&auto=format&fit=crop" alt="BMW M4"/><div class="cat-lbl"><span class="cat-lbl-tag">BMW</span><span class="cat-lbl-name">M4 CSL</span></div></div>
@@ -313,314 +703,368 @@
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1515569067071-ec3b51335dd0?w=700&auto=format&fit=crop" alt="BMW M8"/><div class="cat-lbl"><span class="cat-lbl-tag">BMW</span><span class="cat-lbl-name">M8 Gran Coupé</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1571987502227-9231b837d92a?w=700&auto=format&fit=crop" alt="BMW X5M"/><div class="cat-lbl"><span class="cat-lbl-tag">BMW</span><span class="cat-lbl-name">X5 M Competition</span></div></div>
       </div>
-
-      <!-- EXOTICS -->
       <div class="cat-panel" id="cat-exotic">
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=700&auto=format&fit=crop" alt="McLaren"/><div class="cat-lbl"><span class="cat-lbl-tag">McLaren</span><span class="cat-lbl-name">720S</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&auto=format&fit=crop" alt="Porsche"/><div class="cat-lbl"><span class="cat-lbl-tag">Porsche</span><span class="cat-lbl-name">911 GT3</span></div></div>
-        <div class="cat-img"><img src="https://images.unsplash.com/photo-1471479917193-f00955256257?w=700&auto=format&fit=crop" alt="Aston Martin"/><div class="cat-lbl"><span class="cat-lbl-tag">Aston Martin</span><span class="cat-lbl-name">DB11</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=700&auto=format&fit=crop" alt="Lamborghini"/><div class="cat-lbl"><span class="cat-lbl-tag">Lamborghini</span><span class="cat-lbl-name">Huracán</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&auto=format&fit=crop" alt="Ferrari"/><div class="cat-lbl"><span class="cat-lbl-tag">Ferrari</span><span class="cat-lbl-name">F8 Tributo</span></div></div>
+        <div class="cat-img"><img src="https://images.unsplash.com/photo-1471479917193-f00955256257?w=700&auto=format&fit=crop" alt="Aston Martin"/><div class="cat-lbl"><span class="cat-lbl-tag">Aston Martin</span><span class="cat-lbl-name">DB11</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=700&auto=format&fit=crop" alt="Exotic"/><div class="cat-lbl"><span class="cat-lbl-tag">Exotic</span><span class="cat-lbl-name">Supercar Collection</span></div></div>
       </div>
-
-      <!-- LUXURY -->
       <div class="cat-panel" id="cat-luxury">
-        <div class="cat-img"><img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=700&auto=format&fit=crop" alt="Mercedes S-Class"/><div class="cat-lbl"><span class="cat-lbl-tag">Mercedes</span><span class="cat-lbl-name">S-Class AMG</span></div></div>
+        <div class="cat-img"><img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=700&auto=format&fit=crop" alt="Mercedes"/><div class="cat-lbl"><span class="cat-lbl-tag">Mercedes</span><span class="cat-lbl-name">S-Class AMG</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&auto=format&fit=crop" alt="Rolls Royce"/><div class="cat-lbl"><span class="cat-lbl-tag">Rolls Royce</span><span class="cat-lbl-name">Ghost</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=700&auto=format&fit=crop" alt="Bentley"/><div class="cat-lbl"><span class="cat-lbl-tag">Bentley</span><span class="cat-lbl-name">Continental GT</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=700&auto=format&fit=crop" alt="Audi A8"/><div class="cat-lbl"><span class="cat-lbl-tag">Audi</span><span class="cat-lbl-name">A8 L</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&auto=format&fit=crop" alt="Lexus"/><div class="cat-lbl"><span class="cat-lbl-tag">Lexus</span><span class="cat-lbl-name">LS 500h</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=700&auto=format&fit=crop" alt="Cadillac"/><div class="cat-lbl"><span class="cat-lbl-tag">Cadillac</span><span class="cat-lbl-name">CT6 Platinum</span></div></div>
       </div>
-
-      <!-- TRUCKS & SUVs -->
       <div class="cat-panel" id="cat-trucks">
-        <div class="cat-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&auto=format&fit=crop" alt="Ford F-150 Raptor"/><div class="cat-lbl"><span class="cat-lbl-tag">Ford</span><span class="cat-lbl-name">F-150 Raptor R</span></div></div>
-        <div class="cat-img"><img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=700&auto=format&fit=crop" alt="Chevy Silverado"/><div class="cat-lbl"><span class="cat-lbl-tag">Chevrolet</span><span class="cat-lbl-name">Silverado ZR2</span></div></div>
+        <div class="cat-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&auto=format&fit=crop" alt="F-150 Raptor"/><div class="cat-lbl"><span class="cat-lbl-tag">Ford</span><span class="cat-lbl-name">F-150 Raptor R</span></div></div>
+        <div class="cat-img"><img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=700&auto=format&fit=crop" alt="Silverado"/><div class="cat-lbl"><span class="cat-lbl-tag">Chevrolet</span><span class="cat-lbl-name">Silverado ZR2</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=700&auto=format&fit=crop" alt="GMC Denali"/><div class="cat-lbl"><span class="cat-lbl-tag">GMC</span><span class="cat-lbl-name">Sierra Denali</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1511131341194-24e2eeeebb09?w=700&auto=format&fit=crop" alt="Range Rover"/><div class="cat-lbl"><span class="cat-lbl-tag">Land Rover</span><span class="cat-lbl-name">Range Rover Sport</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1519642918688-7e43b19245d8?w=700&auto=format&fit=crop" alt="Escalade"/><div class="cat-lbl"><span class="cat-lbl-tag">Cadillac</span><span class="cat-lbl-name">Escalade ESV</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1502161254066-6c74afbf07aa?w=700&auto=format&fit=crop" alt="RAM TRX"/><div class="cat-lbl"><span class="cat-lbl-tag">RAM</span><span class="cat-lbl-name">1500 TRX</span></div></div>
       </div>
-
-      <!-- CLASSICS -->
       <div class="cat-panel" id="cat-classic">
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1566473965997-3de9c817e938?w=700&auto=format&fit=crop" alt="Classic Mustang"/><div class="cat-lbl"><span class="cat-lbl-tag">Ford</span><span class="cat-lbl-name">1969 Mustang Boss 429</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1493238792000-8113da705763?w=700&auto=format&fit=crop" alt="Classic Camaro"/><div class="cat-lbl"><span class="cat-lbl-tag">Chevrolet</span><span class="cat-lbl-name">1967 Camaro SS</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=700&auto=format&fit=crop" alt="Classic Cadillac"/><div class="cat-lbl"><span class="cat-lbl-tag">Cadillac</span><span class="cat-lbl-name">1959 DeVille</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1471479917193-f00955256257?w=700&auto=format&fit=crop" alt="Classic Porsche"/><div class="cat-lbl"><span class="cat-lbl-tag">Porsche</span><span class="cat-lbl-name">1973 911 Carrera RS</span></div></div>
         <div class="cat-img"><img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=700&auto=format&fit=crop" alt="Classic Chevy"/><div class="cat-lbl"><span class="cat-lbl-tag">Chevrolet</span><span class="cat-lbl-name">1957 Bel Air</span></div></div>
-        <div class="cat-img"><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&auto=format&fit=crop" alt="Vintage Collection"/><div class="cat-lbl"><span class="cat-lbl-tag">Vintage</span><span class="cat-lbl-name">Classic Collection</span></div></div>
+        <div class="cat-img"><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&auto=format&fit=crop" alt="Vintage"/><div class="cat-lbl"><span class="cat-lbl-tag">Vintage</span><span class="cat-lbl-name">Classic Collection</span></div></div>
       </div>
     </div>
   </div>
 
-  <!-- FEATURED MOSAIC -->
-  <div class="mosaic-wrap">
-    <p class="sec-label">Freshly detailed</p>
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,56px);letter-spacing:3px;margin-bottom:28px">Recent Work</h2>
-    <div class="mosaic-top">
-      <div class="mosaic-img" style="height:420px">
-        <img src="https://images.unsplash.com/photo-1556189250-72ba954cfc2b?w=900&auto=format&fit=crop&q=90" alt="BMW M4" style="height:420px"/>
-        <div class="mosaic-lbl"><span class="mosaic-tag">BMW · Featured</span><span class="mosaic-name">BMW M4 Competition</span></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:3px">
-        <div class="mosaic-img" style="height:207px">
-          <img src="https://images.unsplash.com/photo-1584345604476-8ec5f82d718e?w=600&auto=format&fit=crop" alt="Mustang" style="height:207px"/>
-          <div class="mosaic-lbl"><span class="mosaic-tag">Muscle</span><span class="mosaic-name">Ford Mustang Shelby</span></div>
+  <!-- REVIEWS -->
+  <div class="reviews-wrap" id="reviews">
+    <div class="reviews-inner">
+      <p class="sec-label">What customers say</p>
+      <h2 class="sec-title">Reviews</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text">"Supreme Auto Spa came to my office and detailed my M3 while I worked. Car looked brand new when I walked out. 100% will use again."</p>
+          <div class="review-author">Marcus T.</div>
+          <div class="review-vehicle">2021 BMW M3 Competition · Mobile Detail</div>
         </div>
-        <div class="mosaic-img" style="height:207px">
-          <img src="https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=600&auto=format&fit=crop" alt="McLaren" style="height:207px"/>
-          <div class="mosaic-lbl"><span class="mosaic-tag">Exotic</span><span class="mosaic-name">McLaren 720S</span></div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text">"Dropped my Hellcat off at the Kennesaw location and the paint correction was unbelievable. Swirls completely gone. Worth every penny."</p>
+          <div class="review-author">Deja R.</div>
+          <div class="review-vehicle">2022 Dodge Charger Hellcat · In-Store</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text">"They detailed my truck in my driveway in under 3 hours. Professional, thorough, and the ceramic coating has held up beautifully 6 months later."</p>
+          <div class="review-author">Kevin M.</div>
+          <div class="review-vehicle">2023 RAM 1500 TRX · Mobile + Ceramic</div>
         </div>
       </div>
-    </div>
-    <div class="mosaic-bot" style="margin-top:3px">
-      <div class="mosaic-img" style="height:280px">
-        <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=600&auto=format&fit=crop" alt="BMW M5" style="height:280px"/>
-        <div class="mosaic-lbl"><span class="mosaic-tag">BMW</span><span class="mosaic-name">BMW M5 CS</span></div>
-      </div>
-      <div class="mosaic-img" style="height:280px">
-        <img src="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=600&auto=format&fit=crop" alt="Challenger" style="height:280px"/>
-        <div class="mosaic-lbl"><span class="mosaic-tag">Muscle</span><span class="mosaic-name">Dodge Challenger SRT</span></div>
-      </div>
-      <div class="mosaic-img" style="height:280px">
-        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop" alt="Porsche" style="height:280px"/>
-        <div class="mosaic-lbl"><span class="mosaic-tag">Exotic</span><span class="mosaic-name">Porsche 911 GT3</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PAYMENT CTA -->
-  <div class="pay-sec" id="payment">
-    <div class="pay-inner">
-      <div class="price-badge">$1.00 Booking Deposit</div>
-      <h2>Book Your Detail</h2>
-      <p>Secure your appointment with a $1.00 booking deposit. We service all vehicle types — muscle, exotic, BMW, luxury, trucks, and classics. We'll confirm your time and location.</p>
-      <button class="pay-btn" onclick="checkout()" id="pay-btn">Pay $1 Booking Deposit</button>
-      <p class="pay-note">🔒 Secure checkout &nbsp;·&nbsp; Powered by Stripe &nbsp;·&nbsp; Test mode</p>
-    </div>
-  </div>
-
-  <!-- WHY US -->
-  <div class="sec" id="why">
-    <p class="sec-label">Why choose us</p>
-    <h2>Built Different</h2>
-    <div class="why-grid">
-      <div class="why-card"><div class="why-num">01</div><h3>Pro Quality</h3><p>Premium products and proven techniques on every vehicle — from daily drivers to exotics.</p></div>
-      <div class="why-card"><div class="why-num">02</div><h3>We Come to You</h3><p>Home, office, or any location. No drop-offs, no waiting rooms, no wasted time.</p></div>
-      <div class="why-card"><div class="why-num">03</div><h3>All Vehicles</h3><p>Muscle cars, BMWs, exotics, luxury sedans, trucks, classics — every type treated with care.</p></div>
-      <div class="why-card"><div class="why-num">04</div><h3>Trusted ATL</h3><p>500+ satisfied customers across Kennesaw, Marietta, Smyrna, and Metro Atlanta.</p></div>
     </div>
   </div>
 
   <!-- GALLERY -->
-  <div class="gal-wrap" id="gallery">
-    <div class="gal-inner">
-      <p class="sec-label">Our work</p>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,56px);letter-spacing:3px;margin-bottom:32px">The Gallery</h2>
-      <div class="masonry">
-        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&auto=format&fit=crop" alt="BMW M3" />
-        <img src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=600&auto=format&fit=crop" alt="Lamborghini" />
-        <img src="https://images.unsplash.com/photo-1584345604476-8ec5f82d718e?w=600&auto=format&fit=crop" alt="Mustang" />
-        <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=600&auto=format&fit=crop" alt="BMW M5" />
-        <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&auto=format&fit=crop" alt="Ferrari" />
-        <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&auto=format&fit=crop" alt="Camaro" />
-        <img src="https://images.unsplash.com/photo-1556189250-72ba954cfc2b?w=600&auto=format&fit=crop" alt="BMW M4" />
-        <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop" alt="Mercedes" />
-        <img src="https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=600&auto=format&fit=crop" alt="McLaren" />
-        <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=600&auto=format&fit=crop" alt="Corvette" />
-        <img src="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=600&auto=format&fit=crop" alt="Challenger" />
-        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop" alt="Porsche" />
-        <img src="https://images.unsplash.com/photo-1566473965997-3de9c817e938?w=600&auto=format&fit=crop" alt="Classic Mustang" />
-        <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600&auto=format&fit=crop" alt="GMC" />
-        <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=600&auto=format&fit=crop" alt="Detail Work" />
-        <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=600&auto=format&fit=crop" alt="Rolls Royce" />
-        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&auto=format&fit=crop" alt="Vintage Mustang" />
-        <img src="https://images.unsplash.com/photo-1515569067071-ec3b51335dd0?w=600&auto=format&fit=crop" alt="BMW Coupe" />
-      </div>
+  <div class="gallery-wrap" id="gallery">
+    <p class="sec-label">Our work</p>
+    <h2 class="sec-title">The Gallery</h2>
+    <div class="gallery-grid" id="gallery-grid">
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=600&auto=format&fit=crop" alt="detail"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&auto=format&fit=crop" alt="BMW M3"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1584345604476-8ec5f82d718e?w=600&auto=format&fit=crop" alt="Mustang"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop" alt="Porsche"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=600&auto=format&fit=crop" alt="Lambo"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1556189250-72ba954cfc2b?w=600&auto=format&fit=crop" alt="BMW M4"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=600&auto=format&fit=crop" alt="Corvette"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&auto=format&fit=crop" alt="Ferrari"/></div>
+      <div class="gallery-img"><img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&auto=format&fit=crop" alt="Camaro"/></div>
     </div>
   </div>
 
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <h2>Ready for a Supreme Detail?</h2>
+    <p>Mobile or in-store — we'll make your car look incredible.</p>
+    <a href="#book" class="btn-gold">Book Your Detail Now</a>
+  </div>
+
   <!-- CONTACT -->
-  <div class="con-wrap">
-    <div class="con-grid">
-      <div class="con-info">
-        <p class="sec-label">Get in touch</p>
-        <h2>Contact Us</h2>
-        <div class="con-item">
-          <div class="con-icon">📞</div>
-          <div><div class="con-lbl">Phone</div><div class="con-val"><a href="tel:4045550192">(404) 555‑0192</a><br>Call or text anytime</div></div>
+  <div class="contact-wrap" id="contact">
+    <p class="sec-label">Get in touch</p>
+    <h2 class="sec-title">Contact Us</h2>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>Reach Out</h3>
+        <div class="contact-row">
+          <div class="contact-icon">📞</div>
+          <div class="contact-text"><strong>Phone</strong><a href="tel:4045550192">(404) 555‑0192</a><br>Call or text anytime</div>
         </div>
-        <div class="con-item">
-          <div class="con-icon">✉</div>
-          <div><div class="con-lbl">Email</div><div class="con-val"><a href="mailto:supremeautospaatl@gmail.com">supremeautospaatl@gmail.com</a></div></div>
+        <div class="contact-row">
+          <div class="contact-icon">✉</div>
+          <div class="contact-text"><strong>Email</strong><a href="mailto:supremeautospaatl@gmail.com">supremeautospaatl@gmail.com</a></div>
         </div>
-        <div class="con-item">
-          <div class="con-icon">📍</div>
-          <div><div class="con-lbl">Service Area</div><div class="con-val">Kennesaw · Marietta · Smyrna<br>Acworth · Metro Atlanta</div></div>
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div class="contact-text"><strong>Service Area</strong>Kennesaw · Marietta · Smyrna · Acworth · Metro Atlanta</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🕐</div>
+          <div class="contact-text"><strong>Hours</strong>Mon–Sat 8:00 AM – 7:00 PM<br>Sun 9:00 AM – 4:00 PM</div>
         </div>
       </div>
-      <div>
-        <img class="con-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop" alt="Service Area" />
+      <div class="contact-card">
+        <h3>Our Locations</h3>
+        <div class="contact-row">
+          <div class="contact-icon">🏪</div>
+          <div class="contact-text"><strong>Kennesaw</strong>1234 Barrett Pkwy NW, Kennesaw GA 30144</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🏪</div>
+          <div class="contact-text"><strong>Marietta</strong>567 Cobb Pkwy SE, Marietta GA 30060</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🏪</div>
+          <div class="contact-text"><strong>Smyrna</strong>890 Concord Rd SE, Smyrna GA 30080</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🏪</div>
+          <div class="contact-text"><strong>Acworth</strong>321 Cobb Pkwy N, Acworth GA 30101</div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer>
-    <div class="foot-inner">
-      <div class="foot-logo">Supreme Auto Spa ATL</div>
-      <div class="foot-links">
-        <a href="#services">Services</a>
-        <a href="#categories">Vehicles</a>
-        <a href="#gallery">Gallery</a>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Supreme Auto Spa ATL</div>
+        <p>Premium mobile and in-store detailing serving Kennesaw and Metro Atlanta. We make your car look its absolute best.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="#services">Express Wash</a>
+        <a href="#services">Exterior Detail</a>
+        <a href="#services">Interior Detail</a>
+        <a href="#services">Full Detail</a>
+        <a href="#services">Paint Correction</a>
+        <a href="#services">Ceramic Coating</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
         <a href="signin.html">Sign In</a>
-        <a href="signup.html">Sign Up</a>
+        <a href="signup.html">Create Account</a>
         <a href="verify.html">ID Verify</a>
         <a href="login.html">Employee Login</a>
+        <a href="#contact">Contact</a>
       </div>
-      <div class="foot-copy">© 2026 Supreme Auto Spa ATL</div>
+      <div class="footer-col">
+        <h4>Locations</h4>
+        <a href="#contact">Kennesaw</a>
+        <a href="#contact">Marietta</a>
+        <a href="#contact">Smyrna</a>
+        <a href="#contact">Acworth</a>
+        <a href="#book">Mobile Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Supreme Auto Spa ATL · All Rights Reserved</span>
+      <div style="display:flex;gap:20px">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="tel:4045550192">(404) 555‑0192</a>
+      </div>
     </div>
   </footer>
+
+  <!-- Firebase photo loader + booking logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey:"AIzaSyC2n-SAK9Oyr5WU6cxKTUVBUlwbt3RiaIA",
+      authDomain:"supreme-auto-project.firebaseapp.com",
+      projectId:"supreme-auto-project",
+      storageBucket:"supreme-auto-project.firebasestorage.app",
+      messagingSenderId:"168184784245",
+      appId:"1:168184784245:web:0e063b2463d6851daa9f3c"
+    });
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Load custom photos from Firestore
+    function normalizeUrl(url) {
+      if (!url) return url;
+      if (url.includes('lh3.googleusercontent.com')) return url.split('=')[0]+'=w1200';
+      const dm = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+      if (dm) return `https://drive.google.com/uc?export=view&id=${dm[1]}`;
+      if (url.includes('dropbox.com')) return url.replace('?dl=0','?raw=1').replace('www.dropbox.com','dl.dropboxusercontent.com');
+      return url;
+    }
+    try {
+      const snap = await getDoc(doc(db,'settings','photos'));
+      if (snap.exists()) {
+        const p = snap.data();
+        const map = {
+          hero_bg:{type:'bg',sel:'#hero-bg'},
+          svc_exterior:{type:'img',sel:'.svc-card:nth-child(1) .svc-img'},
+          svc_interior:{type:'img',sel:'.svc-card:nth-child(2) .svc-img'},
+          svc_full:{type:'img',sel:'.svc-card:nth-child(3) .svc-img'},
+          svc_paint:{type:'img',sel:'.svc-card:nth-child(4) .svc-img'},
+          svc_ceramic:{type:'img',sel:'.svc-card:nth-child(5) .svc-img'},
+          svc_express:{type:'img',sel:'.svc-card:nth-child(6) .svc-img'},
+          ...Object.fromEntries(['muscle','bmw','exotic','luxury','trucks','classic'].flatMap(cat=>
+            [1,2,3,4,5,6].map(i=>[`${cat}_${i}`,{type:'img',sel:`#cat-${cat} .cat-img:nth-child(${i}) img`}])
+          )),
+          ...Object.fromEntries(Array.from({length:9},(_,i)=>[`gallery_${i+1}`,{type:'img',sel:`#gallery-grid .gallery-img:nth-child(${i+1}) img`}]))
+        };
+        Object.entries(p).forEach(([k,url])=>{
+          if (!url||!map[k]) return;
+          const {type,sel}=map[k];
+          const el=document.querySelector(sel);
+          if (!el) return;
+          const u=normalizeUrl(url);
+          if (type==='bg') el.style.backgroundImage=`linear-gradient(to bottom,rgba(10,10,10,0.5) 0%,rgba(10,10,10,0.8) 70%,rgba(10,10,10,1) 100%),url('${u}')`;
+          else el.src=u;
+        });
+      }
+    } catch(_){}
+
+    // Update nav if logged in
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        const nav = document.querySelector('.nav-links');
+        if (nav) {
+          const si = nav.querySelector('a[href="signin.html"]');
+          if (si) { si.textContent='My Account'; si.href='customer-dashboard.html'; }
+        }
+      }
+    });
+
+    // Booking logic
+    let bookingType = 'mobile';
+    let selectedSvc = null;
+    let selectedStore = null;
+
+    window.setType = function(type) {
+      bookingType = type;
+      document.getElementById('type-mobile').classList.toggle('active', type==='mobile');
+      document.getElementById('type-instore').classList.toggle('active', type==='instore');
+      document.getElementById('mobile-fields').style.display  = type==='mobile'  ? 'block':'none';
+      document.getElementById('instore-fields').style.display = type==='instore' ? 'block':'none';
+    };
+
+    window.selectSvc = function(el, name, price) {
+      document.querySelectorAll('.svc-opt').forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedSvc = {name, price};
+    };
+
+    window.selectStore = function(el, name) {
+      document.querySelectorAll('.store-opt').forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedStore = name;
+    };
+
+    window.scrollBook = function(svc, price) {
+      document.getElementById('book').scrollIntoView({behavior:'smooth'});
+      setTimeout(()=>{
+        document.querySelectorAll('.svc-opt').forEach(o=>{
+          if (o.querySelector('.svc-opt-name')?.textContent===svc) {
+            o.click();
+          }
+        });
+      }, 600);
+    };
+
+    window.submitBooking = async function() {
+      const btn    = document.getElementById('book-btn');
+      const errEl  = document.getElementById('book-error');
+      const okEl   = document.getElementById('book-success');
+      errEl.classList.remove('show');
+      okEl.classList.remove('show');
+
+      const name    = document.getElementById('cname').value.trim();
+      const phone   = document.getElementById('cphone').value.trim();
+      const email   = document.getElementById('cemail').value.trim();
+      const date    = document.getElementById('cdate').value;
+      const vehicle = document.getElementById('cvehicle').value.trim();
+
+      // Validate
+      if (!name||!phone||!email||!date||!vehicle) {
+        errEl.textContent='Please fill in all required fields (name, phone, email, date, vehicle).';
+        errEl.classList.add('show'); return;
+      }
+      if (!selectedSvc) {
+        errEl.textContent='Please select a service.';
+        errEl.classList.add('show'); return;
+      }
+      if (bookingType==='mobile') {
+        const street=document.getElementById('street').value.trim();
+        const city  =document.getElementById('city').value.trim();
+        const zip   =document.getElementById('zip').value.trim();
+        if (!street||!city||!zip) {
+          errEl.textContent='Please enter your full address for mobile detailing.';
+          errEl.classList.add('show'); return;
+        }
+      } else {
+        if (!selectedStore) {
+          errEl.textContent='Please select an in-store location.';
+          errEl.classList.add('show'); return;
+        }
+      }
+
+      btn.disabled=true; btn.textContent='Processing...';
+
+      try {
+        // Save booking to Firestore
+        const bookingData = {
+          name, phone, email, vehicle,
+          service: selectedSvc.name,
+          price:   selectedSvc.price,
+          date,
+          type:    bookingType,
+          notes:   document.getElementById('cnotes').value.trim(),
+          status:  'pending',
+          createdAt: serverTimestamp(),
+          ...(bookingType==='mobile' ? {
+            address: `${document.getElementById('street').value.trim()}, ${document.getElementById('city').value.trim()}, GA ${document.getElementById('zip').value.trim()}`,
+            parking: document.getElementById('parking').value.trim(),
+          } : { location: selectedStore })
+        };
+
+        await addDoc(collection(db,'bookings'), bookingData);
+
+        // Now redirect to Stripe for $1 deposit
+        const res  = await fetch('/.netlify/functions/create-checkout',{method:'POST'});
+        const data = await res.json();
+        if (data.url) { window.location=data.url; }
+        else {
+          okEl.textContent='Booking saved! Redirecting to payment...';
+          okEl.classList.add('show');
+          btn.textContent='Booking Confirmed ✓';
+        }
+      } catch(err) {
+        errEl.textContent='Something went wrong. Please try again or call (404) 555‑0192.';
+        errEl.classList.add('show');
+        btn.disabled=false; btn.textContent='Confirm & Pay $1 Booking Deposit';
+      }
+    };
+  </script>
 
   <script>
     function toggleMenu() { document.getElementById('mmenu').classList.toggle('open'); }
     function closeMenu()  { document.getElementById('mmenu').classList.remove('open'); }
 
     function switchCat(cat) {
-      const keys = ['muscle','bmw','exotic','luxury','trucks','classic'];
-      document.querySelectorAll('.cat-tab').forEach((t,i) => t.classList.toggle('active', keys[i] === cat));
-      document.querySelectorAll('.cat-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('cat-' + cat).classList.add('active');
-    }
-
-    async function checkout() {
-      const btn = document.getElementById('pay-btn');
-      btn.disabled = true; btn.textContent = 'Redirecting...';
-      try {
-        const res  = await fetch('/.netlify/functions/create-checkout', { method: 'POST' });
-        const data = await res.json();
-        if (data.url) { window.location = data.url; }
-        else { alert('Something went wrong. Please try again.'); btn.disabled = false; btn.textContent = 'Pay $1 Booking Deposit'; }
-      } catch (e) {
-        alert('Could not connect to checkout. Please try again.');
-        btn.disabled = false; btn.textContent = 'Pay $1 Booking Deposit';
-      }
-    }
-  </script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-    const app = initializeApp({
-      apiKey: "AIzaSyC2n-SAK9Oyr5WU6cxKTUVBUlwbt3RiaIA",
-      authDomain: "supreme-auto-project.firebaseapp.com",
-      projectId: "supreme-auto-project",
-      storageBucket: "supreme-auto-project.firebasestorage.app",
-      messagingSenderId: "168184784245",
-      appId: "1:168184784245:web:0e063b2463d6851daa9f3c"
-    });
-    const db = getFirestore(app);
-
-    function normalizeImageUrl(url) {
-      if (!url) return url;
-      if (url.includes('lh3.googleusercontent.com')) {
-        return url.split('=')[0] + '=w1200';
-      }
-      if (url.includes('photos.google.com') || url.includes('photos.app.goo.gl')) {
-        url = url.replace(/=w\d+-h\d+.*$/, '').replace(/=s\d+.*$/, '');
-        return url.includes('?') ? url + '&w=1200' : url + '=w1200';
-      }
-      const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
-      if (driveMatch) return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
-      const driveOpen = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
-      if (driveOpen) return `https://drive.google.com/uc?export=view&id=${driveOpen[1]}`;
-      if (url.includes('dropbox.com')) return url.replace('?dl=0','?raw=1').replace('www.dropbox.com','dl.dropboxusercontent.com');
-      return url;
-    }
-
-    // Map of Firestore keys to DOM selectors
-    const IMAGE_MAP = {
-      // Hero
-      hero_bg:       { type: 'bg',  sel: '.hero-bg' },
-      // Services
-      svc_exterior:  { type: 'img', sel: '.service-card:nth-child(1) .service-img' },
-      svc_interior:  { type: 'img', sel: '.service-card:nth-child(2) .service-img' },
-      svc_full:      { type: 'img', sel: '.service-card:nth-child(3) .service-img' },
-      svc_paint:     { type: 'img', sel: '.service-card:nth-child(4) .service-img' },
-      svc_ceramic:   { type: 'img', sel: '.service-card:nth-child(5) .service-img' },
-      svc_express:   { type: 'img', sel: '.service-card:nth-child(6) .service-img' },
-      // Muscle
-      muscle_1: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(1) img' },
-      muscle_2: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(2) img' },
-      muscle_3: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(3) img' },
-      muscle_4: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(4) img' },
-      muscle_5: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(5) img' },
-      muscle_6: { type: 'img', sel: '#cat-muscle .cat-img:nth-child(6) img' },
-      // Exotic
-      exotic_1: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(1) img' },
-      exotic_2: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(2) img' },
-      exotic_3: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(3) img' },
-      exotic_4: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(4) img' },
-      exotic_5: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(5) img' },
-      exotic_6: { type: 'img', sel: '#cat-exotic .cat-img:nth-child(6) img' },
-      // BMW
-      bmw_1: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(1) img' },
-      bmw_2: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(2) img' },
-      bmw_3: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(3) img' },
-      bmw_4: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(4) img' },
-      bmw_5: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(5) img' },
-      bmw_6: { type: 'img', sel: '#cat-bmw .cat-img:nth-child(6) img' },
-      // Luxury
-      luxury_1: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(1) img' },
-      luxury_2: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(2) img' },
-      luxury_3: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(3) img' },
-      luxury_4: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(4) img' },
-      luxury_5: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(5) img' },
-      luxury_6: { type: 'img', sel: '#cat-luxury .cat-img:nth-child(6) img' },
-      // Trucks
-      trucks_1: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(1) img' },
-      trucks_2: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(2) img' },
-      trucks_3: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(3) img' },
-      trucks_4: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(4) img' },
-      trucks_5: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(5) img' },
-      trucks_6: { type: 'img', sel: '#cat-trucks .cat-img:nth-child(6) img' },
-      // Classics
-      classic_1: { type: 'img', sel: '#cat-classic .cat-img:nth-child(1) img' },
-      classic_2: { type: 'img', sel: '#cat-classic .cat-img:nth-child(2) img' },
-      classic_3: { type: 'img', sel: '#cat-classic .cat-img:nth-child(3) img' },
-      classic_4: { type: 'img', sel: '#cat-classic .cat-img:nth-child(4) img' },
-      classic_5: { type: 'img', sel: '#cat-classic .cat-img:nth-child(5) img' },
-      classic_6: { type: 'img', sel: '#cat-classic .cat-img:nth-child(6) img' },
-      // Gallery
-      ...Object.fromEntries(Array.from({length:15},(_,i)=>[
-        `gallery_${i+1}`,
-        { type:'img', sel:`#gallery .gallery-masonry img:nth-child(${i+1})` }
-      ]))
-    };
-
-    try {
-      const snap = await getDoc(doc(db, 'settings', 'photos'));
-      if (snap.exists()) {
-        const photos = snap.data();
-        console.log('[SAS Photos] Loaded', Object.keys(photos).length, 'photos from Firestore');
-        Object.entries(photos).forEach(([key, url]) => {
-          if (!url || !IMAGE_MAP[key]) return;
-          const { type, sel } = IMAGE_MAP[key];
-          const el = document.querySelector(sel);
-          if (!el) return;
-          const finalUrl = normalizeImageUrl(url);
-          if (type === 'bg') {
-            el.style.backgroundImage = `linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.85) 100%), url('${finalUrl}')`;
-          } else {
-            el.src = finalUrl;
-          }
-        });
-      }
-    } catch(_) {
-      // Silently fail — default Unsplash images stay in place
+      document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
+      document.getElementById('cat-'+cat).classList.add('active');
     }
   </script>
 </body>
