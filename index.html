@@ -156,7 +156,10 @@
     }
     .field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:var(--gold)}
     .field-group input::placeholder,.field-group textarea::placeholder{color:rgba(245,245,240,0.25)}
-    .field-group select option{background:var(--dark);color:var(--white)}
+    .field-group select option{background:#16161e;color:var(--white)}
+    .field-group select:focus{border-color:var(--gold)}
+    .field-group select:disabled{cursor:not-allowed}
+    select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px!important}
     .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .location-note{font-size:12px;color:var(--muted);padding:12px 14px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);margin-bottom:16px;line-height:1.6}
     .location-note strong{color:var(--gold)}
@@ -542,10 +545,37 @@
           <input type="date" id="cdate" />
         </div>
       </div>
+      <!-- Vehicle dropdowns -->
       <div class="field-group">
-        <label>Vehicle (Year, Make, Model) *</label>
-        <input type="text" id="cvehicle" placeholder="2021 BMW M3 Competition" />
+        <label>Model Year *</label>
+        <select id="v-year" onchange="updateMakes()" style="width:100%;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:14px;outline:none;cursor:pointer">
+          <option value="">— Select Year —</option>
+        </select>
       </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Make *</label>
+          <select id="v-make" onchange="updateModels()" disabled style="width:100%;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:14px;outline:none;cursor:pointer;opacity:.5">
+            <option value="">— Select Make —</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Model *</label>
+          <select id="v-model" onchange="updateTrims()" disabled style="width:100%;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:14px;outline:none;cursor:pointer;opacity:.5">
+            <option value="">— Select Model —</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Trim / Spec</label>
+        <select id="v-trim" onchange="updateVehicleSummary()" disabled style="width:100%;padding:13px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:14px;outline:none;cursor:pointer;opacity:.5">
+          <option value="">— Select Trim (optional) —</option>
+        </select>
+      </div>
+      <div id="vehicle-summary" style="display:none;padding:12px 14px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);font-size:13px;color:var(--gold);margin-top:-8px;margin-bottom:8px">
+        ✓ Vehicle: <strong id="vehicle-summary-text"></strong>
+      </div>
+      <input type="hidden" id="cvehicle" />
       <div class="field-group">
         <label>Special Requests / Notes</label>
         <textarea id="cnotes" rows="3" placeholder="Any specific concerns or areas to focus on?"></textarea>
@@ -995,9 +1025,18 @@
       const vehicle = document.getElementById('cvehicle').value.trim();
 
       // Validate
-      if (!name||!phone||!email||!date||!vehicle) {
-        errEl.textContent='Please fill in all required fields (name, phone, email, date, vehicle).';
+      if (!name||!phone||!email||!date) {
+        errEl.textContent='Please fill in all required fields (name, phone, email, date).';
         errEl.classList.add('show'); return;
+      }
+      const vYear  = document.getElementById('v-year').value;
+      const vMake  = document.getElementById('v-make').value;
+      const vModel = document.getElementById('v-model').value;
+      if (!vYear || !vMake || !vModel) {
+        errEl.textContent='Please select your vehicle year, make, and model.';
+        errEl.classList.add('show');
+        document.getElementById('v-year').scrollIntoView({behavior:'smooth',block:'center'});
+        return;
       }
       if (!selectedSvc) {
         errEl.textContent='Please select a service.';
@@ -1065,6 +1104,146 @@
       event.target.classList.add('active');
       document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
       document.getElementById('cat-'+cat).classList.add('active');
+    }
+
+    // ── VEHICLE DATA ──────────────────────────────────────────────
+    const VEHICLES = {
+      'Acura':      { 'ILX':['Base','Premium','Technology','A-Spec'], 'TLX':['Base','Technology','A-Spec','Type S','Type S w/Performance'], 'MDX':['Base','Technology','A-Spec','Advance','Type S','Type S Advance'], 'RDX':['Base','Technology','A-Spec','Advance'], 'NSX':['Base','Type S'] },
+      'Aston Martin':{ 'DB11':['V8','V12','AMR'], 'Vantage':['Base','AMR','F1 Edition'], 'DBS':['Base','Superleggera','Volante'], 'DBX':['Base','707'] },
+      'Audi':       { 'A3':['Premium','Premium Plus','Prestige'], 'A4':['Premium','Premium Plus','Prestige'], 'A6':['Premium','Premium Plus','Prestige'], 'A8':['Base','L','L 60 TFSI e'], 'Q5':['Premium','Premium Plus','Prestige','SQ5'], 'Q7':['Premium','Premium Plus','Prestige'], 'Q8':['Premium','Premium Plus','Prestige','RS Q8','SQ8'], 'R8':['V10 Performance','V10 Performance Quattro','Spyder'], 'RS6':['Avant'], 'RS7':['Base'], 'TT':['Base','S','RS'] },
+      'Bentley':    { 'Continental GT':['V8','W12','Speed','Mulliner'], 'Bentayga':['V8','Speed','Azure','EWB'], 'Flying Spur':['V8','W12','Speed','Mulliner'] },
+      'BMW':        { 'M2':['Base','Competition','CS'], 'M3':['Base','Competition','Competition xDrive','CS'], 'M4':['Base','Competition','Competition xDrive','CSL','M4 GTS'], 'M5':['Base','Competition','CS'], 'M8':['Base','Competition','Gran Coupé','Gran Coupé Competition'], 'M240i':['Base','xDrive'], 'M340i':['Base','xDrive'], 'M440i':['Base','xDrive','Gran Coupé'], 'M550i':['xDrive'], 'X3 M':['Base','Competition'], 'X4 M':['Base','Competition'], 'X5 M':['Base','Competition'], 'X6 M':['Base','Competition'], 'XM':['Base','Label Red'], '2 Series':['228i','M235i xDrive'], '3 Series':['330i','330i xDrive','330e','M340i'], '4 Series':['430i','430i xDrive','M440i'], '5 Series':['530i','540i','550e'], '7 Series':['740i','760i xDrive','Alpina B7'], '8 Series':['840i','840i xDrive','850i','M850i'], 'X1':['sDrive28i','xDrive28i'], 'X3':['sDrive30i','xDrive30i','M40i'], 'X5':['sDrive40i','xDrive40i','xDrive50e','X5 M50i'], 'X7':['xDrive40i','xDrive50i','M60i'] },
+      'Bugatti':    { 'Chiron':['Base','Sport','Pur Sport','Super Sport 300+'], 'Veyron':['Base','Grand Sport','Super Sport'], 'Bolide':['Base'] },
+      'Cadillac':   { 'CT4':['Luxury','Premium Luxury','Sport','V-Series','Blackwing'], 'CT5':['Luxury','Premium Luxury','Sport','V-Series','Blackwing'], 'Escalade':['Luxury','Premium Luxury','Sport','Platinum','ESV Luxury','ESV Platinum'], 'XT4':['Luxury','Premium Luxury','Sport'], 'XT5':['Luxury','Premium Luxury','Sport','Platinum'], 'XT6':['Luxury','Premium Luxury','Sport','Platinum'] },
+      'Chevrolet':  { 'Camaro':['LS','LT','LT1','SS','ZL1','ZL1 1LE','COPO'], 'Corvette':['Stingray','Stingray Z51','Grand Sport','Z06','ZR1','E-Ray'], 'Silverado':['WT','Custom','LT','RST','LTZ','High Country','Trail Boss','ZR2'], 'Colorado':['WT','LT','Z71','ZR2','Bison'], 'Tahoe':['LS','LT','RST','Z71','Premier','High Country','Police Pursuit'] },
+      'Dodge':      { 'Challenger':['SXT','GT','R/T','R/T Scat Pack','SRT 392','SRT Hellcat','SRT Hellcat Widebody','SRT Super Stock','SRT Jailbreak','Demon','Demon 170'], 'Charger':['SXT','GT','R/T','Scat Pack','SRT 392','SRT Hellcat','SRT Hellcat Widebody','SRT Jailbreak','SRT Hellcat King Daytona'], 'Durango':['SXT','GT','R/T','Citadel','SRT 392','SRT Hellcat'] },
+      'Ferrari':    { '296 GTB':['Base','Assetto Fiorano'], '296 GTS':['Base'], '488 GTB':['Base','Pista','Pista Spider'], 'F8 Tributo':['Base','Spider'], 'Roma':['Base'], 'Portofino':['Base','M'], 'SF90':['Stradale','Spider','XX','XX Spider'], '812':['Superfast','GTS','Competizione','Competizione A'], 'Purosangue':['Base'], 'LaFerrari':['Base','Aperta'] },
+      'Ford':       { 'Mustang':['EcoBoost','EcoBoost Premium','GT','GT Premium','Mach 1','Mach 1 Premium','Shelby GT350','Shelby GT350R','Shelby GT500','Dark Horse'], 'Mustang Mach-E':['Select','Premium','GT','GT Performance'], 'F-150':['XL','XLT','Lariat','King Ranch','Platinum','Limited','Raptor','Raptor R','Tremor'], 'Bronco':['Base','Big Bend','Black Diamond','Outer Banks','Badlands','Wildtrak','Everglades','Raptor','Heritage','Sasquatch'], 'GT':['Base'] },
+      'Genesis':    { 'G70':['2.0T','3.3T Sport','3.3T Sport Advanced'], 'G80':['2.5T','3.5T Sport','Electrified'], 'G90':['3.5T','5.0','Electrified'], 'GV70':['2.5T','3.5T Sport','Electrified'], 'GV80':['2.5T','3.5T Prestige'] },
+      'GMC':        { 'Sierra 1500':['Pro','SLE','SLT','AT4','AT4X','Denali','Denali Ultimate'], 'Sierra 2500HD':['Pro','SLE','SLT','AT4','Denali'], 'Canyon':['Elevation','AT4','Denali'], 'Yukon':['SLE','SLT','AT4','Denali','Denali Ultimate','XL SLT','XL Denali'] },
+      'Honda':      { 'Civic':['LX','Sport','EX','EX-L','Sport Touring','Si','Type R'], 'Accord':['LX','Sport','EX','EX-L','Sport 2.0T','Touring'], 'CR-V':['LX','EX','EX-L','Sport','Touring','Hybrid'], 'Pilot':['Sport','EX-L','TrailSport','Touring','Elite','Black Edition'], 'Passport':['Sport','EX-L','TrailSport','Touring','Elite'] },
+      'Hyundai':    { 'Elantra':['SE','SEL','N Line','Limited','N'], 'Sonata':['SE','SEL','SEL Plus','N Line','Limited'], 'Tucson':['SE','SEL','N Line','XRT','Limited'], 'Santa Fe':['SE','SEL','XRT','Limited','Calligraphy'], 'Ioniq 5':['SE Standard Range','SE','SEL','Limited'], 'Ioniq 6':['SE Standard Range','SE','SEL','Limited'] },
+      'Infiniti':   { 'Q50':['Pure','Luxe','Sensory','Red Sport 400','Red Sport 400 AWD'], 'Q60':['Pure','Luxe','Red Sport 400','Red Sport 400 AWD'], 'QX55':['Essential','Sensory','Autograph'], 'QX80':['Luxe','Sensory','Autograph'] },
+      'Jaguar':     { 'F-Type':['R-Dynamic','P300','P450','P575 R','P575 R-Dynamic Black'], 'F-Pace':['S','R-Dynamic SE','R-Dynamic HSE','SVR'], 'XE':['S','R-Dynamic SE','R-Dynamic HSE'], 'XF':['S','R-Dynamic SE','R-Dynamic HSE'] },
+      'Jeep':       { 'Wrangler':['Sport','Sport S','Willys','Sahara','Rubicon','4xe','392 Rubicon','Rubicon 20th Anniversary'], 'Grand Cherokee':['Laredo','Altitude','Limited','Overland','Summit','Summit Reserve','Trackhawk','4xe','Trailhawk','SRT'], 'Gladiator':['Sport','Sport S','Willys','Overland','Rubicon','Mojave'] },
+      'Kia':        { 'Stinger':['GT-Line','GT1','GT2'], 'EV6':['Light','Wind','GT-Line','GT'], 'K5':['LX','GT-Line','EX','GT'], 'Telluride':['LX','S','EX','SX','X-Pro','Nightfall','SX-Prestige'] },
+      'Lamborghini':{ 'Huracán':['EVO','EVO Spyder','EVO RWD','EVO RWD Spyder','STO','Sterrato','Tecnica'], 'Urus':['Base','Performante','S'], 'Revuelto':['Base'], 'Aventador':['S','S Roadster','SVJ','SVJ Roadster','LP 780-4 Ultimae'] },
+      'Land Rover': { 'Range Rover':['SE','HSE','Autobiography','SV','PHEV','Sport SE','Sport Dynamic SE','Sport Autobiography','Sport SVR','Defender 90','Defender 110','Defender 130'] },
+      'Lexus':      { 'IS':['IS 300','IS 300 AWD','IS 350','IS 350 AWD','IS 500'], 'ES':['ES 250','ES 300h','ES 350'], 'GS':['GS 350','GS 350 F Sport','GS 450h'], 'LS':['LS 500','LS 500 AWD','LS 500h'], 'LC':['LC 500','LC 500 Convertible','LC 500h'], 'LFA':['Base'], 'NX':['NX 250','NX 350','NX 350h','NX 450h+'], 'RX':['RX 350','RX 350 AWD','RX 350h','RX 500h','RX 450h+'], 'GX':['GX 460'], 'LX':['LX 600'] },
+      'Lincoln':    { 'MKZ':['Reserve I','Reserve II','Black Label'], 'Continental':['Reserve','Black Label'], 'Corsair':['Standard','Reserve','Grand Touring'], 'Nautilus':['Standard','Reserve','Black Label'], 'Aviator':['Standard','Reserve','Black Label','Grand Touring'], 'Navigator':['Standard','Reserve','Black Label','L Reserve','L Black Label'] },
+      'McLaren':    { '720S':['Coupe','Spider','Performance'], '765LT':['Coupe','Spider'], 'Artura':['Base','Performance'], 'GT':['Base'], 'Senna':['Base'], 'P1':['Base'] },
+      'Mercedes-Benz':{ 'A-Class':['A 220','A 220 4MATIC','AMG A 35'], 'C-Class':['C 300','C 300 4MATIC','AMG C 43','AMG C 63 S E'], 'E-Class':['E 350','E 450','AMG E 53','AMG E 63 S'], 'S-Class':['S 500','S 580','S 580 4MATIC','AMG S 63 E','Maybach S 580','Maybach S 680'], 'GLE':['GLE 350','GLE 450','GLE 580','AMG GLE 53','AMG GLE 63 S'], 'GLS':['GLS 450','GLS 580','AMG GLS 63','Maybach GLS 600'], 'AMG GT':['53','55','63 S','63 S E Performance','Black Series'], 'G-Class':['G 550','AMG G 63','AMG G 63 Grand Edition','Stronger Than Time'] },
+      'Nissan':     { 'GT-R':['Premium','Track Edition','NISMO'], 'Z':['Sport','Performance','Proto Spec','NISMO'], 'Altima':['S','SR','SV','SL','Platinum'], 'Maxima':['SV','SL','Platinum'], 'Armada':['SV','SL','Platinum'] },
+      'Porsche':    { '718 Cayman':['Base','S','GTS 4.0','GT4','GT4 RS','Spyder'], '718 Boxster':['Base','S','GTS 4.0','Spyder'], '911':['Carrera','Carrera S','Carrera 4S','Targa 4S','GTS','GT3','GT3 RS','Turbo','Turbo S','Dakar'], 'Panamera':['Base','4','4S','GTS','Turbo','Turbo S','Turbo S E-Hybrid'], 'Cayenne':['Base','S','GTS','Turbo','Turbo GT','Turbo S E-Hybrid'], 'Macan':['Base','S','GTS','Turbo'] },
+      'RAM':        { '1500':['Tradesman','Big Horn','Lone Star','Rebel','Laramie','Laramie Longhorn','Limited','Limited Longhorn','TRX'], '2500':['Tradesman','Big Horn','Rebel','Laramie','Limited','Power Wagon'], '3500':['Tradesman','Big Horn','Laramie','Limited','Longhorn'] },
+      'Rolls-Royce':{ 'Ghost':['Base','Black Badge','Extended','Extended Black Badge'], 'Phantom':['Base','Extended','Drophead Coupe'], 'Wraith':['Base','Black Badge'], 'Dawn':['Base','Black Badge'], 'Cullinan':['Base','Black Badge'], 'Spectre':['Base'] },
+      'Subaru':     { 'WRX':['Base','Premium','Limited','GT','TR','STI'], 'BRZ':['Premium','Limited','tS'], 'Outback':['Base','Premium','Limited','Onyx Edition','Touring','Wilderness'], 'Forester':['Base','Premium','Sport','Limited','Touring'] },
+      'Tesla':      { 'Model S':['Long Range','Plaid'], 'Model 3':['Standard Range','Long Range','Performance'], 'Model X':['Long Range','Plaid'], 'Model Y':['Long Range','Performance'], 'Roadster':['Base','Founders Edition'], 'Cybertruck':['RWD','AWD','Cyberbeast'] },
+      'Toyota':     { 'GR86':['Base','Premium'], 'GR Supra':['2.0','3.0','3.0 Premium','A91-MT','A91-CF'], 'GR Corolla':['Core','Circuit Edition','Morizo Edition'], 'Camry':['LE','SE','XSE','XLE','TRD','XSE V6'], 'Avalon':['XLE','Touring','Limited','TRD'], '4Runner':['SR5','TRD Sport','TRD Off-Road','TRD Off-Road Premium','Limited','TRD Pro'], 'Tundra':['SR','SR5','Limited','Platinum','1794','TRD Pro','Capstone'], 'Tacoma':['SR','SR5','TRD Sport','TRD Off-Road','Limited','TRD Pro','Trailhunter'] },
+      'Volkswagen': { 'Golf GTI':['S','SE','Autobahn'], 'Golf R':['Base'], 'Jetta':['S','Sport','SE','SEL','GLI'], 'Passat':['S','SE','SEL'] },
+      'Volvo':      { 'S60':['Momentum','R-Design','Inscription','T8 Polestar'], 'S90':['Momentum','R-Design','Inscription','T8 Excellence'], 'XC40':['Momentum','R-Design','Inscription'], 'XC60':['Momentum','R-Design','Inscription','T8 Polestar'], 'XC90':['Momentum','R-Design','Inscription','Excellence'] },
+    };
+
+    // Populate years 2025 down to 1980
+    (function initYears() {
+      const sel = document.getElementById('v-year');
+      for (let y = 2026; y >= 1980; y--) {
+        const o = document.createElement('option');
+        o.value = y; o.textContent = y;
+        sel.appendChild(o);
+      }
+    })();
+
+    function enableSelect(id) {
+      const s = document.getElementById(id);
+      s.disabled = false;
+      s.style.opacity = '1';
+      s.style.cursor  = 'pointer';
+      s.style.borderColor = 'rgba(201,168,76,0.4)';
+    }
+    function disableSelect(id, label) {
+      const s = document.getElementById(id);
+      s.disabled = true;
+      s.style.opacity = '0.4';
+      s.style.cursor  = 'not-allowed';
+      s.style.borderColor = 'rgba(255,255,255,0.1)';
+      s.innerHTML = `<option value="">— ${label} —</option>`;
+    }
+
+    function updateMakes() {
+      disableSelect('v-model','Select Model');
+      disableSelect('v-trim','Select Trim');
+      document.getElementById('vehicle-summary').style.display = 'none';
+      document.getElementById('cvehicle').value = '';
+
+      const yr = document.getElementById('v-year').value;
+      if (!yr) { disableSelect('v-make','Select Make'); return; }
+
+      const makeEl = document.getElementById('v-make');
+      makeEl.innerHTML = '<option value="">— Select Make —</option>';
+      Object.keys(VEHICLES).sort().forEach(make => {
+        const o = document.createElement('option');
+        o.value = make; o.textContent = make;
+        makeEl.appendChild(o);
+      });
+      enableSelect('v-make');
+    }
+
+    function updateModels() {
+      disableSelect('v-trim','Select Trim');
+      document.getElementById('vehicle-summary').style.display = 'none';
+      document.getElementById('cvehicle').value = '';
+
+      const make = document.getElementById('v-make').value;
+      if (!make) { disableSelect('v-model','Select Model'); return; }
+
+      const models = VEHICLES[make] || {};
+      const modelEl = document.getElementById('v-model');
+      modelEl.innerHTML = '<option value="">— Select Model —</option>';
+      Object.keys(models).sort().forEach(model => {
+        const o = document.createElement('option');
+        o.value = model; o.textContent = model;
+        modelEl.appendChild(o);
+      });
+      enableSelect('v-model');
+    }
+
+    function updateTrims() {
+      document.getElementById('vehicle-summary').style.display = 'none';
+      document.getElementById('cvehicle').value = '';
+
+      const make  = document.getElementById('v-make').value;
+      const model = document.getElementById('v-model').value;
+      if (!make || !model) { disableSelect('v-trim','Select Trim'); return; }
+
+      const trims = (VEHICLES[make] && VEHICLES[make][model]) || [];
+      const trimEl = document.getElementById('v-trim');
+      trimEl.innerHTML = '<option value="">— Select Trim (optional) —</option>';
+      trims.forEach(trim => {
+        const o = document.createElement('option');
+        o.value = trim; o.textContent = trim;
+        trimEl.appendChild(o);
+      });
+      enableSelect('v-trim');
+      updateVehicleSummary();
+    }
+
+    function updateVehicleSummary() {
+      const yr    = document.getElementById('v-year').value;
+      const make  = document.getElementById('v-make').value;
+      const model = document.getElementById('v-model').value;
+      const trim  = document.getElementById('v-trim').value;
+
+      if (!yr || !make || !model) {
+        document.getElementById('vehicle-summary').style.display = 'none';
+        document.getElementById('cvehicle').value = '';
+        return;
+      }
+
+      const full = [yr, make, model, trim].filter(Boolean).join(' ');
+      document.getElementById('cvehicle').value = full;
+      document.getElementById('vehicle-summary-text').textContent = full;
+      document.getElementById('vehicle-summary').style.display = 'block';
     }
   </script>
 </body>
